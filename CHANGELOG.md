@@ -12,6 +12,7 @@ All notable changes to `homebridge-config-ui-x` will be documented in this file.
 - fix widget config saving on dashboard
 - use native language for validation messages where available
   - currently available for `de` `en` `es` `fr` `it` `pt` `zh`
+- switch from a top menu to a sidebar menu
 
 ### Other Changes
 
