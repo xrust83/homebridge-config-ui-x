@@ -9,6 +9,7 @@ All notable changes to `homebridge-config-ui-x` will be documented in this file.
 - updates to the `th.json` language file (#2211) (@tomzt)
 - updates to the `nl.json` language file (#2213) (@tooh)
 - updates to the `es.json` language file (#2235) (@AxelDreemurr)
+- fix widget config saving on dashboard
 
 ### Other Changes
 
