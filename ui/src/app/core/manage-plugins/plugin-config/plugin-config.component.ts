@@ -111,7 +111,7 @@ export class PluginConfigComponent implements OnInit {
         }
       }
 
-      if (!['homebridge', 'homebridge-config-ui-x'].includes(this.plugin.name)) {
+      if (!['homebridge', 'homebridge-config-ui-x'].includes(this.plugin.name) && this.$settings.env.serviceMode) {
         await this.getChildBridges()
         if (this.childBridges.length > 0) {
           this.$activeModal.close()
