@@ -18,6 +18,7 @@ All notable changes to `homebridge-config-ui-x` will be documented in this file.
 
 - migrate `@zajsf/*` to `@ng-formworks/*` for plugin schema forms
 - check for service mode when querying child bridge status
+- perform a full restart when updating `homebridge`
 
 ### Homebridge Dependencies
 
