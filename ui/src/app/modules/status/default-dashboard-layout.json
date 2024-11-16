@@ -1,20 +1,20 @@
 [
   {
-    "component": "HapQrcodeWidgetComponent",
+    "component": "HomebridgeStatusWidgetComponent",
     "x": 0,
     "y": 0,
     "cols": 5,
     "rows": 7,
-    "mobileOrder": 100,
+    "mobileOrder": 10,
     "hideOnMobile": false
   },
   {
-    "component": "HomebridgeStatusWidgetComponent",
+    "component": "ChildBridgeWidgetComponent",
     "x": 0,
     "y": 7,
     "cols": 5,
     "rows": 7,
-    "mobileOrder": 10,
+    "mobileOrder": 35,
     "hidePort": true,
     "hideOnMobile": false
   },
@@ -37,12 +37,12 @@
     "hideOnMobile": false
   },
   {
-    "component": "ChildBridgeWidgetComponent",
+    "component": "HapQrcodeWidgetComponent",
     "x": 15,
     "y": 9,
     "cols": 5,
     "rows": 5,
-    "mobileOrder": 35,
+    "mobileOrder": 100,
     "hideOnMobile": false
   },
   {

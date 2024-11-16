@@ -16,6 +16,7 @@ All notable changes to `homebridge-config-ui-x` will be documented in this file.
 - switch from a top menu to a sidebar menu
 - show pairing status for bridges around the ui
 - consistent labels for sensor-type accessories
+- update default dashboard layout
 
 ### Other Changes
 
