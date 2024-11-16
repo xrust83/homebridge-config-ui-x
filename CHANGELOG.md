@@ -2,6 +2,24 @@
 
 All notable changes to `homebridge-config-ui-x` will be documented in this file. This project tries to adhere to [Semantic Versioning](http://semver.org/).
 
+## BETA
+
+### UI Changes
+
+- updates to the `th.json` language file (#2211) (@tomzt)
+- updates to the `nl.json` language file (#2213) (@tooh)
+- updates to the `es.json` language file (#2235) (@AxelDreemurr)
+
+### Other Changes
+
+- migrate `@zajsf/*` to `@ng-formworks/*` for plugin schema forms
+
+### Homebridge Dependencies
+
+- `@homebridge/hap-client` @ `v1.10.2`
+- `@homebridge/node-pty-prebuilt-multiarch` @ `v0.11.14`
+- `@homebridge/plugin-ui-utils` @ `v1.0.3`
+
 ## v4.62.0 (2024-10-19)
 
 ### UI Changes
