@@ -35,6 +35,12 @@
   <app-securitysystem *ngSwitchCase="'SecuritySystem'" [service]="service">Security System</app-securitysystem>
   <app-leaksensor *ngSwitchCase="'LeakSensor'" [service]="service">Leak Sensor</app-leaksensor>
   <app-smokesensor *ngSwitchCase="'SmokeSensor'" [service]="service">Smoke Sensor</app-smokesensor>
+  <app-carbonmonoxidesensor *ngSwitchCase="'CarbonMonoxideSensor'" [service]="service"
+    >Carbon Monoxide Sensor</app-carbonmonoxidesensor
+  >
+  <app-carbondioxidesensor *ngSwitchCase="'CarbonDioxideSensor'" [service]="service"
+    >Carbon Monoxide Sensor</app-carbondioxidesensor
+  >
   <app-valve *ngSwitchCase="'Valve'" [service]="service">Valve</app-valve>
   <app-irrigationsystem *ngSwitchCase="'IrrigationSystem'" [service]="service">Irrigation System</app-irrigationsystem>
   <app-heatercooler *ngSwitchCase="'HeaterCooler'" [service]="service">Heater Cooler</app-heatercooler>

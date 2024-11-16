@@ -18,6 +18,7 @@ All notable changes to `homebridge-config-ui-x` will be documented in this file.
 - consistent labels for sensor-type accessories
 - update default dashboard layout
 - remove pnpm warning modal
+- use smoke detector icon for carbon monoxide and dioxide sensors
 
 ### Other Changes
 

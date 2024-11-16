@@ -5,6 +5,8 @@ import { AirpurifierComponent } from '@/app/core/accessories/types/airpurifier/a
 import { AirpurifierManageComponent } from '@/app/core/accessories/types/airpurifier/airpurifier.manage.component'
 import { AirqualitysensorComponent } from '@/app/core/accessories/types/airqualitysensor/airqualitysensor.component'
 import { BatteryComponent } from '@/app/core/accessories/types/battery/battery.component'
+import { CarbondioxidesensorComponent } from '@/app/core/accessories/types/carbondioxidesensor/carbondioxidesensor.component'
+import { CarbonmonoxidesensorComponent } from '@/app/core/accessories/types/carbonmonoxidesensor/carbonmonoxidesensor.component'
 import { ContactsensorComponent } from '@/app/core/accessories/types/contactsensor/contactsensor.component'
 import { DoorComponent } from '@/app/core/accessories/types/door/door.component'
 import { DoorManageComponent } from '@/app/core/accessories/types/door/door.manage.component'
@@ -103,6 +105,8 @@ import { NgxMdModule } from 'ngx-md'
     HeaterCoolerManageComponent,
     HumidifierDehumidifierComponent,
     HumidifierDehumidifierManageComponent,
+    CarbonmonoxidesensorComponent,
+    CarbondioxidesensorComponent,
   ],
   imports: [
     CommonModule,
