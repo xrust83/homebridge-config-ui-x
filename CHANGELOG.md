@@ -17,6 +17,7 @@ All notable changes to `homebridge-config-ui-x` will be documented in this file.
 - show pairing status for bridges around the ui
 - consistent labels for sensor-type accessories
 - update default dashboard layout
+- remove pnpm warning modal
 
 ### Other Changes
 
