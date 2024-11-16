@@ -424,7 +424,7 @@ export class ConfigEditorComponent implements OnInit, OnDestroy {
                   },
                   model: {
                     type: 'string',
-                    description: 'The bridge model to be displayed  in HomeKit',
+                    description: 'The bridge model to be displayed in HomeKit',
                   },
                   bind: {
                     description: 'A string or an array of strings with the name(s) of the network interface(s) '
@@ -474,7 +474,7 @@ export class ConfigEditorComponent implements OnInit, OnDestroy {
               },
               ports: {
                 type: 'object',
-                description: 'The range of ports that should be used for certain accessories like Cameras and TVs',
+                description: 'The range of ports that should be used for certain accessories like cameras and TVs',
                 required: ['start', 'end'],
                 properties: {
                   start: {
@@ -497,7 +497,7 @@ export class ConfigEditorComponent implements OnInit, OnDestroy {
               },
               platforms: {
                 type: 'array',
-                description: 'Plugins that expose a "Platform" should have there config entered in this array.'
+                description: 'Any plugin that exposes a platform should have it\'s config entered in this array.'
                   + '\nSeparate each plugin config block using a comma.',
                 items: {
                   type: 'object',
@@ -530,7 +530,7 @@ export class ConfigEditorComponent implements OnInit, OnDestroy {
                         },
                         name: {
                           type: 'string',
-                          description: 'The name used in the Homebridge log',
+                          description: 'The name used in the Homebridge log.',
                         },
                       },
                     },
@@ -539,7 +539,7 @@ export class ConfigEditorComponent implements OnInit, OnDestroy {
               },
               accessories: {
                 type: 'array',
-                description: 'Plugins that expose a "Accessory" should have there config entered in this array.'
+                description: 'Any plugin that exposes an accessory should have it\'s config entered in this array.'
                   + '\nSeparate each plugin config block using a comma.',
                 items: {
                   type: 'object',

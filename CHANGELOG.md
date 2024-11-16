@@ -15,6 +15,7 @@ All notable changes to `homebridge-config-ui-x` will be documented in this file.
   - currently available for `de` `en` `es` `fr` `it` `pt` `zh`
 - switch from a top menu to a sidebar menu
 - show pairing status for bridges around the ui
+- consistent labels for sensor-type accessories
 
 ### Other Changes
 
