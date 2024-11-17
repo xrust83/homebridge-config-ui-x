@@ -28,8 +28,6 @@
 
 Homebridge UI also provides a tool called [`hb-service`](https://github.com/homebridge/homebridge-config-ui-x/wiki/Homebridge-Service-Command) which makes it easy to set up Homebridge as a service on Linux/Raspbian, macOS and Windows 10.
 
-[![Status](screenshots/homebridge-config-ui-x-darkmode-status.png?2020-01-07)](#usage)
-
 ## Installation Instructions
 
 For detailed instructions on how to set up Node.js and Homebridge with Homebridge UI as a service, see the guides on the wiki:
@@ -54,35 +52,35 @@ The UI can be accessed via web browser by default on port `8581` (e.g. `http://l
 
 This shows an overview of your Homebridge system. The dashboard is widget-based and completely customisable with a number of themes available.
 
-![Status](screenshots/homebridge-config-ui-x-status.png?2020-01-07)
+![Status](screenshots/homebridge-config-ui-x-status.png)
 
 ### Plugin Screen
 
 This shows you the currently installed plugins and allows you to install, configure, update and remove plugins.
 
-![Plugin](screenshots/homebridge-config-ui-x-darkmode-plugins.png?2020-01-07)
+![Plugin](screenshots/homebridge-config-ui-x-darkmode-plugins.png)
 
 You can configure supported plugins using the graphical settings editor, or by editing the config JSON directly.
 
-![Plugin Settings](screenshots/homebridge-config-ui-x-darkmode-alexa-settings.png?2020-01-07)
+![Plugin Settings](screenshots/homebridge-config-ui-x-darkmode-alexa-settings.png)
 
 ### Configuration Screen
 
 The configuration screen allows you to modify your Homebridge `config.json`. The built-in editor automatically syntax-checks your JSON and makes a backup of your config every time you make a change.
 
-![Config](screenshots/homebridge-config-ui-x-config.png?2020-01-07)
+![Config](screenshots/homebridge-config-ui-x-config.png)
 
 ### Log Screen
 
 This shows you the Homebridge rolling log. This is helpful for troubleshooting.
 
-![Log](screenshots/homebridge-config-ui-x-logs.png?2020-01-07)
+![Log](screenshots/homebridge-config-ui-x-logs.png)
 
 ### Accessories Screen
 
 This shows you the Homebridge accessories for all the Homebridge instances on your network. You can use this to control accessories from a web browser and works well on mobile devices which allows users to control Homebridge from non-Apple devices.
 
-![Accessories](screenshots/homebridge-config-ui-x-accessories.png?2020-01-07)
+![Accessories](screenshots/homebridge-config-ui-x-accessories.png)
 
 ## Plugin Development
 
