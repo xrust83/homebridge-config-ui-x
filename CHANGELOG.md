@@ -2,6 +2,25 @@
 
 All notable changes to `homebridge-config-ui-x` will be documented in this file. This project tries to adhere to [Semantic Versioning](http://semver.org/).
 
+## BETA
+
+### UI Changes
+
+- updates to the `uk.json` language file (#2262) (@xrust83)
+- logo and `homebridge` text should link to status page
+- Add icons for shower head and water faucet valve types (#2267) (@justjam2013)
+- Removed conditional for displaying search exit component (#2269) (@justjam2013)
+
+### Other Changes
+
+- Fix typo in console message (#2264) (@markholland)
+
+### Homebridge Dependencies
+
+- `@homebridge/hap-client` @ `v1.10.2`
+- `@homebridge/node-pty-prebuilt-multiarch` @ `v0.11.14`
+- `@homebridge/plugin-ui-utils` @ `v1.0.3`
+
 ## v4.64.0 (2024-11-30)
 
 ### ⚠️ Upcoming Deprecations:
@@ -23,6 +42,12 @@ All notable changes to `homebridge-config-ui-x` will be documented in this file.
 
 - dependency updates
 - fix npm search max character limit
+
+### Homebridge Dependencies
+
+- `@homebridge/hap-client` @ `v1.10.2`
+- `@homebridge/node-pty-prebuilt-multiarch` @ `v0.11.14`
+- `@homebridge/plugin-ui-utils` @ `v1.0.3`
 
 ## v4.63.0 (2024-11-17)
 
