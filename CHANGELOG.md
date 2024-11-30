@@ -13,6 +13,7 @@ All notable changes to `homebridge-config-ui-x` will be documented in this file.
 ### Other Changes
 
 - dependency updates
+- fix npm search max character limit
 
 ## v4.63.0 (2024-11-17)
 
