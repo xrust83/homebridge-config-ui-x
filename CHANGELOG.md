@@ -9,6 +9,7 @@ All notable changes to `homebridge-config-ui-x` will be documented in this file.
 - updates to the `de.json` language file (#2249) (@Staubgeborener)
 - updates to the `ko.json` language file (#2251) (@alphaorderly)
 - updates to the `uk.json` language file (#2255) (@xrust83)
+- add reload menu item when using as a PWA
 
 ### Other Changes
 
