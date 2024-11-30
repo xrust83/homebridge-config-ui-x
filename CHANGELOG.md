@@ -2,6 +2,18 @@
 
 All notable changes to `homebridge-config-ui-x` will be documented in this file. This project tries to adhere to [Semantic Versioning](http://semver.org/).
 
+## BETA
+
+### UI Changes
+
+- updates to the `de.json` language file (#2249) (@Staubgeborener)
+- updates to the `ko.json` language file (#2251) (@alphaorderly)
+- updates to the `uk.json` language file (#2255) (@xrust83)
+
+### Other Changes
+
+- dependency updates
+
 ## v4.63.0 (2024-11-17)
 
 ### ⚠️ Upcoming Deprecations:
