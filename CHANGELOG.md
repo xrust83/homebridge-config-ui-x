@@ -14,6 +14,7 @@ All notable changes to `homebridge-config-ui-x` will be documented in this file.
 ### Other Changes
 
 - Fix typo in console message (#2264) (@markholland)
+- updated dependencies
 
 ### Homebridge Dependencies
 
