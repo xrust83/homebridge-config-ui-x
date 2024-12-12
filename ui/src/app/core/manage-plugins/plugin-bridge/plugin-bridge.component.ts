@@ -47,6 +47,7 @@ export class PluginBridgeComponent implements OnInit {
   public showConfigFields: boolean[] = []
   public saveInProgress = false
   public canShowBridgeDebug = false
+  public deleteBridgeIds: string[] = []
 
   constructor() {}
 
@@ -85,6 +86,9 @@ export class PluginBridgeComponent implements OnInit {
 
   async toggleExternalBridge(block: any, enable: boolean, index: number) {
     if (!enable) {
+      // Store unpaired child bridge id for deletion, so no bridges are orphaned
+      this.deleteBridgeIds.push(block._bridge.username)
+
       delete block._bridge
       return
     }
@@ -100,6 +104,10 @@ export class PluginBridgeComponent implements OnInit {
       firmwareRevision: bridgeCache?.firmwareRevision,
       debugModeEnabled: bridgeCache?.debugModeEnabled,
       env: bridgeCache?.env,
+    }
+
+    if (this.deleteBridgeIds.includes(block._bridge.username)) {
+      this.deleteBridgeIds = this.deleteBridgeIds.filter(id => id !== block._bridge.username)
     }
 
     this.bridgeCache.set(index, block._bridge)
@@ -132,6 +140,17 @@ export class PluginBridgeComponent implements OnInit {
 
     try {
       await firstValueFrom(this.$api.post(`/config-editor/plugin/${encodeURIComponent(this.plugin.name)}`, this.configBlocks))
+
+      // Delete unpaired bridges, so no bridges are orphaned
+      for (const childBridgeId of this.deleteBridgeIds) {
+        try {
+          await firstValueFrom(this.$api.delete(`/server/pairings/${childBridgeId.replace(/:/g, '')}`))
+        } catch (error) {
+          console.error(error)
+          this.$toastr.error(this.$translate.instant('settings.unpair_bridge.unpair_error'), this.$translate.instant('toast.title_error'))
+        }
+      }
+
       this.$activeModal.close()
       this.$modal.open(RestartHomebridgeComponent, {
         size: 'lg',

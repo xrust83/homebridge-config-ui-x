@@ -14,6 +14,7 @@ All notable changes to `homebridge-config-ui-x` will be documented in this file.
 
 - format svg files nicely as part of lint
 - upgrade angular from `v18` to `v19`
+- delete unpaired bridges when toggling bridges off (#2284) (@justjam2013) (fixes [#2257](https://github.com/homebridge/homebridge-config-ui-x/issues/2257))
 
 ## v4.65.2 (2024-12-15)
 
