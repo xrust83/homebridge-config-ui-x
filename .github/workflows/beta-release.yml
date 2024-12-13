@@ -54,7 +54,17 @@ jobs:
       - name: Install package v${{ needs.publish.outputs.NPM_VERSION }}
         run: |
           export npm_config_prefix=$(pwd)/package
-          npm install -g homebridge-config-ui-x@${{ needs.publish.outputs.NPM_VERSION }}
+          for i in {1..10}; do
+            npm install -g homebridge-config-ui-x@${{ needs.publish.outputs.NPM_VERSION }} && break || {
+              if [ $? -eq 1 ] && grep -q 'ETARGET' <<< "$(npm install -g homebridge-config-ui-x@${{ needs.publish.outputs.NPM_VERSION }} 2>&1)"; then
+                echo "Attempt $i failed with ETARGET error. Retrying in 1 minute..."
+                sleep 60
+              else
+                echo "Attempt $i failed with a different error. Exiting..."
+                exit 1
+              fi
+            }
+          done
 
       - name: Remove invalid node-pty node-gyp run v${{ needs.publish.outputs.NPM_VERSION }}
         run: |

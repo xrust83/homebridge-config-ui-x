@@ -21,6 +21,7 @@ All notable changes to `homebridge-config-ui-x` will be documented in this file.
 ### Other Changes
 
 - fix types + update dependencies
+- fix attach artifacts to release workflow
 
 ### Homebridge Dependencies
 
