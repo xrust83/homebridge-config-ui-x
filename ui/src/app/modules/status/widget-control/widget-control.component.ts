@@ -73,11 +73,11 @@ export class WidgetControlComponent implements OnInit {
         term.length < 3
           ? []
           : this.findOpenWeatherMapCity(term).pipe(
-            catchError(() => {
-              this.searching = false
-              return of([])
-            }),
-          ),
+              catchError(() => {
+                this.searching = false
+                return of([])
+              }),
+            ),
       ),
       tap(() => this.searching = false),
     )

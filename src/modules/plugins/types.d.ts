@@ -86,7 +86,7 @@ export interface INpmRegistryModule {
 export interface INpmSearchResultItem {
   package: {
     name: string
-    scoped: string
+    scope: string
     version: string
     description: string
     keywords: string[]
@@ -116,7 +116,8 @@ export interface INpmSearchResultItem {
 }
 
 export interface INpmSearchResults {
-  objects: INpmSearchResultItem[]
+  total: number
+  results: INpmSearchResultItem[]
 }
 
 export interface IPackageJson {
