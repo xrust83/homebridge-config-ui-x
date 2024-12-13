@@ -3,6 +3,7 @@ export interface HomebridgePlugin {
   private: boolean
   displayName?: string
   description?: string
+  keywords?: string[]
   verifiedPlugin?: boolean
   verifiedPlusPlugin?: boolean
   icon?: string

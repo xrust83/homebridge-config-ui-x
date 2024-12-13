@@ -250,8 +250,10 @@ export class PluginsService {
     if ((query.indexOf('homebridge-') === 0 || this.isScopedPlugin(query)) && !this.hiddenPlugins.includes(query.toLowerCase())) {
       return await this.searchNpmRegistrySingle(query.toLowerCase())
     }
+
     // There seems to be a new 64-character limit on the text query (which allows for 15 characters of query)
-    const q = `${(!query || !query.length) ? '' : `${query.substring(0, 15)}+`}keywords:homebridge-plugin+not:deprecated&size=30`
+    // Get the top 99 plugins now, later we filter down to the top 30
+    const q = `${(!query || !query.length) ? '' : `${query.substring(0, 15)}+`}keywords:homebridge-plugin+not:deprecated&size=99`
     let searchResults: INpmSearchResults
 
     try {
@@ -275,6 +277,7 @@ export class PluginsService {
         if (isInstalled) {
           plugin = isInstalled
           plugin.lastUpdated = pkg.package.date
+          plugin.keywords = pkg.package.keywords
           return plugin
         }
 
@@ -286,6 +289,7 @@ export class PluginsService {
         plugin.description = (pkg.package.description)
           ? pkg.package.description.replace(/\(?(?:https?|ftp):\/\/[\n\S]+/g, '').trim()
           : pkg.package.name
+        plugin.keywords = pkg.package.keywords
         plugin.links = pkg.package.links
         plugin.author = (pkg.package.publisher) ? pkg.package.publisher.username : null
         plugin.verifiedPlugin = this.verifiedPlugins.includes(pkg.package.name)
@@ -296,15 +300,24 @@ export class PluginsService {
         return plugin
       })
 
-    if (
-      !result.length
-      && (query.indexOf('homebridge-') === 0 || this.isScopedPlugin(query))
-      && !this.hiddenPlugins.includes(query.toLowerCase())
-    ) {
-      return await this.searchNpmRegistrySingle(query.toLowerCase())
-    }
+    const searchTerms: string[] = query
+      .replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, '') // remove punctuation
+      .toLowerCase() // convert to lowercase
+      .split(/\s+/) // split into words
+      .filter(term => term.length > 0) // remove empty strings
 
-    return orderBy(result, ['verifiedPlusPlugin', 'verifiedPlugin'], ['desc', 'desc'])
+    // Filter matching plugins
+    const matchPlugins = result.filter((plugin) => {
+      const pluginName = plugin.name.toLowerCase()
+      const pluginKeywords = plugin.keywords.map(keyword => keyword.toLowerCase())
+      const pluginDescription = plugin.description.toLowerCase()
+
+      return searchTerms.some(term => pluginName.includes(term))
+        || searchTerms.some(term => pluginKeywords.includes(term))
+        || searchTerms.some(term => pluginDescription.includes(term))
+    })
+
+    return orderBy(matchPlugins, ['verifiedPlusPlugin', 'verifiedPlugin'], ['desc', 'desc']).slice(0, 30)
   }
 
   /**
