@@ -27,5 +27,6 @@ module.exports = antfu({
     css: true,
     html: true,
     markdown: true,
+    svg: true,
   },
 })
