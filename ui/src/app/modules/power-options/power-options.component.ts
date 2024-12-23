@@ -1,21 +1,28 @@
 import { ApiService } from '@/app/core/api.service'
 import { SettingsService } from '@/app/core/settings.service'
-import { Component } from '@angular/core'
+
+import { Component, inject } from '@angular/core'
 import { Router } from '@angular/router'
-import { TranslateService } from '@ngx-translate/core'
+import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
+import { TranslatePipe, TranslateService } from '@ngx-translate/core'
 import { ToastrService } from 'ngx-toastr'
 
 @Component({
   templateUrl: './power-options.component.html',
+  standalone: true,
+  imports: [
+    NgbTooltip,
+    TranslatePipe,
+  ],
 })
 export class PowerOptionsComponent {
-  constructor(
-    private $api: ApiService,
-    private $router: Router,
-    public $settings: SettingsService,
-    private $toastr: ToastrService,
-    private $translate: TranslateService,
-  ) {}
+  private $api = inject(ApiService)
+  private $router = inject(Router)
+  $settings = inject(SettingsService)
+  private $toastr = inject(ToastrService)
+  private $translate = inject(TranslateService)
+
+  constructor() {}
 
   restartHomebridge() {
     this.$router.navigate(['/restart'])

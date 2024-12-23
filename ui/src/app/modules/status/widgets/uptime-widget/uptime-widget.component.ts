@@ -1,11 +1,17 @@
 import { IoNamespace, WsService } from '@/app/core/ws.service'
-import { Component, Input, OnDestroy, OnInit } from '@angular/core'
+import { NgClass } from '@angular/common'
+import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core'
+import { TranslatePipe } from '@ngx-translate/core'
 import { interval, Subscription } from 'rxjs'
 
 @Component({
   templateUrl: './uptime-widget.component.html',
+  standalone: true,
+  imports: [NgClass, TranslatePipe],
 })
 export class UptimeWidgetComponent implements OnInit, OnDestroy {
+  private $ws = inject(WsService)
+
   @Input() widget: any
 
   public serverUptime: string
@@ -14,9 +20,7 @@ export class UptimeWidgetComponent implements OnInit, OnDestroy {
   private io: IoNamespace
   private intervalSubscription: Subscription
 
-  constructor(
-    private $ws: WsService,
-  ) {}
+  constructor() {}
 
   ngOnInit() {
     this.io = this.$ws.getExistingNamespace('status')

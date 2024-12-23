@@ -1,10 +1,15 @@
-import { Component, Input } from '@angular/core'
+import { Component, inject, Input } from '@angular/core'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
+import { TranslatePipe } from '@ngx-translate/core'
 
 @Component({
   templateUrl: './information.component.html',
+  standalone: true,
+  imports: [TranslatePipe],
 })
 export class InformationComponent {
+  $activeModal = inject(NgbActiveModal)
+
   @Input() title: string
   @Input() subtitle?: string
   @Input() message: string
@@ -12,7 +17,5 @@ export class InformationComponent {
   @Input() ctaButtonLink?: string
   @Input() faIconClass: string
 
-  constructor(
-    public $activeModal: NgbActiveModal,
-  ) {}
+  constructor() {}
 }

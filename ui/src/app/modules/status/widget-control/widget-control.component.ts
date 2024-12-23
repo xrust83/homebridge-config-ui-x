@@ -1,9 +1,11 @@
 import { ApiService } from '@/app/core/api.service'
 import { environment } from '@/environments/environment'
+import { DatePipe, NgClass, NgFor, NgIf, NgSwitch, NgSwitchCase } from '@angular/common'
 import { HttpClient, HttpParams } from '@angular/common/http'
-import { Component, Input, OnInit } from '@angular/core'
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
-import { TranslateService } from '@ngx-translate/core'
+import { Component, inject, Input, OnInit } from '@angular/core'
+import { FormsModule } from '@angular/forms'
+import { NgbActiveModal, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap'
+import { TranslatePipe, TranslateService } from '@ngx-translate/core'
 import { firstValueFrom, Observable, of } from 'rxjs'
 import {
   catchError,
@@ -16,8 +18,25 @@ import {
 
 @Component({
   templateUrl: './widget-control.component.html',
+  standalone: true,
+  imports: [
+    NgSwitch,
+    FormsModule,
+    NgSwitchCase,
+    NgClass,
+    NgbTypeahead,
+    NgFor,
+    NgIf,
+    DatePipe,
+    TranslatePipe,
+  ],
 })
 export class WidgetControlComponent implements OnInit {
+  $activeModal = inject(NgbActiveModal)
+  private $api = inject(ApiService)
+  private $http = inject(HttpClient)
+  private $translate = inject(TranslateService)
+
   @Input() widget: any
 
   // weather
@@ -57,12 +76,7 @@ export class WidgetControlComponent implements OnInit {
 
   public networkInterfaces: string[] = []
 
-  constructor(
-    public $activeModal: NgbActiveModal,
-    private $api: ApiService,
-    private $http: HttpClient,
-    private $translate: TranslateService,
-  ) {}
+  constructor() {}
 
   public searchCountryCodes = (text$: Observable<string>) =>
     text$.pipe(

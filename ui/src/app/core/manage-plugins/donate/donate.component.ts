@@ -1,18 +1,25 @@
-import { Component, Input, OnInit } from '@angular/core'
+import { NgClass } from '@angular/common'
+import { Component, inject, Input, OnInit } from '@angular/core'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
+import { TranslatePipe } from '@ngx-translate/core'
 
 @Component({
   templateUrl: './donate.component.html',
   styleUrls: ['./donate.component.scss'],
+  standalone: true,
+  imports: [
+    NgClass,
+    TranslatePipe,
+  ],
 })
 export class DonateComponent implements OnInit {
+  $activeModal = inject(NgbActiveModal)
+
   @Input() plugin: any
 
   public fundingOptions: { type: string, url: string }[]
 
-  constructor(
-    public $activeModal: NgbActiveModal,
-  ) {}
+  constructor() {}
 
   ngOnInit(): void {
     if (!this.plugin.funding) {

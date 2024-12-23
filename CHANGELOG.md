@@ -7,6 +7,7 @@ All notable changes to `homebridge-config-ui-x` will be documented in this file.
 ### Other Changes
 
 - format svg files nicely as part of lint
+- upgrade angular from `v18` to `v19`
 
 ## v4.65.2 (2024-12-15)
 

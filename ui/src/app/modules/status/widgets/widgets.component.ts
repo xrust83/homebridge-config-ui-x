@@ -11,23 +11,19 @@ import { SystemInfoWidgetComponent } from '@/app/modules/status/widgets/system-i
 import { TerminalWidgetComponent } from '@/app/modules/status/widgets/terminal-widget/terminal-widget.component'
 import { UptimeWidgetComponent } from '@/app/modules/status/widgets/uptime-widget/uptime-widget.component'
 import { WeatherWidgetComponent } from '@/app/modules/status/widgets/weather-widget/weather-widget.component'
-import {
-  ApplicationRef,
-  Component,
-  ComponentFactoryResolver,
-  ElementRef,
-  EmbeddedViewRef,
-  Injector,
-  Input,
-  OnDestroy,
-  OnInit,
-} from '@angular/core'
+import { ApplicationRef, Component, ComponentFactoryResolver, ElementRef, EmbeddedViewRef, inject, Injector, Input, OnDestroy, OnInit } from '@angular/core'
 
 @Component({
   selector: 'app-widgets',
   template: '',
+  standalone: true,
 })
 export class WidgetsComponent implements OnInit, OnDestroy {
+  private appRef = inject(ApplicationRef)
+  private componentFactoryResolver = inject(ComponentFactoryResolver)
+  private el = inject(ElementRef)
+  private injector = inject(Injector)
+
   @Input() widget: any
 
   private availableWidgets = {
@@ -48,12 +44,7 @@ export class WidgetsComponent implements OnInit, OnDestroy {
 
   private componentRef
 
-  constructor(
-    private appRef: ApplicationRef,
-    private componentFactoryResolver: ComponentFactoryResolver,
-    private el: ElementRef,
-    private injector: Injector,
-  ) {}
+  constructor() {}
 
   ngOnInit() {
     if (Object.prototype.hasOwnProperty.call(this.availableWidgets, this.widget.component)) {

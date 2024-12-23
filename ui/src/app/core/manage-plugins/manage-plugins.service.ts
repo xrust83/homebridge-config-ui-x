@@ -9,7 +9,7 @@ import { PluginConfigComponent } from '@/app/core/manage-plugins/plugin-config/p
 import { ResetAccessoriesComponent } from '@/app/core/manage-plugins/reset-accessories/reset-accessories.component'
 import { UninstallPluginComponent } from '@/app/core/manage-plugins/uninstall-plugin/uninstall-plugin.component'
 import { SettingsService } from '@/app/core/settings.service'
-import { Injectable } from '@angular/core'
+import { inject, Injectable } from '@angular/core'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { TranslateService } from '@ngx-translate/core'
 import { ToastrService } from 'ngx-toastr'
@@ -20,14 +20,14 @@ import { lt, minVersion } from 'semver'
   providedIn: 'root',
 })
 export class ManagePluginsService {
-  constructor(
-    private $api: ApiService,
-    private $modal: NgbModal,
-    private $customPluginsService: CustomPluginsService,
-    private $settings: SettingsService,
-    private $toastr: ToastrService,
-    private $translate: TranslateService,
-  ) {}
+  private $api = inject(ApiService)
+  private $modal = inject(NgbModal)
+  private $customPluginsService = inject(CustomPluginsService)
+  private $settings = inject(SettingsService)
+  private $toastr = inject(ToastrService)
+  private $translate = inject(TranslateService)
+
+  constructor() {}
 
   installPlugin(pluginName: string, targetVersion = 'latest') {
     const ref = this.$modal.open(ManagePluginComponent, {

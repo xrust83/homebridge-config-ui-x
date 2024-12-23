@@ -1,12 +1,19 @@
 import { SettingsService } from '@/app/core/settings.service'
-import { Component, Input, OnInit } from '@angular/core'
+
+import { Component, inject, Input, OnInit } from '@angular/core'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
+import { TranslatePipe } from '@ngx-translate/core'
 import { minVersion, SemVer } from 'semver'
 
 @Component({
   templateUrl: './plugin-compatibility.component.html',
+  standalone: true,
+  imports: [TranslatePipe],
 })
 export class PluginCompatibilityComponent implements OnInit {
+  $activeModal = inject(NgbActiveModal)
+  private $settings = inject(SettingsService)
+
   @Input() plugin: any
   @Input() isValidNode: boolean
   @Input() isValidHb: boolean
@@ -17,10 +24,7 @@ export class PluginCompatibilityComponent implements OnInit {
   public hbMinVersion: SemVer
   public hbInstalledVersion: string
 
-  constructor(
-    public $activeModal: NgbActiveModal,
-    private $settings: SettingsService,
-  ) {}
+  constructor() {}
 
   ngOnInit(): void {
     this.nodeMinVersion = minVersion(this.plugin.updateEngines?.node)

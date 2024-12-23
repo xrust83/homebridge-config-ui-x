@@ -1,16 +1,30 @@
 import { ManagePluginsService } from '@/app/core/manage-plugins/manage-plugins.service'
 import { SettingsService } from '@/app/core/settings.service'
 import { IoNamespace, WsService } from '@/app/core/ws.service'
-import { Component, Input, OnInit } from '@angular/core'
-import { TranslateService } from '@ngx-translate/core'
+import { NgClass } from '@angular/common'
+import { Component, inject, Input, OnInit } from '@angular/core'
+import { RouterLink } from '@angular/router'
+import { TranslatePipe, TranslateService } from '@ngx-translate/core'
 import { ToastrService } from 'ngx-toastr'
 import { firstValueFrom } from 'rxjs'
 
 @Component({
   templateUrl: './homebridge-status-widget.component.html',
   styleUrls: ['./homebridge-status-widget.component.scss'],
+  standalone: true,
+  imports: [
+    NgClass,
+    RouterLink,
+    TranslatePipe,
+  ],
 })
 export class HomebridgeStatusWidgetComponent implements OnInit {
+  $plugin = inject(ManagePluginsService)
+  private $settings = inject(SettingsService)
+  private $toastr = inject(ToastrService)
+  private $translate = inject(TranslateService)
+  private $ws = inject(WsService)
+
   @Input() widget: any
 
   public homebridgePkg = {} as any
@@ -21,13 +35,7 @@ export class HomebridgeStatusWidgetComponent implements OnInit {
 
   private io: IoNamespace
 
-  constructor(
-    public $plugin: ManagePluginsService,
-    private $settings: SettingsService,
-    private $toastr: ToastrService,
-    private $translate: TranslateService,
-    private $ws: WsService,
-  ) {}
+  constructor() {}
 
   async ngOnInit() {
     this.io = this.$ws.getExistingNamespace('status')

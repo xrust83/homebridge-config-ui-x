@@ -9,18 +9,36 @@ import { RestoreComponent } from '@/app/modules/settings/restore/restore.compone
 import { SelectNetworkInterfacesComponent } from '@/app/modules/settings/select-network-interfaces/select-network-interfaces.component'
 import { UnpairAllBridgesComponent } from '@/app/modules/settings/unpair-all-bridges/unpair-all-bridges.component'
 import { UnpairSingleBridgeComponent } from '@/app/modules/settings/unpair-single-bridge/unpair-single-bridge.component'
-import { Component, OnInit } from '@angular/core'
-import { FormControl, FormGroup, UntypedFormControl } from '@angular/forms'
+import { NgClass, TitleCasePipe } from '@angular/common'
+import { Component, inject, OnInit } from '@angular/core'
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, UntypedFormControl } from '@angular/forms'
+import { RouterLink } from '@angular/router'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
-import { TranslateService } from '@ngx-translate/core'
+import { TranslatePipe, TranslateService } from '@ngx-translate/core'
 import { ToastrService } from 'ngx-toastr'
 import { firstValueFrom } from 'rxjs'
 import { debounceTime } from 'rxjs/operators'
 
 @Component({
   templateUrl: './settings.component.html',
+  standalone: true,
+  imports: [
+    NgClass,
+    RouterLink,
+    FormsModule,
+    ReactiveFormsModule,
+    TitleCasePipe,
+    TranslatePipe,
+  ],
 })
 export class SettingsComponent implements OnInit {
+  private $api = inject(ApiService)
+  private $modal = inject(NgbModal)
+  private $plugin = inject(ManagePluginsService)
+  $settings = inject(SettingsService)
+  private $toastr = inject(ToastrService)
+  private $translate = inject(TranslateService)
+
   public originalServiceForm = {
     HOMEBRIDGE_DEBUG: false,
     HOMEBRIDGE_KEEP_ORPHANS: false,
@@ -64,8 +82,8 @@ export class SettingsComponent implements OnInit {
   public legacyMdnsFormControl = new UntypedFormControl(false)
   public showAvahiMdnsOption = false
   public showResolvedMdnsOption = false
-  public availableNetworkAdapters: Record<string, any> = []
-  public bridgeNetworkAdapters: Record<string, any> = []
+  public availableNetworkAdapters: any[] = []
+  public bridgeNetworkAdapters: string[] = []
   public hbPortFormControl = new FormControl(0)
   public isHbV2 = false
   public showFields = {
@@ -77,14 +95,7 @@ export class SettingsComponent implements OnInit {
     cache: true,
   }
 
-  constructor(
-    private $api: ApiService,
-    private $modal: NgbModal,
-    private $plugin: ManagePluginsService,
-    public $settings: SettingsService,
-    private $toastr: ToastrService,
-    private $translate: TranslateService,
-  ) {}
+  constructor() {}
 
   ngOnInit() {
     this.isHbV2 = this.$settings.env.homebridgeVersion.startsWith('2')

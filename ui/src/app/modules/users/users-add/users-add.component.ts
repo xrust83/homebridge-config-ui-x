@@ -1,14 +1,27 @@
 import { ApiService } from '@/app/core/api.service'
-import { Component } from '@angular/core'
-import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms'
+import { NgClass } from '@angular/common'
+import { Component, inject } from '@angular/core'
+import { AbstractControl, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
-import { TranslateService } from '@ngx-translate/core'
+import { TranslatePipe, TranslateService } from '@ngx-translate/core'
 import { ToastrService } from 'ngx-toastr'
 
 @Component({
   templateUrl: './users-add.component.html',
+  standalone: true,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    NgClass,
+    TranslatePipe,
+  ],
 })
 export class UsersAddComponent {
+  $activeModal = inject(NgbActiveModal)
+  private $api = inject(ApiService)
+  private $toastr = inject(ToastrService)
+  private $translate = inject(TranslateService)
+
   form = new FormGroup({
     username: new FormControl('', [Validators.required]),
     name: new FormControl('', [Validators.required]),
@@ -23,12 +36,7 @@ export class UsersAddComponent {
     password: 'users.label_password',
   }
 
-  constructor(
-    public $activeModal: NgbActiveModal,
-    private $api: ApiService,
-    private $toastr: ToastrService,
-    private $translate: TranslateService,
-  ) {}
+  constructor() {}
 
   matchPassword(AC: AbstractControl) {
     const password = AC.get('password').value

@@ -1,7 +1,9 @@
 import { ApiService } from '@/app/core/api.service'
-import { Component, Input, OnInit } from '@angular/core'
+
+import { Component, inject, Input, OnInit } from '@angular/core'
+import { FormsModule } from '@angular/forms'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
-import { TranslateService } from '@ngx-translate/core'
+import { TranslatePipe, TranslateService } from '@ngx-translate/core'
 import { ToastrService } from 'ngx-toastr'
 import { rcompare } from 'semver'
 
@@ -15,8 +17,18 @@ interface VersionData {
 
 @Component({
   templateUrl: './manage-version.component.html',
+  standalone: true,
+  imports: [
+    FormsModule,
+    TranslatePipe,
+  ],
 })
 export class ManageVersionComponent implements OnInit {
+  $activeModal = inject(NgbActiveModal)
+  private $api = inject(ApiService)
+  private $toastr = inject(ToastrService)
+  private $translate = inject(TranslateService)
+
   @Input() plugin: any
 
   public loading = true
@@ -24,12 +36,7 @@ export class ManageVersionComponent implements OnInit {
   public versionsWithTags: Array<{ version: string, tag: string }> = []
   public versionSelect: string
 
-  constructor(
-    public $activeModal: NgbActiveModal,
-    private $api: ApiService,
-    private $toastr: ToastrService,
-    private $translate: TranslateService,
-  ) {}
+  constructor() {}
 
   ngOnInit(): void {
     this.versionSelect = this.plugin.installedVersion || this.plugin.latestVersion

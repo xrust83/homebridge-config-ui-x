@@ -1,14 +1,25 @@
 import { InformationComponent } from '@/app/core/components/information/information.component'
 import { IoNamespace, WsService } from '@/app/core/ws.service'
-import { Component, Input, OnInit } from '@angular/core'
+import { NgClass, TitleCasePipe } from '@angular/common'
+import { Component, inject, Input, OnInit } from '@angular/core'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
-import { TranslateService } from '@ngx-translate/core'
+import { TranslatePipe, TranslateService } from '@ngx-translate/core'
 
 @Component({
   templateUrl: './system-info-widget.component.html',
   styleUrls: ['./system-info-widget.component.scss'],
+  standalone: true,
+  imports: [
+    NgClass,
+    TitleCasePipe,
+    TranslatePipe,
+  ],
 })
 export class SystemInfoWidgetComponent implements OnInit {
+  private $modal = inject(NgbModal)
+  private $translate = inject(TranslateService)
+  private $ws = inject(WsService)
+
   @Input() widget: any
 
   public serverInfo: any
@@ -16,11 +27,7 @@ export class SystemInfoWidgetComponent implements OnInit {
 
   private io: IoNamespace
 
-  constructor(
-    private $modal: NgbModal,
-    private $translate: TranslateService,
-    private $ws: WsService,
-  ) {}
+  constructor() {}
 
   ngOnInit() {
     this.io = this.$ws.getExistingNamespace('status')

@@ -114,14 +114,14 @@
     "reflect-metadata": "0.2.2",
     "rxjs": "7.8.1",
     "semver": "7.6.3",
-    "systeminformation": "5.23.16",
+    "systeminformation": "5.23.22",
     "tail": "2.2.6",
     "tar": "6.2.1",
     "tcp-port-used": "1.0.2",
     "unzipper": "0.12.3"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^3.12.0",
+    "@antfu/eslint-config": "^3.12.1",
     "@nestjs/testing": "^10.4.15",
     "@prettier/plugin-xml": "^3.4.1",
     "@types/fs-extra": "^11.0.4",
@@ -144,7 +144,7 @@
     "ts-loader": "^9.5.1",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.6.3",
+    "typescript": "^5.7.2",
     "unplugin-swc": "^1.5.1",
     "vitest": "^2.1.8"
   },

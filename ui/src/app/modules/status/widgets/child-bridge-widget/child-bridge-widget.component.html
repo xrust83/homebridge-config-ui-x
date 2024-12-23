@@ -4,10 +4,8 @@
   </div>
   <div class="d-flex flex-wrap w-100 px-2">
     <ul class="list-group w-100 gridster-item-content">
-      <li
-        class="list-group-item border-0 px-2 d-flex flex-row justify-content-between"
-        *ngFor="let bridge of childBridges"
-      >
+      @for (bridge of childBridges; track bridge) {
+      <li class="list-group-item border-0 px-2 d-flex flex-row justify-content-between">
         <div class="flex-child">
           <i
             class="fas fa-fw mr-1"
@@ -26,8 +24,8 @@
             [placement]="['left', 'top', 'bottom']">
             <i class="fa-fw icon-button fas fa-fw fa-qrcode"></i>
           </a> -->
+          @if (!bridge.restartInProgress) {
           <a
-            *ngIf="!bridge.restartInProgress"
             href="javascript:void(0)"
             (click)="restartChildBridge(bridge)"
             class="grey-text"
@@ -39,9 +37,12 @@
           >
             <i class="fa-fw icon-button fas fa-fw fa-power-off"></i>
           </a>
-          <i *ngIf="bridge.restartInProgress" class="fas fa-fw fa-spinner fa-pulse"></i>
+          } @if (bridge.restartInProgress) {
+          <i class="fas fa-fw fa-spinner fa-pulse"></i>
+          }
         </div>
       </li>
+      }
     </ul>
   </div>
 </div>

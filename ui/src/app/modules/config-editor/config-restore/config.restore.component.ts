@@ -1,13 +1,24 @@
 import { ApiService } from '@/app/core/api.service'
-import { Component, OnInit } from '@angular/core'
+import { DatePipe } from '@angular/common'
+import { Component, inject, OnInit } from '@angular/core'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
-import { TranslateService } from '@ngx-translate/core'
+import { TranslatePipe, TranslateService } from '@ngx-translate/core'
 import { ToastrService } from 'ngx-toastr'
 
 @Component({
   templateUrl: './config.restore.component.html',
+  standalone: true,
+  imports: [
+    DatePipe,
+    TranslatePipe,
+  ],
 })
 export class ConfigRestoreComponent implements OnInit {
+  $activeModal = inject(NgbActiveModal)
+  private $api = inject(ApiService)
+  private $toastr = inject(ToastrService)
+  private $translate = inject(TranslateService)
+
   public loading = true
   public backupList: {
     id: string
@@ -15,12 +26,7 @@ export class ConfigRestoreComponent implements OnInit {
     file: string
   }[] = []
 
-  constructor(
-    public $activeModal: NgbActiveModal,
-    private $api: ApiService,
-    private $toastr: ToastrService,
-    private $translate: TranslateService,
-  ) {}
+  constructor() {}
 
   ngOnInit() {
     this.$api.get('/config-editor/backups').subscribe({

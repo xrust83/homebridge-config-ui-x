@@ -1,13 +1,14 @@
 /* global NodeJS */
-import { Directive, EventEmitter, HostListener, Input, OnDestroy, Output } from '@angular/core'
+import { Directive, HostListener, Input, OnDestroy, output } from '@angular/core'
 
 @Directive({
   selector: '[appLongclick]',
+  standalone: true,
 })
 export class LongClickDirective implements OnDestroy {
   @Input() public duration = 350
-  @Output() public longclick: EventEmitter<MouseEvent> = new EventEmitter()
-  @Output() public shortclick: EventEmitter<MouseEvent | KeyboardEvent> = new EventEmitter()
+  public readonly longclick = output<MouseEvent>()
+  public readonly shortclick = output<MouseEvent | KeyboardEvent>()
 
   private downTimeout: NodeJS.Timeout
   private done = false

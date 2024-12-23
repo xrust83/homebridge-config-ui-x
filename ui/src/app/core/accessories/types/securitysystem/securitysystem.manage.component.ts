@@ -1,19 +1,23 @@
 import { ServiceTypeX } from '@/app/core/accessories/accessories.interfaces'
-import { Component, Input, OnInit } from '@angular/core'
+import { Component, inject, Input, OnInit } from '@angular/core'
+import { FormsModule } from '@angular/forms'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
+import { TranslatePipe } from '@ngx-translate/core'
 
 @Component({
   selector: 'app-securitysystem.manage',
   templateUrl: './securitysystem.manage.component.html',
   styleUrls: ['./securitysystem.component.scss'],
+  standalone: true,
+  imports: [FormsModule, TranslatePipe],
 })
 export class SecuritysystemManageComponent implements OnInit {
+  $activeModal = inject(NgbActiveModal)
+
   @Input() public service: ServiceTypeX
   public targetMode: any
 
-  constructor(
-    public $activeModal: NgbActiveModal,
-  ) {}
+  constructor() {}
 
   ngOnInit() {
     this.targetMode = this.service.values.SecuritySystemTargetState

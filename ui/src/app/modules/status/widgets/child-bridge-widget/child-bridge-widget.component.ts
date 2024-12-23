@@ -1,25 +1,33 @@
 import { IoNamespace, WsService } from '@/app/core/ws.service'
-import { Component, Input, OnDestroy, OnInit } from '@angular/core'
-import { TranslateService } from '@ngx-translate/core'
+import { NgClass } from '@angular/common'
+import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core'
+import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
+import { TranslatePipe, TranslateService } from '@ngx-translate/core'
 import { ToastrService } from 'ngx-toastr'
 import { firstValueFrom } from 'rxjs'
 
 @Component({
   templateUrl: './child-bridge-widget.component.html',
   styleUrls: ['./child-bridge-widget.component.scss'],
+  standalone: true,
+  imports: [
+    NgClass,
+    NgbTooltip,
+    TranslatePipe,
+  ],
 })
 export class ChildBridgeWidgetComponent implements OnInit, OnDestroy {
+  private $toastr = inject(ToastrService)
+  private $translate = inject(TranslateService)
+  private $ws = inject(WsService)
+
   @Input() widget: any
 
   public childBridges = []
 
   private io: IoNamespace
 
-  constructor(
-    private $toastr: ToastrService,
-    private $translate: TranslateService,
-    private $ws: WsService,
-  ) {}
+  constructor() {}
 
   ngOnInit(): void {
     this.io = this.$ws.connectToNamespace('child-bridges')

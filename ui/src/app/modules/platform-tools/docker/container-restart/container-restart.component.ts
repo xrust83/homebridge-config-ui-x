@@ -2,16 +2,26 @@
 import { ApiService } from '@/app/core/api.service'
 import { SettingsService } from '@/app/core/settings.service'
 import { IoNamespace, WsService } from '@/app/core/ws.service'
-import { Component, OnDestroy, OnInit } from '@angular/core'
+
+import { Component, inject, OnDestroy, OnInit } from '@angular/core'
 import { Router } from '@angular/router'
-import { TranslateService } from '@ngx-translate/core'
+import { TranslatePipe, TranslateService } from '@ngx-translate/core'
 import { ToastrService } from 'ngx-toastr'
 
 @Component({
   templateUrl: './container-restart.component.html',
   styleUrls: ['./container-restart.component.scss'],
+  standalone: true,
+  imports: [TranslatePipe],
 })
 export class ContainerRestartComponent implements OnInit, OnDestroy {
+  private $api = inject(ApiService)
+  private $router = inject(Router)
+  private $settings = inject(SettingsService)
+  private $toastr = inject(ToastrService)
+  private $translate = inject(TranslateService)
+  private $ws = inject(WsService)
+
   checkTimeout: NodeJS.Timeout
   checkDelay: NodeJS.Timeout
   resp: any = {}
@@ -20,14 +30,7 @@ export class ContainerRestartComponent implements OnInit, OnDestroy {
 
   private io: IoNamespace
 
-  constructor(
-    private $api: ApiService,
-    private $router: Router,
-    private $settings: SettingsService,
-    private $toastr: ToastrService,
-    private $translate: TranslateService,
-    private $ws: WsService,
-  ) {}
+  constructor() {}
 
   ngOnInit() {
     this.io = this.$ws.connectToNamespace('status')

@@ -1,16 +1,26 @@
 import { SettingsService } from '@/app/core/settings.service'
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
+
+import { Component, inject, Input, OnInit, output } from '@angular/core'
+import { JsonSchemaFormModule } from '@ng-formworks/core'
+import { JsonSchemaFormPatchDirective } from '../../directives/json-schema-form-patch.directive'
 
 @Component({
   selector: 'app-schema-form',
   templateUrl: './schema-form.component.html',
+  standalone: true,
+  imports: [
+    JsonSchemaFormModule,
+    JsonSchemaFormPatchDirective,
+  ],
 })
 export class SchemaFormComponent implements OnInit {
+  private $settings = inject(SettingsService)
+
   @Input() configSchema: any
   @Input() data: any
-  @Output() dataChange = new EventEmitter()
-  @Output() dataChanged = new EventEmitter()
-  @Output() isValid = new EventEmitter()
+  readonly dataChange = output()
+  readonly dataChanged = output()
+  readonly isValid = output()
 
   public currentData: any
   public language: string = 'en'
@@ -24,9 +34,7 @@ export class SchemaFormComponent implements OnInit {
     autocomplete: false,
   }
 
-  constructor(
-    private $settings: SettingsService,
-  ) {}
+  constructor() {}
 
   ngOnInit(): void {
     // Use 'en' by default, unless the user's language is available
