@@ -66,10 +66,11 @@ export class AirpurifierManageComponent implements OnInit {
     }
   }
 
-  onTargetStateChange() {
+  setTargetMode(value: number) {
+    this.targetMode = value
     this.service.getCharacteristic('Active').setValue(this.targetMode)
 
-    // set the brightness to 100% if on 0% when turned on
+    // Set the rotation speed to 100% if on 0% when turned on
     if (this.targetMode && this.targetRotationSpeed && !this.targetRotationSpeed.value) {
       this.targetRotationSpeed.value = 100
     }

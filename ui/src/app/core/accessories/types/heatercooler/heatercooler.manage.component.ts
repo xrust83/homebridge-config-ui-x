@@ -28,7 +28,7 @@ export class HeaterCoolerManageComponent implements OnInit {
   $activeModal = inject(NgbActiveModal)
 
   @Input() public service: ServiceTypeX
-  public targetMode: any
+  public targetMode: number | 'off'
   public targetTemperatureChanged: Subject<any> = new Subject<any>()
 
   public CoolingThresholdTemperature: CharacteristicType
@@ -77,7 +77,9 @@ export class HeaterCoolerManageComponent implements OnInit {
     this.autoTemp = [this.targetHeatingTemp, this.targetCoolingTemp]
   }
 
-  onTargetStateChange() {
+  setTargetMode(value: number | 'off') {
+    this.targetMode = value
+
     if (this.targetMode === 'off') {
       this.service.getCharacteristic('Active').setValue(0)
     } else {

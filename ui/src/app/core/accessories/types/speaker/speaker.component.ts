@@ -10,7 +10,6 @@ import { LongClickDirective } from '../../../directives/longclick.directive'
 @Component({
   selector: 'app-speaker',
   templateUrl: './speaker.component.html',
-  styleUrls: ['./speaker.component.scss'],
   standalone: true,
   imports: [
     LongClickDirective,

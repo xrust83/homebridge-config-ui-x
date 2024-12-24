@@ -25,7 +25,7 @@ export class HumidifierDehumidifierManageComponent implements OnInit {
   $activeModal = inject(NgbActiveModal)
 
   @Input() public service: ServiceTypeX
-  public targetMode: any
+  public targetMode: number | 'off'
   public targetHumidityChanged: Subject<any> = new Subject<any>()
 
   public RelativeHumidityDehumidifierThreshold: CharacteristicType
@@ -74,7 +74,9 @@ export class HumidifierDehumidifierManageComponent implements OnInit {
     this.autoHumidity = [this.targetHumidifierHumidity, this.targetDehumidifierHumidity]
   }
 
-  onTargetStateChange() {
+  setTargetMode(value: number | 'off') {
+    this.targetMode = value
+
     if (this.targetMode === 'off') {
       this.service.getCharacteristic('Active').setValue(0)
     } else {

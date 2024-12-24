@@ -9,7 +9,6 @@ import { LongClickDirective } from '../../../directives/longclick.directive'
 @Component({
   selector: 'app-fan',
   templateUrl: './fan.component.html',
-  styleUrls: ['./fan.component.scss'],
   standalone: true,
   imports: [
     LongClickDirective,

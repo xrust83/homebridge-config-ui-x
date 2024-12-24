@@ -7,7 +7,6 @@ import { TranslatePipe } from '@ngx-translate/core'
 @Component({
   selector: 'app-securitysystem.manage',
   templateUrl: './securitysystem.manage.component.html',
-  styleUrls: ['./securitysystem.component.scss'],
   standalone: true,
   imports: [FormsModule, TranslatePipe],
 })
@@ -23,7 +22,8 @@ export class SecuritysystemManageComponent implements OnInit {
     this.targetMode = this.service.values.SecuritySystemTargetState
   }
 
-  onTargetStateChange() {
+  setTargetMode(value: number) {
+    this.targetMode = value
     this.service.getCharacteristic('SecuritySystemTargetState').setValue(this.targetMode)
   }
 }

@@ -11,7 +11,6 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators'
 @Component({
   selector: 'app-lightbulb-manage',
   templateUrl: './lightbulb.manage.component.html',
-  styleUrls: ['./lightbulb.component.scss'],
   standalone: true,
   imports: [
     FormsModule,
@@ -66,10 +65,11 @@ export class LightbulbManageComponent implements OnInit {
     }
   }
 
-  onTargetStateChange() {
+  setTargetMode(value: boolean) {
+    this.targetMode = value
     this.service.getCharacteristic('On').setValue(this.targetMode)
 
-    // set the brightness to 100% if on 0% when turned on
+    // Set the brightness to 100% if on 0% when turned on
     if (this.targetMode && this.targetBrightness && !this.targetBrightness.value) {
       this.targetBrightness.value = 100
     }

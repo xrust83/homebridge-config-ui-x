@@ -10,7 +10,6 @@ import { LongClickDirective } from '../../../directives/longclick.directive'
 @Component({
   selector: 'app-securitysystem',
   templateUrl: './securitysystem.component.html',
-  styleUrls: ['./securitysystem.component.scss'],
   standalone: true,
   imports: [
     LongClickDirective,

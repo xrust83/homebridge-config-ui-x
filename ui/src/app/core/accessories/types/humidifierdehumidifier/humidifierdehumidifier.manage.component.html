@@ -24,24 +24,42 @@
     </div>
 
     <div
-      class="humidity-mode-control btn-group-vertical btn-group-toggle d-flex justify-content-center mb-4"
-      ngbRadioGroup
-      name="radioBasic"
-      [(ngModel)]="targetMode"
-      (change)="onTargetStateChange()"
+      class="btn-group-vertical d-flex justify-content-center mb-4 p-0"
+      role="group"
+      aria-label="Humidifier Dehumidifier Mode Control"
     >
-      <label ngbButtonLabel class="btn-primary m-0">
-        <input ngbButton type="radio" [value]="0" /> {{ 'accessories.control.auto' | translate }}
-      </label>
-      <label ngbButtonLabel class="btn-primary m-0">
-        <input ngbButton type="radio" [value]="1" /> {{ 'accessories.control.humidifying' | translate }}
-      </label>
-      <label ngbButtonLabel class="btn-primary m-0">
-        <input ngbButton type="radio" [value]="2" /> {{ 'accessories.control.dehumidifying' | translate }}
-      </label>
-      <label ngbButtonLabel class="btn-primary m-0">
-        <input ngbButton type="radio" [value]="'off'" /> {{ 'accessories.control.off' | translate }}
-      </label>
+      <button
+        type="button"
+        class="btn btn-primary mb-0 mx-0 px-0 py-2"
+        (click)="setTargetMode(0)"
+        [style.opacity]="targetMode === 0 ? '1' : '0.75'"
+      >
+        {{ 'accessories.control.auto' | translate }}
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary mb-0 mx-0 px-0 py-2"
+        (click)="setTargetMode(1)"
+        [style.opacity]="targetMode === 1 ? '1' : '0.75'"
+      >
+        {{ 'accessories.control.humidifying' | translate }}
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary mb-0 mx-0 px-0 py-2"
+        (click)="setTargetMode(2)"
+        [style.opacity]="targetMode === 2 ? '1' : '0.75'"
+      >
+        {{ 'accessories.control.dehumidifying' | translate }}
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary mb-0 mx-0 px-0 py-2"
+        (click)="setTargetMode('off')"
+        [style.opacity]="targetMode === 'off' ? '1' : '0.75'"
+      >
+        {{ 'accessories.control.off' | translate }}
+      </button>
     </div>
 
     @if (service.values.Active === 1 && RelativeHumidityHumidifierThreshold && RelativeHumidityDehumidifierThreshold) {

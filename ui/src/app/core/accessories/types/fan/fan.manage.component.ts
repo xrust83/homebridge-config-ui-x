@@ -11,7 +11,6 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators'
 @Component({
   selector: 'app-fan-manage',
   templateUrl: './fan.manage.component.html',
-  styleUrls: ['./fan.component.scss'],
   standalone: true,
   imports: [
     FormsModule,
@@ -67,10 +66,11 @@ export class FanManageComponent implements OnInit {
     }
   }
 
-  onTargetStateChange() {
+  setTargetMode(value: boolean) {
+    this.targetMode = value
     this.service.getCharacteristic('On').setValue(this.targetMode)
 
-    // set the rotation speed to max if on 0% when turned on
+    // Set the rotation speed to max if on 0% when turned on
     if (this.targetMode && this.targetRotationSpeed && !this.targetRotationSpeed.value) {
       this.targetRotationSpeed.value = this.service.getCharacteristic('RotationSpeed').maxValue
     }

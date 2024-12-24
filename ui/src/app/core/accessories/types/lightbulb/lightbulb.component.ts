@@ -10,7 +10,6 @@ import { LongClickDirective } from '../../../directives/longclick.directive'
 @Component({
   selector: 'app-lightbulb',
   templateUrl: './lightbulb.component.html',
-  styleUrls: ['./lightbulb.component.scss'],
   standalone: true,
   imports: [
     LongClickDirective,

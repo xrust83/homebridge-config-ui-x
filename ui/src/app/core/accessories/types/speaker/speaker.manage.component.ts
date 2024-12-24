@@ -11,7 +11,6 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators'
 @Component({
   selector: 'app-speaker-manage',
   templateUrl: './speaker.manage.component.html',
-  styleUrls: ['./speaker.component.scss'],
   standalone: true,
   imports: [
     FormsModule,
@@ -57,7 +56,8 @@ export class SpeakerManageComponent implements OnInit {
     }
   }
 
-  onTargetStateChange() {
+  setTargetMode(value: boolean) {
+    this.targetMode = value
     this.service.getCharacteristic('Mute').setValue(this.targetMode)
   }
 
