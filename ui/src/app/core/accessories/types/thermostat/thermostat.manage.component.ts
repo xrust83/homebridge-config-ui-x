@@ -58,7 +58,8 @@ export class ThermostatManageComponent implements OnInit {
     }
   }
 
-  onTargetStateChange() {
+  setTargetMode(value: number) {
+    this.targetMode = value
     this.service.getCharacteristic('TargetHeatingCoolingState').setValue(this.targetMode)
   }
 

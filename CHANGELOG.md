@@ -7,6 +7,7 @@ All notable changes to `homebridge-config-ui-x` will be documented in this file.
 ### UI Changes
 
 - fix verified plugins link in support module (fixes [#2295](https://github.com/homebridge/homebridge-config-ui-x/issues/2295))
+- add missing modal footer `<div>`s to accessory control modals
 
 ### Other Changes
 
