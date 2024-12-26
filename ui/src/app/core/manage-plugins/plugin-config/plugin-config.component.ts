@@ -6,7 +6,7 @@ import { ManagePluginsService } from '@/app/core/manage-plugins/manage-plugins.s
 import { SettingsService } from '@/app/core/settings.service'
 
 import { Component, inject, Input, OnInit } from '@angular/core'
-import { NgbAccordionBody, NgbAccordionButton, NgbAccordionCollapse, NgbAccordionDirective, NgbAccordionHeader, NgbAccordionItem, NgbAccordionToggle, NgbActiveModal, NgbCollapse, NgbModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
+import { NgbAccordionBody, NgbAccordionButton, NgbAccordionCollapse, NgbAccordionDirective, NgbAccordionHeader, NgbAccordionItem, NgbActiveModal, NgbModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { TranslatePipe, TranslateService } from '@ngx-translate/core'
 import { NgxMdModule } from 'ngx-md'
 import { ToastrService } from 'ngx-toastr'
@@ -45,9 +45,7 @@ export interface PluginSchema {
     NgbAccordionItem,
     NgbAccordionHeader,
     NgbTooltip,
-    NgbAccordionToggle,
     NgbAccordionButton,
-    NgbCollapse,
     NgbAccordionCollapse,
     NgbAccordionBody,
     SchemaFormComponent,

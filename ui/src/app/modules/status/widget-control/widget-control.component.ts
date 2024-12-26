@@ -1,6 +1,6 @@
 import { ApiService } from '@/app/core/api.service'
 import { environment } from '@/environments/environment'
-import { DatePipe, NgClass, NgFor, NgIf, NgSwitch, NgSwitchCase } from '@angular/common'
+import { DatePipe, NgClass } from '@angular/common'
 import { HttpClient, HttpParams } from '@angular/common/http'
 import { Component, inject, Input, OnInit } from '@angular/core'
 import { FormsModule } from '@angular/forms'
@@ -20,13 +20,9 @@ import {
   templateUrl: './widget-control.component.html',
   standalone: true,
   imports: [
-    NgSwitch,
     FormsModule,
-    NgSwitchCase,
     NgClass,
     NgbTypeahead,
-    NgFor,
-    NgIf,
     DatePipe,
     TranslatePipe,
   ],

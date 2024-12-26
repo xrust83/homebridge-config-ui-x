@@ -2,6 +2,18 @@
 
 All notable changes to `homebridge-config-ui-x` will be documented in this file. This project tries to adhere to [Semantic Versioning](http://semver.org/).
 
+## BETA
+
+### Other Changes
+
+- improve and finish up previous angular migration
+
+### Homebridge Dependencies
+
+- `@homebridge/hap-client` @ `v2.0.5`
+- `@homebridge/node-pty-prebuilt-multiarch` @ `v0.11.14`
+- `@homebridge/plugin-ui-utils` @ `v2.0.0`
+
 ## v4.66.0 (2024-12-25)
 
 ### ⚠️ Upcoming Deprecations:
@@ -24,13 +36,17 @@ All notable changes to `homebridge-config-ui-x` will be documented in this file.
 - upgrade angular from `v18` to `v19`
 - delete unpaired bridges when toggling bridges off (#2284) (@justjam2013) (fixes [#2257](https://github.com/homebridge/homebridge-config-ui-x/issues/2257))
 
+### Homebridge Dependencies
+
+- `@homebridge/hap-client` @ `v1.10.2`
+- `@homebridge/node-pty-prebuilt-multiarch` @ `v0.11.14`
+- `@homebridge/plugin-ui-utils` @ `v1.0.3`
+
 ## v4.65.2 (2024-12-15)
 
 ### UI Changes
 
 - Rollback recent changes to plugin search (#2289) (@justjam2013)
-
-### Other Changes
 
 ### Homebridge Dependencies
 

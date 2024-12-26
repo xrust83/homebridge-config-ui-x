@@ -1,5 +1,3 @@
-import { NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common'
-
 import { Component, inject, Input } from '@angular/core'
 import { ServiceTypeX } from '../accessories.interfaces'
 import { AccessoriesService } from '../accessories.service'
@@ -42,9 +40,6 @@ import { WindowCoveringComponent } from '../types/windowcovering/windowcovering.
   templateUrl: './accessory-tile.component.html',
   standalone: true,
   imports: [
-    NgSwitch,
-    NgIf,
-    NgSwitchCase,
     SwitchComponent,
     ThermostatComponent,
     OutletComponent,
@@ -77,7 +72,6 @@ import { WindowCoveringComponent } from '../types/windowcovering/windowcovering.
     HeaterCoolerComponent,
     HumidifierDehumidifierComponent,
     StatelessprogrammableswitchComponent,
-    NgSwitchDefault,
     UnknownComponent,
   ],
 })

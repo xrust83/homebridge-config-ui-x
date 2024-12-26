@@ -1,22 +1,19 @@
 import { ServiceTypeX } from '@/app/core/accessories/accessories.interfaces'
 import { AccessoriesService } from '@/app/core/accessories/accessories.service'
+import { AccessoryTileComponent } from '@/app/core/accessories/accessory-tile/accessory-tile.component'
 import { MobileDetectService } from '@/app/core/mobile-detect.service'
-import { NgClass, NgFor, NgIf, NgSwitch } from '@angular/common'
+import { NgClass } from '@angular/common'
 import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core'
 import { TranslatePipe } from '@ngx-translate/core'
 import { DragulaModule, DragulaService } from 'ng2-dragula'
 import { Subscription } from 'rxjs'
-import { AccessoryTileComponent } from '../../../../core/accessories/accessory-tile/accessory-tile.component'
 
 @Component({
   templateUrl: './accessories-widget.component.html',
   standalone: true,
   imports: [
     NgClass,
-    NgIf,
     DragulaModule,
-    NgFor,
-    NgSwitch,
     AccessoryTileComponent,
     TranslatePipe,
   ],

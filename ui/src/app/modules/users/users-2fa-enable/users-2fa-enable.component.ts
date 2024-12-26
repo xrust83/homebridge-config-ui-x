@@ -1,12 +1,12 @@
 import { ApiService } from '@/app/core/api.service'
 
+import { QrcodeComponent } from '@/app/core/components/qrcode/qrcode.component'
 import { Component, ElementRef, inject, Input, OnInit, viewChild } from '@angular/core'
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms'
 import { NgbActiveModal, NgbAlert } from '@ng-bootstrap/ng-bootstrap'
 import { TranslatePipe, TranslateService } from '@ngx-translate/core'
 import dayjs from 'dayjs'
 import { ToastrService } from 'ngx-toastr'
-import { QrcodeComponent } from '../../../core/components/qrcode/qrcode.component'
 
 @Component({
   templateUrl: './users-2fa-enable.component.html',

@@ -1,9 +1,9 @@
+import { QrcodeComponent } from '@/app/core/components/qrcode/qrcode.component'
 import { IoNamespace, WsService } from '@/app/core/ws.service'
 import { NgStyle } from '@angular/common'
 import { Component, ElementRef, inject, Input, OnInit, viewChild } from '@angular/core'
 import { TranslatePipe } from '@ngx-translate/core'
 import { Subject } from 'rxjs'
-import { QrcodeComponent } from '../../../../core/components/qrcode/qrcode.component'
 
 @Component({
   templateUrl: './hap-qrcode-widget.component.html',

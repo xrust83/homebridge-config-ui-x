@@ -3,7 +3,7 @@ import { AuthService } from '@/app/core/auth/auth.service'
 import { MobileDetectService } from '@/app/core/mobile-detect.service'
 import { SettingsService } from '@/app/core/settings.service'
 import { AddRoomComponent } from '@/app/modules/accessories/add-room/add-room.component'
-import { NgClass, NgFor, NgIf, NgSwitch } from '@angular/common'
+import { NgClass } from '@angular/common'
 import { Component, inject, OnDestroy, OnInit } from '@angular/core'
 import { NgbModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { TranslatePipe } from '@ngx-translate/core'
@@ -18,12 +18,9 @@ import { DragHerePlaceholderComponent } from './drag-here-placeholder/drag-here-
   styleUrls: ['./accessories.component.scss'],
   standalone: true,
   imports: [
-    NgIf,
     NgbTooltip,
     NgClass,
     DragulaModule,
-    NgFor,
-    NgSwitch,
     AccessoryTileComponent,
     DragHerePlaceholderComponent,
     TranslatePipe,
