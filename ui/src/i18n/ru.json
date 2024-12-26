@@ -83,6 +83,7 @@
   "child_bridge.config.manufacturer": "Производитель",
   "child_bridge.config.model": "Модель",
   "child_bridge.config.name": "Имя",
+  "child_bridge.confirm_delete": "The following child bridges (and their accessories) will be permanently removed. If you have them paired with HomeKit, you will also need to remove them from the Home app.",
   "child_bridge.must_configure_plugin": "Вы должны настроить этот плагин перед тем, как управлять его настройками моста.",
   "child_bridge.reset_accessories": "Сбросить аксессуары",
   "child_bridge.reset_accessories_list": "Выберите, для каких дочерних мостов вы хотите сбросить аксессуары ниже:",

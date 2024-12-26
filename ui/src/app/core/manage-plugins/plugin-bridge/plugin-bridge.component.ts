@@ -13,6 +13,21 @@ import { ToastrService } from 'ngx-toastr'
 import { firstValueFrom } from 'rxjs'
 import { QrcodeComponent } from '../../components/qrcode/qrcode.component'
 
+interface DeviceInfo {
+  category: number
+  configVersion: number
+  displayName: string
+  lastFirmwareVersion: string
+  pincode: string
+  setupID: string
+  _category: string
+  _id: string
+  _isPaired: boolean
+  _main: boolean
+  _setupCode: string
+  _username: string
+}
+
 @Component({
   templateUrl: './plugin-bridge.component.html',
   styleUrls: ['./plugin-bridge.component.scss'],
@@ -43,11 +58,12 @@ export class PluginBridgeComponent implements OnInit {
   public configBlocks: any[] = []
   public enabledBlocks: Record<number, boolean> = {}
   public bridgeCache: Map<number, Record<string, any>> = new Map()
-  public deviceInfo: Map<string, any> = new Map()
+  public originalBridges: any[] = []
+  public deviceInfo: Map<string, DeviceInfo | false> = new Map()
   public showConfigFields: boolean[] = []
   public saveInProgress = false
   public canShowBridgeDebug = false
-  public deleteBridgeIds: string[] = []
+  public deleteBridges: { id: string, blockName: string, bridgeName: string }[] = []
 
   constructor() {}
 
@@ -66,6 +82,7 @@ export class PluginBridgeComponent implements OnInit {
             block._bridge.env = block._bridge.env || {}
             this.bridgeCache.set(i, block._bridge)
             this.getDeviceInfo(block._bridge.username)
+            this.originalBridges.push(block._bridge)
           }
         }
 
@@ -87,7 +104,13 @@ export class PluginBridgeComponent implements OnInit {
   async toggleExternalBridge(block: any, enable: boolean, index: number) {
     if (!enable) {
       // Store unpaired child bridge id for deletion, so no bridges are orphaned
-      this.deleteBridgeIds.push(block._bridge.username)
+      if (this.originalBridges.some(b => b.username === block._bridge.username)) {
+        this.deleteBridges.push({
+          id: block._bridge.username,
+          blockName: block.name,
+          bridgeName: block._bridge.name,
+        })
+      }
 
       delete block._bridge
       return
@@ -106,8 +129,8 @@ export class PluginBridgeComponent implements OnInit {
       env: bridgeCache?.env,
     }
 
-    if (this.deleteBridgeIds.includes(block._bridge.username)) {
-      this.deleteBridgeIds = this.deleteBridgeIds.filter(id => id !== block._bridge.username)
+    if (this.deleteBridges.some(b => b.id === block._bridge.username)) {
+      this.deleteBridges = this.deleteBridges.filter(b => b.id !== block._bridge.username)
     }
 
     this.bridgeCache.set(index, block._bridge)
@@ -142,9 +165,9 @@ export class PluginBridgeComponent implements OnInit {
       await firstValueFrom(this.$api.post(`/config-editor/plugin/${encodeURIComponent(this.plugin.name)}`, this.configBlocks))
 
       // Delete unpaired bridges, so no bridges are orphaned
-      for (const childBridgeId of this.deleteBridgeIds) {
+      for (const bridge of this.deleteBridges) {
         try {
-          await firstValueFrom(this.$api.delete(`/server/pairings/${childBridgeId.replace(/:/g, '')}`))
+          await firstValueFrom(this.$api.delete(`/server/pairings/${bridge.id.replace(/:/g, '')}`))
         } catch (error) {
           console.error(error)
           this.$toastr.error(this.$translate.instant('settings.unpair_bridge.unpair_error'), this.$translate.instant('toast.title_error'))
@@ -199,5 +222,15 @@ export class PluginBridgeComponent implements OnInit {
 
   toggleConfigFields(index: number) {
     this.showConfigFields[index] = !this.showConfigFields[index]
+  }
+
+  formatName(bridge: { id: string, blockName: string, bridgeName: string }) {
+    if (bridge.blockName && bridge.bridgeName) {
+      return ` (${bridge.blockName} - ${bridge.bridgeName})`
+    } else if (bridge.blockName || bridge.bridgeName) {
+      return ` (${bridge.blockName || bridge.bridgeName})`
+    } else {
+      return ''
+    }
   }
 }

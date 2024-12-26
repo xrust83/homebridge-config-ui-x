@@ -83,6 +83,7 @@
   "child_bridge.config.manufacturer": "ผู้ผลิต",
   "child_bridge.config.model": "รุ่น",
   "child_bridge.config.name": "ชื่อ",
+  "child_bridge.confirm_delete": "The following child bridges (and their accessories) will be permanently removed. If you have them paired with HomeKit, you will also need to remove them from the Home app.",
   "child_bridge.must_configure_plugin": "คุณต้องกำหนดค่าปลั๊กอินนี้ก่อนจึงจะจัดการการตั้งค่า Bridge ได้",
   "child_bridge.reset_accessories": "รีเซ็ตอุปกรณ์เสริม",
   "child_bridge.reset_accessories_list": "เลือกจากบริดจ์ย่อยที่คุณต้องการรีเซ็ตอุปกรณ์เสริมด้านล่าง:",

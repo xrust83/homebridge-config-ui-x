@@ -189,7 +189,18 @@
       </ul>
       }
     </div>
-    } @if (!configBlocks.length && canConfigure) {
+    @if (deleteBridges.length) {
+    <ngb-alert type="error" [dismissible]="false" class="mt-4 mb-0">
+      <p>{{ 'child_bridge.confirm_delete' | translate }}</p>
+      <div class="text-center">
+        <ul class="d-inline-block text-left mb-0">
+          @for (bridge of deleteBridges; track bridge) {
+          <li><code>{{ bridge.id }}</code>{{ formatName(bridge) }}</li>
+          }
+        </ul>
+      </div>
+    </ngb-alert>
+    } } @if (!configBlocks.length && canConfigure) {
     <ngb-alert type="info" [dismissible]="false"> {{ 'child_bridge.must_configure_plugin' | translate }} </ngb-alert>
     } @if (!canConfigure) {
     <div class="mb-2">

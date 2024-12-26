@@ -83,6 +83,7 @@
   "child_bridge.config.manufacturer": "Fabricante",
   "child_bridge.config.model": "Modelo",
   "child_bridge.config.name": "Nombre",
+  "child_bridge.confirm_delete": "The following child bridges (and their accessories) will be permanently removed. If you have them paired with HomeKit, you will also need to remove them from the Home app.",
   "child_bridge.must_configure_plugin": "Es necesario configurar este plugin para poder modificar los ajustes del puente.",
   "child_bridge.reset_accessories": "Restablecer Accesorios",
   "child_bridge.reset_accessories_list": "Elige de qué puentes hijos quieres restablecer los accesorios a continuación:",

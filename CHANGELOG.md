@@ -4,6 +4,10 @@ All notable changes to `homebridge-config-ui-x` will be documented in this file.
 
 ## BETA
 
+## UI Changes
+
+- add explanation of deleting child bridges when un-toggling
+
 ### Other Changes
 
 - improve and finish up previous angular migration

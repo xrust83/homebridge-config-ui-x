@@ -83,6 +83,7 @@
   "child_bridge.config.manufacturer": "Valmistaja",
   "child_bridge.config.model": "Malli",
   "child_bridge.config.name": "Nimi",
+  "child_bridge.confirm_delete": "The following child bridges (and their accessories) will be permanently removed. If you have them paired with HomeKit, you will also need to remove them from the Home app.",
   "child_bridge.must_configure_plugin": "Sinun täytyy määritellä lisäosan asetukset ennnekuin voit hallita sen silta-asetuksia.",
   "child_bridge.reset_accessories": "Nollaa laitteet",
   "child_bridge.reset_accessories_list": "Valitse alla olevasta listasta mitkä lapsisillat haluat nollata:",
