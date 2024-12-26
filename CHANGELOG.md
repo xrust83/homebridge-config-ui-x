@@ -12,6 +12,7 @@ All notable changes to `homebridge-config-ui-x` will be documented in this file.
 
 - improve and finish up previous angular migration
 - update `hap-client` + `plugin-ui-utils` hb dependencies
+- update dependencies
 
 ### Homebridge Dependencies
 

@@ -2,14 +2,15 @@ import type { MultipartFile } from '@fastify/multipart'
 import type { FastifyReply } from 'fastify'
 
 import type { HomebridgePlugin } from '../plugins/types'
+
 import { exec, execSync } from 'node:child_process'
 import { EventEmitter } from 'node:events'
 import { platform, tmpdir } from 'node:os'
 import { basename, join, resolve } from 'node:path'
 import process from 'node:process'
 import { pipeline } from 'node:stream'
-
 import { promisify } from 'node:util'
+
 import {
   BadRequestException,
   Injectable,
@@ -36,8 +37,7 @@ import {
   writeJson,
 } from 'fs-extra'
 import { networkInterfaces } from 'systeminformation'
-import { c as compress, x as extract } from 'tar'
-
+import { create, extract } from 'tar'
 import { Extract } from 'unzipper'
 
 import { ConfigService, HomebridgeConfig } from '../../core/config/config.service'
@@ -152,7 +152,7 @@ export class BackupService {
       })
 
       // create a tarball of storage and plugins list
-      await compress({
+      await create({
         portable: true,
         gzip: true,
         file: backupPath,

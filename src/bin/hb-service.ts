@@ -7,16 +7,17 @@
 
 import type { PathLike, WriteStream } from 'fs-extra'
 import type { ChildProcessWithoutNullStreams, ForkOptions } from 'node:child_process'
-import type { ExtractOptions } from 'tar'
+import type { TarOptionsWithAliases } from 'tar'
 
 import type { HomebridgeIpcService } from '../core/homebridge-ipc/homebridge-ipc.service'
 import type { BasePlatform } from './base-platform'
+
 import { Buffer } from 'node:buffer'
 import { execSync, fork } from 'node:child_process'
 import { arch, cpus, homedir, platform, release, tmpdir, type } from 'node:os'
-
 import { dirname, join, resolve } from 'node:path'
 import process from 'node:process'
+
 import axios from 'axios'
 import { program } from 'commander'
 import {
@@ -45,8 +46,7 @@ import ora from 'ora'
 import { gt, gte, parse } from 'semver'
 import { networkInterfaceDefault, networkInterfaces } from 'systeminformation'
 import { Tail } from 'tail'
-
-import { x as extract } from 'tar'
+import { extract } from 'tar'
 import { check as tcpCheck } from 'tcp-port-used'
 
 import { DarwinInstaller } from './platforms/darwin'
@@ -1256,7 +1256,7 @@ export class HomebridgeServiceHelper {
   /**
    * Extract the Node.js tarball
    */
-  public async extractNodejs(targetVersion: string, extractConfig: ExtractOptions) {
+  public async extractNodejs(targetVersion: string, extractConfig: TarOptionsWithAliases) {
     const spinner = ora(`Installing Node.js ${targetVersion}`).start()
 
     try {
