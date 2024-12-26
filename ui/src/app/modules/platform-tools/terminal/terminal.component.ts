@@ -1,7 +1,8 @@
-import { TerminalService } from '@/app/core/terminal.service'
 import { Component, ElementRef, HostListener, inject, OnDestroy, OnInit, viewChild } from '@angular/core'
 import { TranslatePipe } from '@ngx-translate/core'
 import { Subject } from 'rxjs'
+
+import { TerminalService } from '@/app/core/terminal.service'
 
 @Component({
   templateUrl: './terminal.component.html',

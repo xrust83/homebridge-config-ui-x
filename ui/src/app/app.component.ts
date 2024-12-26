@@ -1,7 +1,8 @@
-import { SettingsService } from '@/app/core/settings.service'
 import { Component, inject } from '@angular/core'
 import { Router, RouterOutlet } from '@angular/router'
 import { TranslateService } from '@ngx-translate/core'
+
+import { SettingsService } from '@/app/core/settings.service'
 
 @Component({
   selector: 'app-root',

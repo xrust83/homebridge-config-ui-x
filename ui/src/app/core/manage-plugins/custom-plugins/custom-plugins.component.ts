@@ -1,3 +1,10 @@
+import { Component, ElementRef, inject, Input, OnDestroy, OnInit, viewChild } from '@angular/core'
+import { NgbActiveModal, NgbModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
+import { TranslatePipe, TranslateService } from '@ngx-translate/core'
+import { ToastrService } from 'ngx-toastr'
+import { firstValueFrom, Subject } from 'rxjs'
+import { debounceTime, skip } from 'rxjs/operators'
+
 import { ApiService } from '@/app/core/api.service'
 import { RestartChildBridgesComponent } from '@/app/core/components/restart-child-bridges/restart-child-bridges.component'
 import { RestartHomebridgeComponent } from '@/app/core/components/restart-homebridge/restart-homebridge.component'
@@ -7,12 +14,6 @@ import { SettingsService } from '@/app/core/settings.service'
 import { IoNamespace, WsService } from '@/app/core/ws.service'
 import { environment } from '@/environments/environment'
 
-import { Component, ElementRef, inject, Input, OnDestroy, OnInit, viewChild } from '@angular/core'
-import { NgbActiveModal, NgbModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
-import { TranslatePipe, TranslateService } from '@ngx-translate/core'
-import { ToastrService } from 'ngx-toastr'
-import { firstValueFrom, Subject } from 'rxjs'
-import { debounceTime, skip } from 'rxjs/operators'
 import { SchemaFormComponent } from '../../components/schema-form/schema-form.component'
 
 @Component({

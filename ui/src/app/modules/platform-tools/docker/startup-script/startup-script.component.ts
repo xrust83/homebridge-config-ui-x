@@ -1,7 +1,3 @@
-import { ApiService } from '@/app/core/api.service'
-import { MobileDetectService } from '@/app/core/mobile-detect.service'
-import { SettingsService } from '@/app/core/settings.service'
-
 import { Component, inject, OnDestroy, OnInit } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { ActivatedRoute } from '@angular/router'
@@ -9,6 +5,10 @@ import { TranslateService } from '@ngx-translate/core'
 import { EditorComponent, NgxEditorModel } from 'ngx-monaco-editor-v2'
 import { ToastrService } from 'ngx-toastr'
 import { firstValueFrom } from 'rxjs'
+
+import { ApiService } from '@/app/core/api.service'
+import { MobileDetectService } from '@/app/core/mobile-detect.service'
+import { SettingsService } from '@/app/core/settings.service'
 
 @Component({
   templateUrl: './startup-script.component.html',

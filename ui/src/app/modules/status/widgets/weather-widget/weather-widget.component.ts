@@ -1,12 +1,13 @@
-import { ConvertTempPipe } from '@/app/core/pipes/convert-temp.pipe'
-import { IoNamespace, WsService } from '@/app/core/ws.service'
-import { environment } from '@/environments/environment'
 import { DecimalPipe, NgClass, TitleCasePipe } from '@angular/common'
 import { HttpClient, HttpParams } from '@angular/common/http'
 import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core'
 import { TranslatePipe, TranslateService } from '@ngx-translate/core'
 import dayjs from 'dayjs'
 import { interval, Subject, Subscription } from 'rxjs'
+
+import { ConvertTempPipe } from '@/app/core/pipes/convert-temp.pipe'
+import { IoNamespace, WsService } from '@/app/core/ws.service'
+import { environment } from '@/environments/environment'
 
 @Component({
   templateUrl: './weather-widget.component.html',

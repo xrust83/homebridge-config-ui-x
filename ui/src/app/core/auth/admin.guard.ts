@@ -1,9 +1,10 @@
-import { AuthService } from '@/app/core/auth/auth.service'
 import { inject, Injectable } from '@angular/core'
 import { CanActivate, Router } from '@angular/router'
 import { TranslateService } from '@ngx-translate/core'
 import { ToastrService } from 'ngx-toastr'
 import { Observable } from 'rxjs'
+
+import { AuthService } from '@/app/core/auth/auth.service'
 
 @Injectable({
   providedIn: 'root',

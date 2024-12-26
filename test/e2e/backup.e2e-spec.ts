@@ -1,11 +1,12 @@
 import type { NestFastifyApplication } from '@nestjs/platform-fastify'
 import type { TestingModule } from '@nestjs/testing'
-
 import type { Mock } from 'vitest'
+
 import crypto from 'node:crypto'
 import { EventEmitter } from 'node:events'
 import { join, resolve } from 'node:path'
 import process from 'node:process'
+
 import fastifyMultipart from '@fastify/multipart'
 import { ValidationPipe } from '@nestjs/common'
 import { FastifyAdapter } from '@nestjs/platform-fastify'
@@ -37,6 +38,7 @@ import { BackupGateway } from '../../src/modules/backup/backup.gateway'
 import { BackupModule } from '../../src/modules/backup/backup.module'
 import { BackupService } from '../../src/modules/backup/backup.service'
 import { PluginsService } from '../../src/modules/plugins/plugins.service'
+
 import '../../src/globalDefaults'
 
 vi.spyOn(globalThis.console, 'error')

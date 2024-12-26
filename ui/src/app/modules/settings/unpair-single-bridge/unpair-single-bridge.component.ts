@@ -1,11 +1,12 @@
-import { ApiService } from '@/app/core/api.service'
-import { RestartHomebridgeComponent } from '@/app/core/components/restart-homebridge/restart-homebridge.component'
 import { NgClass, TitleCasePipe } from '@angular/common'
 import { Component, inject, OnDestroy, OnInit } from '@angular/core'
 import { NgbActiveModal, NgbAlert, NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { TranslatePipe, TranslateService } from '@ngx-translate/core'
 import { ToastrService } from 'ngx-toastr'
 import { firstValueFrom } from 'rxjs'
+
+import { ApiService } from '@/app/core/api.service'
+import { RestartHomebridgeComponent } from '@/app/core/components/restart-homebridge/restart-homebridge.component'
 
 @Component({
   templateUrl: './unpair-single-bridge.component.html',

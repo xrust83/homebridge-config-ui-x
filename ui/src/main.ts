@@ -1,12 +1,3 @@
-import { AppRoutingModule } from '@/app/app-routing.module'
-import { AuthModule } from '@/app/core/auth/auth.module'
-
-import { supportedLocales } from '@/app/core/locales'
-import { onMonacoLoad } from '@/app/core/monaco-editor.service'
-import { LoginModule } from '@/app/modules/login/login.module'
-import { RestartModule } from '@/app/modules/restart/restart.module'
-import { StatusModule } from '@/app/modules/status/status.module'
-import { environment } from '@/environments/environment'
 import { NgOptimizedImage } from '@angular/common'
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import { enableProdMode, importProvidersFrom, LOCALE_ID } from '@angular/core'
@@ -17,7 +8,18 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core'
 import { DragulaModule } from 'ng2-dragula'
 import { MonacoEditorModule } from 'ngx-monaco-editor-v2'
 import { ToastrModule } from 'ngx-toastr'
+
+import { AppRoutingModule } from '@/app/app-routing.module'
+import { AuthModule } from '@/app/core/auth/auth.module'
+import { supportedLocales } from '@/app/core/locales'
+import { onMonacoLoad } from '@/app/core/monaco-editor.service'
+import { LoginModule } from '@/app/modules/login/login.module'
+import { RestartModule } from '@/app/modules/restart/restart.module'
+import { StatusModule } from '@/app/modules/status/status.module'
+import { environment } from '@/environments/environment'
+
 import { AppComponent } from './app/app.component'
+
 import '../../src/globalDefaults'
 
 if (environment.production) {

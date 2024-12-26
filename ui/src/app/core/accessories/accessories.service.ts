@@ -1,13 +1,14 @@
 import type { ServiceType } from '@homebridge/hap-client'
 
-import { ServiceTypeX } from '@/app/core/accessories/accessories.interfaces'
-import { AccessoryInfoComponent } from '@/app/core/accessories/accessory-info/accessory-info.component'
 import { inject, Injectable } from '@angular/core'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { TranslateService } from '@ngx-translate/core'
 import { ToastrService } from 'ngx-toastr'
-
 import { firstValueFrom, Subject } from 'rxjs'
+
+import { ServiceTypeX } from '@/app/core/accessories/accessories.interfaces'
+import { AccessoryInfoComponent } from '@/app/core/accessories/accessory-info/accessory-info.component'
+
 import { AuthService } from '../auth/auth.service'
 import { IoNamespace, WsService } from '../ws.service'
 

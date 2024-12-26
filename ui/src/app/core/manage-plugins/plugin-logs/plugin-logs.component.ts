@@ -1,6 +1,3 @@
-import { ApiService } from '@/app/core/api.service'
-import { ConfirmComponent } from '@/app/core/components/confirm/confirm.component'
-import { LogService } from '@/app/core/log.service'
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http'
 import { Component, ElementRef, HostListener, inject, Input, OnDestroy, OnInit, viewChild } from '@angular/core'
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap'
@@ -8,6 +5,10 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core'
 import { saveAs } from 'file-saver'
 import { ToastrService } from 'ngx-toastr'
 import { Subject } from 'rxjs'
+
+import { ApiService } from '@/app/core/api.service'
+import { ConfirmComponent } from '@/app/core/components/confirm/confirm.component'
+import { LogService } from '@/app/core/log.service'
 
 @Component({
   templateUrl: './plugin-logs.component.html',

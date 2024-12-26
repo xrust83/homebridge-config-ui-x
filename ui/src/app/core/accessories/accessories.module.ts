@@ -1,3 +1,11 @@
+import { CommonModule } from '@angular/common'
+import { NgModule } from '@angular/core'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
+import { TranslateModule } from '@ngx-translate/core'
+import { NouisliderModule } from 'ng2-nouislider'
+import { NgxMdModule } from 'ngx-md'
+
 import { AccessoriesService } from '@/app/core/accessories/accessories.service'
 import { AccessoryInfoComponent } from '@/app/core/accessories/accessory-info/accessory-info.component'
 import { AccessoryTileComponent } from '@/app/core/accessories/accessory-tile/accessory-tile.component'
@@ -47,14 +55,6 @@ import { WindowComponent } from '@/app/core/accessories/types/window/window.comp
 import { WindowManageComponent } from '@/app/core/accessories/types/window/window.manage.component'
 import { WindowCoveringComponent } from '@/app/core/accessories/types/windowcovering/windowcovering.component'
 import { WindowcoveringManageComponent } from '@/app/core/accessories/types/windowcovering/windowcovering.manage.component'
-
-import { CommonModule } from '@angular/common'
-import { NgModule } from '@angular/core'
-import { FormsModule, ReactiveFormsModule } from '@angular/forms'
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
-import { TranslateModule } from '@ngx-translate/core'
-import { NouisliderModule } from 'ng2-nouislider'
-import { NgxMdModule } from 'ngx-md'
 
 @NgModule({
   imports: [

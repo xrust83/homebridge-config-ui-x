@@ -1,11 +1,11 @@
-import { ApiService } from '@/app/core/api.service'
-import { SettingsService } from '@/app/core/settings.service'
-
 import { Component, inject } from '@angular/core'
 import { Router } from '@angular/router'
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { TranslatePipe, TranslateService } from '@ngx-translate/core'
 import { ToastrService } from 'ngx-toastr'
+
+import { ApiService } from '@/app/core/api.service'
+import { SettingsService } from '@/app/core/settings.service'
 
 @Component({
   templateUrl: './power-options.component.html',

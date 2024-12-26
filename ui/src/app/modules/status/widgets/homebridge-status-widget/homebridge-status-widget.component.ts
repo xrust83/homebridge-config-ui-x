@@ -1,12 +1,13 @@
-import { ManagePluginsService } from '@/app/core/manage-plugins/manage-plugins.service'
-import { SettingsService } from '@/app/core/settings.service'
-import { IoNamespace, WsService } from '@/app/core/ws.service'
 import { NgClass } from '@angular/common'
 import { Component, inject, Input, OnInit } from '@angular/core'
 import { RouterLink } from '@angular/router'
 import { TranslatePipe, TranslateService } from '@ngx-translate/core'
 import { ToastrService } from 'ngx-toastr'
 import { firstValueFrom } from 'rxjs'
+
+import { ManagePluginsService } from '@/app/core/manage-plugins/manage-plugins.service'
+import { SettingsService } from '@/app/core/settings.service'
+import { IoNamespace, WsService } from '@/app/core/ws.service'
 
 @Component({
   templateUrl: './homebridge-status-widget.component.html',

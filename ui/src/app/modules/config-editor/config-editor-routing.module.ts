@@ -1,6 +1,7 @@
-import { ConfigEditorResolver } from '@/app/modules/config-editor/config-editor.resolver'
 import { NgModule } from '@angular/core'
 import { RouterModule, Routes } from '@angular/router'
+
+import { ConfigEditorResolver } from '@/app/modules/config-editor/config-editor.resolver'
 
 const routes: Routes = [
   {

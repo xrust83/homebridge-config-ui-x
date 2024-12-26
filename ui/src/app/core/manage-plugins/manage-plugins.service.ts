@@ -1,3 +1,10 @@
+import { inject, Injectable } from '@angular/core'
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
+import { TranslateService } from '@ngx-translate/core'
+import { ToastrService } from 'ngx-toastr'
+import { firstValueFrom } from 'rxjs'
+import { lt, minVersion } from 'semver'
+
 import { ApiService } from '@/app/core/api.service'
 import { CustomPluginsService } from '@/app/core/manage-plugins/custom-plugins/custom-plugins.service'
 import { ManagePluginComponent } from '@/app/core/manage-plugins/manage-plugin/manage-plugin.component'
@@ -9,12 +16,6 @@ import { PluginConfigComponent } from '@/app/core/manage-plugins/plugin-config/p
 import { ResetAccessoriesComponent } from '@/app/core/manage-plugins/reset-accessories/reset-accessories.component'
 import { UninstallPluginComponent } from '@/app/core/manage-plugins/uninstall-plugin/uninstall-plugin.component'
 import { SettingsService } from '@/app/core/settings.service'
-import { inject, Injectable } from '@angular/core'
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
-import { TranslateService } from '@ngx-translate/core'
-import { ToastrService } from 'ngx-toastr'
-import { firstValueFrom } from 'rxjs'
-import { lt, minVersion } from 'semver'
 
 @Injectable({
   providedIn: 'root',

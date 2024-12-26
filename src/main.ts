@@ -17,6 +17,7 @@ import { ConfigService } from './core/config/config.service'
 import { getStartupConfig } from './core/config/config.startup'
 import { Logger } from './core/logger/logger.service'
 import { SpaFilter } from './core/spa/spa.filter'
+
 import './self-check'
 import './globalDefaults'
 

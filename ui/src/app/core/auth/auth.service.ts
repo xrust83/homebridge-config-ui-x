@@ -1,11 +1,12 @@
-/* global NodeJS */
-import { ApiService } from '@/app/core/api.service'
-import { SettingsService } from '@/app/core/settings.service'
-import { environment } from '@/environments/environment'
 import { inject, Injectable } from '@angular/core'
 import { JwtHelperService } from '@auth0/angular-jwt'
 import dayjs from 'dayjs'
 import { firstValueFrom } from 'rxjs'
+
+/* global NodeJS */
+import { ApiService } from '@/app/core/api.service'
+import { SettingsService } from '@/app/core/settings.service'
+import { environment } from '@/environments/environment'
 
 interface UserInterface {
   username?: string

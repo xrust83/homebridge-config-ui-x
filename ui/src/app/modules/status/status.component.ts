@@ -1,3 +1,10 @@
+import { Component, inject, OnDestroy, OnInit } from '@angular/core'
+import { NgbModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
+import { TranslatePipe } from '@ngx-translate/core'
+import { GridsterComponent, GridsterConfig, GridsterItem, GridsterItemComponent } from 'angular-gridster2'
+import { firstValueFrom, Subject } from 'rxjs'
+import { take } from 'rxjs/operators'
+
 import { AuthService } from '@/app/core/auth/auth.service'
 import { NotificationService } from '@/app/core/notification.service'
 import { SettingsService } from '@/app/core/settings.service'
@@ -6,12 +13,6 @@ import { CreditsComponent } from '@/app/modules/status/credits/credits.component
 import { WidgetControlComponent } from '@/app/modules/status/widget-control/widget-control.component'
 import { WidgetVisibilityComponent } from '@/app/modules/status/widget-visibility/widget-visibility.component'
 
-import { Component, inject, OnDestroy, OnInit } from '@angular/core'
-import { NgbModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
-import { TranslatePipe } from '@ngx-translate/core'
-import { GridsterComponent, GridsterConfig, GridsterItem, GridsterItemComponent } from 'angular-gridster2'
-import { firstValueFrom, Subject } from 'rxjs'
-import { take } from 'rxjs/operators'
 import { SpinnerComponent } from '../../core/components/spinner/spinner.component'
 import { WidgetsComponent } from './widgets/widgets.component'
 

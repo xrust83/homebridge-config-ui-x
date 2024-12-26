@@ -1,12 +1,13 @@
-import { ConvertTempPipe } from '@/app/core/pipes/convert-temp.pipe'
-import { SettingsService } from '@/app/core/settings.service'
-import { IoNamespace, WsService } from '@/app/core/ws.service'
 import { DecimalPipe, NgClass, UpperCasePipe } from '@angular/common'
 import { Component, ElementRef, inject, Input, OnDestroy, OnInit, viewChild } from '@angular/core'
 import { TranslatePipe } from '@ngx-translate/core'
 import { ChartConfiguration } from 'chart.js'
 import { BaseChartDirective } from 'ng2-charts'
 import { interval, Subscription } from 'rxjs'
+
+import { ConvertTempPipe } from '@/app/core/pipes/convert-temp.pipe'
+import { SettingsService } from '@/app/core/settings.service'
+import { IoNamespace, WsService } from '@/app/core/ws.service'
 
 @Component({
   templateUrl: './cpu-widget.component.html',

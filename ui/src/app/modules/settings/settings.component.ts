@@ -1,3 +1,13 @@
+import { NgClass, TitleCasePipe } from '@angular/common'
+import { Component, inject, OnInit } from '@angular/core'
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, UntypedFormControl } from '@angular/forms'
+import { RouterLink } from '@angular/router'
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
+import { TranslatePipe, TranslateService } from '@ngx-translate/core'
+import { ToastrService } from 'ngx-toastr'
+import { firstValueFrom } from 'rxjs'
+import { debounceTime } from 'rxjs/operators'
+
 import { ApiService } from '@/app/core/api.service'
 import { ManagePluginsService } from '@/app/core/manage-plugins/manage-plugins.service'
 import { SettingsService } from '@/app/core/settings.service'
@@ -9,15 +19,6 @@ import { RestoreComponent } from '@/app/modules/settings/restore/restore.compone
 import { SelectNetworkInterfacesComponent } from '@/app/modules/settings/select-network-interfaces/select-network-interfaces.component'
 import { UnpairAllBridgesComponent } from '@/app/modules/settings/unpair-all-bridges/unpair-all-bridges.component'
 import { UnpairSingleBridgeComponent } from '@/app/modules/settings/unpair-single-bridge/unpair-single-bridge.component'
-import { NgClass, TitleCasePipe } from '@angular/common'
-import { Component, inject, OnInit } from '@angular/core'
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, UntypedFormControl } from '@angular/forms'
-import { RouterLink } from '@angular/router'
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
-import { TranslatePipe, TranslateService } from '@ngx-translate/core'
-import { ToastrService } from 'ngx-toastr'
-import { firstValueFrom } from 'rxjs'
-import { debounceTime } from 'rxjs/operators'
 
 @Component({
   templateUrl: './settings.component.html',

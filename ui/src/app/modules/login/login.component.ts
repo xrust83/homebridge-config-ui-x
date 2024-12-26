@@ -1,6 +1,3 @@
-import { AuthService } from '@/app/core/auth/auth.service'
-import { SettingsService } from '@/app/core/settings.service'
-import { environment } from '@/environments/environment'
 import { NgClass, NgStyle } from '@angular/common'
 import { Component, ElementRef, inject, OnInit, viewChild } from '@angular/core'
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms'
@@ -8,6 +5,10 @@ import { Router } from '@angular/router'
 import { TranslatePipe } from '@ngx-translate/core'
 import { firstValueFrom } from 'rxjs'
 import { debounceTime } from 'rxjs/operators'
+
+import { AuthService } from '@/app/core/auth/auth.service'
+import { SettingsService } from '@/app/core/settings.service'
+import { environment } from '@/environments/environment'
 
 @Component({
   templateUrl: './login.component.html',

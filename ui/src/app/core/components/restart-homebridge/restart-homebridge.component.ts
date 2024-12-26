@@ -1,9 +1,10 @@
-import { ApiService } from '@/app/core/api.service'
 import { Component, inject, Input } from '@angular/core'
 import { Router } from '@angular/router'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
 import { TranslatePipe, TranslateService } from '@ngx-translate/core'
 import { ToastrService } from 'ngx-toastr'
+
+import { ApiService } from '@/app/core/api.service'
 
 @Component({
   templateUrl: './restart-homebridge.component.html',

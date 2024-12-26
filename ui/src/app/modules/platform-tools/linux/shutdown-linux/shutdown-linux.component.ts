@@ -1,8 +1,8 @@
-import { ApiService } from '@/app/core/api.service'
-
 import { Component, inject, OnInit } from '@angular/core'
 import { TranslatePipe, TranslateService } from '@ngx-translate/core'
 import { ToastrService } from 'ngx-toastr'
+
+import { ApiService } from '@/app/core/api.service'
 
 @Component({
   templateUrl: './shutdown-linux.component.html',

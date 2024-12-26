@@ -1,14 +1,15 @@
-import { ApiService } from '@/app/core/api.service'
-import { ManagePluginsService } from '@/app/core/manage-plugins/manage-plugins.service'
-import { SettingsService } from '@/app/core/settings.service'
-import { IoNamespace, WsService } from '@/app/core/ws.service'
-
 import { Component, inject, OnDestroy, OnInit } from '@angular/core'
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms'
 import { NavigationEnd, Router } from '@angular/router'
 import { TranslatePipe, TranslateService } from '@ngx-translate/core'
 import { ToastrService } from 'ngx-toastr'
 import { firstValueFrom, Subscription } from 'rxjs'
+
+import { ApiService } from '@/app/core/api.service'
+import { ManagePluginsService } from '@/app/core/manage-plugins/manage-plugins.service'
+import { SettingsService } from '@/app/core/settings.service'
+import { IoNamespace, WsService } from '@/app/core/ws.service'
+
 import { SpinnerComponent } from '../../core/components/spinner/spinner.component'
 import { PluginCardComponent } from './plugin-card/plugin-card.component'
 

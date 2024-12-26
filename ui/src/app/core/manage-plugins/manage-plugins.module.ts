@@ -1,3 +1,11 @@
+import { CommonModule } from '@angular/common'
+import { NgModule } from '@angular/core'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
+import { TranslateModule } from '@ngx-translate/core'
+import { NgxMdModule } from 'ngx-md'
+import { MonacoEditorModule } from 'ngx-monaco-editor-v2'
+
 import { CustomPluginsModule } from '@/app/core/manage-plugins/custom-plugins/custom-plugins.module'
 import { DisablePluginComponent } from '@/app/core/manage-plugins/disable-plugin/disable-plugin.component'
 import { DonateComponent } from '@/app/core/manage-plugins/donate/donate.component'
@@ -13,13 +21,6 @@ import { PluginConfigComponent } from '@/app/core/manage-plugins/plugin-config/p
 import { PluginLogsComponent } from '@/app/core/manage-plugins/plugin-logs/plugin-logs.component'
 import { ResetAccessoriesComponent } from '@/app/core/manage-plugins/reset-accessories/reset-accessories.component'
 import { UninstallPluginComponent } from '@/app/core/manage-plugins/uninstall-plugin/uninstall-plugin.component'
-import { CommonModule } from '@angular/common'
-import { NgModule } from '@angular/core'
-import { FormsModule, ReactiveFormsModule } from '@angular/forms'
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
-import { TranslateModule } from '@ngx-translate/core'
-import { NgxMdModule } from 'ngx-md'
-import { MonacoEditorModule } from 'ngx-monaco-editor-v2'
 
 @NgModule({
   imports: [

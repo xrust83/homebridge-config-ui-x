@@ -1,3 +1,10 @@
+import { DatePipe, NgClass } from '@angular/common'
+import { Component, inject, Input, OnInit } from '@angular/core'
+import { NgbDropdown, NgbDropdownButtonItem, NgbDropdownItem, NgbDropdownMenu, NgbDropdownToggle, NgbModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
+import { TranslatePipe, TranslateService } from '@ngx-translate/core'
+import { ToastrService } from 'ngx-toastr'
+import { firstValueFrom } from 'rxjs'
+
 import { ApiService } from '@/app/core/api.service'
 import { ConfirmComponent } from '@/app/core/components/confirm/confirm.component'
 import { InformationComponent } from '@/app/core/components/information/information.component'
@@ -10,12 +17,6 @@ import { MobileDetectService } from '@/app/core/mobile-detect.service'
 import { SettingsService } from '@/app/core/settings.service'
 import { IoNamespace, WsService } from '@/app/core/ws.service'
 import { PluginInfoComponent } from '@/app/modules/plugins/plugin-card/plugin-info/plugin-info.component'
-import { DatePipe, NgClass } from '@angular/common'
-import { Component, inject, Input, OnInit } from '@angular/core'
-import { NgbDropdown, NgbDropdownButtonItem, NgbDropdownItem, NgbDropdownMenu, NgbDropdownToggle, NgbModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
-import { TranslatePipe, TranslateService } from '@ngx-translate/core'
-import { ToastrService } from 'ngx-toastr'
-import { firstValueFrom } from 'rxjs'
 
 @Component({
   selector: 'app-plugin-card',

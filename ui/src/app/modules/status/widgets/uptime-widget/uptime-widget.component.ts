@@ -1,8 +1,9 @@
-import { IoNamespace, WsService } from '@/app/core/ws.service'
 import { NgClass } from '@angular/common'
 import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core'
 import { TranslatePipe } from '@ngx-translate/core'
 import { interval, Subscription } from 'rxjs'
+
+import { IoNamespace, WsService } from '@/app/core/ws.service'
 
 @Component({
   templateUrl: './uptime-widget.component.html',

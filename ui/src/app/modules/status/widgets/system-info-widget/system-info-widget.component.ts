@@ -1,9 +1,10 @@
-import { InformationComponent } from '@/app/core/components/information/information.component'
-import { IoNamespace, WsService } from '@/app/core/ws.service'
 import { NgClass, TitleCasePipe } from '@angular/common'
 import { Component, inject, Input, OnInit } from '@angular/core'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { TranslatePipe, TranslateService } from '@ngx-translate/core'
+
+import { InformationComponent } from '@/app/core/components/information/information.component'
+import { IoNamespace, WsService } from '@/app/core/ws.service'
 
 @Component({
   templateUrl: './system-info-widget.component.html',

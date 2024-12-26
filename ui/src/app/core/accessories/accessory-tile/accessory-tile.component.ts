@@ -1,4 +1,5 @@
 import { Component, inject, Input } from '@angular/core'
+
 import { ServiceTypeX } from '../accessories.interfaces'
 import { AccessoriesService } from '../accessories.service'
 import { AirpurifierComponent } from '../types/airpurifier/airpurifier.component'

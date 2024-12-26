@@ -1,8 +1,9 @@
-import { ApiService } from '@/app/core/api.service'
 import { Component, inject } from '@angular/core'
 import { TranslateService } from '@ngx-translate/core'
 import { saveAs } from 'file-saver'
 import { ToastrService } from 'ngx-toastr'
+
+import { ApiService } from '@/app/core/api.service'
 
 @Component({
   selector: 'app-homebridge-deconz',

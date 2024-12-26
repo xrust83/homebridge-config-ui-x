@@ -1,4 +1,3 @@
-import { ApiService } from '@/app/core/api.service'
 import { inject, Injectable } from '@angular/core'
 import { Title } from '@angular/platform-browser'
 import { TranslateService } from '@ngx-translate/core'
@@ -6,6 +5,8 @@ import dayjs from 'dayjs'
 import { ToastrService } from 'ngx-toastr'
 import { firstValueFrom, Subject } from 'rxjs'
 import { first } from 'rxjs/operators'
+
+import { ApiService } from '@/app/core/api.service'
 
 interface EnvInterface {
   platform: 'darwin' | 'win32' | 'linux' | 'freebsd'

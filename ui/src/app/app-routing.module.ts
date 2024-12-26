@@ -1,12 +1,10 @@
-import { AdminGuard } from '@/app/core/auth/admin.guard'
-import { AuthGuard } from '@/app/core/auth/auth.guard'
-
-import { LoginGuard } from '@/app/modules/login/login.guard'
-
-import { SetupWizardGuard } from '@/app/modules/setup-wizard/setup-wizard.guard'
-
 import { NgModule } from '@angular/core'
 import { RouterModule, Routes } from '@angular/router'
+
+import { AdminGuard } from '@/app/core/auth/admin.guard'
+import { AuthGuard } from '@/app/core/auth/auth.guard'
+import { LoginGuard } from '@/app/modules/login/login.guard'
+import { SetupWizardGuard } from '@/app/modules/setup-wizard/setup-wizard.guard'
 
 /*
  * The status and restart modules should not be lazy loaded

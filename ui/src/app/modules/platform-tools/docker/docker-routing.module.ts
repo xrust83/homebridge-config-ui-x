@@ -1,6 +1,7 @@
-import { StartupScriptResolver } from '@/app/modules/platform-tools/docker/startup-script/startup-script.resolver'
 import { NgModule } from '@angular/core'
 import { RouterModule, Routes } from '@angular/router'
+
+import { StartupScriptResolver } from '@/app/modules/platform-tools/docker/startup-script/startup-script.resolver'
 
 const routes: Routes = [
   {

@@ -1,11 +1,12 @@
-import { ApiService } from '@/app/core/api.service'
-import { RestoreComponent } from '@/app/modules/settings/restore/restore.component'
 import { DatePipe, NgClass } from '@angular/common'
 import { Component, inject, OnInit } from '@angular/core'
 import { NgbActiveModal, NgbModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { TranslatePipe, TranslateService } from '@ngx-translate/core'
 import { saveAs } from 'file-saver'
 import { ToastrService } from 'ngx-toastr'
+
+import { ApiService } from '@/app/core/api.service'
+import { RestoreComponent } from '@/app/modules/settings/restore/restore.component'
 
 @Component({
   templateUrl: './backup.component.html',

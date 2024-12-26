@@ -1,14 +1,15 @@
-import { AuthService } from '@/app/core/auth/auth.service'
-import { InformationComponent } from '@/app/core/components/information/information.component'
-import { MobileDetectService } from '@/app/core/mobile-detect.service'
-import { NotificationService } from '@/app/core/notification.service'
-import { SettingsService } from '@/app/core/settings.service'
 import { NgClass, NgOptimizedImage } from '@angular/common'
 import { Component, inject, Input, OnInit, Renderer2 } from '@angular/core'
 import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { TranslatePipe, TranslateService } from '@ngx-translate/core'
 import { isStandalonePWA } from 'is-standalone-pwa'
+
+import { AuthService } from '@/app/core/auth/auth.service'
+import { InformationComponent } from '@/app/core/components/information/information.component'
+import { MobileDetectService } from '@/app/core/mobile-detect.service'
+import { NotificationService } from '@/app/core/notification.service'
+import { SettingsService } from '@/app/core/settings.service'
 
 @Component({
   selector: 'app-sidebar',

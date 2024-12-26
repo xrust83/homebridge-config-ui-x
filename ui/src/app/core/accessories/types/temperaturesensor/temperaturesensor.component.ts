@@ -1,7 +1,8 @@
-import { ServiceTypeX } from '@/app/core/accessories/accessories.interfaces'
-import { ConvertTempPipe } from '@/app/core/pipes/convert-temp.pipe'
 import { DecimalPipe } from '@angular/common'
 import { Component, Input } from '@angular/core'
+
+import { ServiceTypeX } from '@/app/core/accessories/accessories.interfaces'
+import { ConvertTempPipe } from '@/app/core/pipes/convert-temp.pipe'
 
 @Component({
   selector: 'app-temperaturesensor',

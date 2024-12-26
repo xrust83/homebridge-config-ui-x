@@ -1,10 +1,11 @@
-import { IoNamespace, WsService } from '@/app/core/ws.service'
 import { NgClass } from '@angular/common'
 import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core'
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { TranslatePipe, TranslateService } from '@ngx-translate/core'
 import { ToastrService } from 'ngx-toastr'
 import { firstValueFrom } from 'rxjs'
+
+import { IoNamespace, WsService } from '@/app/core/ws.service'
 
 @Component({
   templateUrl: './child-bridge-widget.component.html',

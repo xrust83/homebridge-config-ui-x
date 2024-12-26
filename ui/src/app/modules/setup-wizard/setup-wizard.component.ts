@@ -1,8 +1,3 @@
-import { ApiService } from '@/app/core/api.service'
-import { AuthService } from '@/app/core/auth/auth.service'
-import { SettingsService } from '@/app/core/settings.service'
-import { RestoreComponent } from '@/app/modules/settings/restore/restore.component'
-import { environment } from '@/environments/environment'
 import { NgClass } from '@angular/common'
 import { Component, inject, OnDestroy, OnInit } from '@angular/core'
 import { AbstractControl, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms'
@@ -12,6 +7,12 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { TranslatePipe, TranslateService } from '@ngx-translate/core'
 import { ToastrService } from 'ngx-toastr'
 import { firstValueFrom } from 'rxjs'
+
+import { ApiService } from '@/app/core/api.service'
+import { AuthService } from '@/app/core/auth/auth.service'
+import { SettingsService } from '@/app/core/settings.service'
+import { RestoreComponent } from '@/app/modules/settings/restore/restore.component'
+import { environment } from '@/environments/environment'
 
 @Component({
   templateUrl: './setup-wizard.component.html',

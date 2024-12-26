@@ -1,8 +1,3 @@
-/* global NodeJS */
-import { ApiService } from '@/app/core/api.service'
-import { SchemaFormComponent } from '@/app/core/components/schema-form/schema-form.component'
-import { PluginsMarkdownDirective } from '@/app/core/directives/plugins.markdown.directive'
-import { SettingsService } from '@/app/core/settings.service'
 import { TitleCasePipe } from '@angular/common'
 import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core'
 import { JwtHelperService } from '@auth0/angular-jwt'
@@ -11,6 +6,12 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core'
 import { NgxMdModule } from 'ngx-md'
 import { ToastrService } from 'ngx-toastr'
 import { firstValueFrom } from 'rxjs'
+
+/* global NodeJS */
+import { ApiService } from '@/app/core/api.service'
+import { SchemaFormComponent } from '@/app/core/components/schema-form/schema-form.component'
+import { PluginsMarkdownDirective } from '@/app/core/directives/plugins.markdown.directive'
+import { SettingsService } from '@/app/core/settings.service'
 
 @Component({
   selector: 'app-homebridge-google-smarthome',

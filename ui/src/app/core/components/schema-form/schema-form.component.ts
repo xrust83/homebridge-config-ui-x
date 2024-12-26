@@ -1,7 +1,8 @@
-import { SettingsService } from '@/app/core/settings.service'
-
 import { Component, inject, Input, OnInit, output } from '@angular/core'
 import { JsonSchemaFormModule } from '@ng-formworks/core'
+
+import { SettingsService } from '@/app/core/settings.service'
+
 import { JsonSchemaFormPatchDirective } from '../../directives/json-schema-form-patch.directive'
 
 @Component({

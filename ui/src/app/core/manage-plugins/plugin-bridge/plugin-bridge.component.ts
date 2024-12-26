@@ -1,8 +1,3 @@
-import { ApiService } from '@/app/core/api.service'
-import { RestartHomebridgeComponent } from '@/app/core/components/restart-homebridge/restart-homebridge.component'
-import { ManagePluginsService } from '@/app/core/manage-plugins/manage-plugins.service'
-import { PluginSchema } from '@/app/core/manage-plugins/plugin-config/plugin-config.component'
-import { SettingsService } from '@/app/core/settings.service'
 import { NgClass } from '@angular/common'
 import { Component, inject, Input, OnInit } from '@angular/core'
 import { FormsModule } from '@angular/forms'
@@ -11,6 +6,13 @@ import { NgbActiveModal, NgbAlert, NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { TranslatePipe, TranslateService } from '@ngx-translate/core'
 import { ToastrService } from 'ngx-toastr'
 import { firstValueFrom } from 'rxjs'
+
+import { ApiService } from '@/app/core/api.service'
+import { RestartHomebridgeComponent } from '@/app/core/components/restart-homebridge/restart-homebridge.component'
+import { ManagePluginsService } from '@/app/core/manage-plugins/manage-plugins.service'
+import { PluginSchema } from '@/app/core/manage-plugins/plugin-config/plugin-config.component'
+import { SettingsService } from '@/app/core/settings.service'
+
 import { QrcodeComponent } from '../../components/qrcode/qrcode.component'
 
 interface DeviceInfo {

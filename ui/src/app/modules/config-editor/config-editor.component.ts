@@ -1,10 +1,3 @@
-import { ApiService } from '@/app/core/api.service'
-import { RestartHomebridgeComponent } from '@/app/core/components/restart-homebridge/restart-homebridge.component'
-import { MobileDetectService } from '@/app/core/mobile-detect.service'
-import { MonacoEditorService } from '@/app/core/monaco-editor.service'
-import { SettingsService } from '@/app/core/settings.service'
-import { ConfigRestoreComponent } from '@/app/modules/config-editor/config-restore/config.restore.component'
-
 import { Component, inject, OnDestroy, OnInit, Renderer2 } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { ActivatedRoute } from '@angular/router'
@@ -14,6 +7,13 @@ import json5 from 'json5'
 import { DiffEditorComponent, EditorComponent, NgxEditorModel } from 'ngx-monaco-editor-v2'
 import { ToastrService } from 'ngx-toastr'
 import { firstValueFrom } from 'rxjs'
+
+import { ApiService } from '@/app/core/api.service'
+import { RestartHomebridgeComponent } from '@/app/core/components/restart-homebridge/restart-homebridge.component'
+import { MobileDetectService } from '@/app/core/mobile-detect.service'
+import { MonacoEditorService } from '@/app/core/monaco-editor.service'
+import { SettingsService } from '@/app/core/settings.service'
+import { ConfigRestoreComponent } from '@/app/modules/config-editor/config-restore/config.restore.component'
 
 @Component({
   templateUrl: './config-editor.component.html',

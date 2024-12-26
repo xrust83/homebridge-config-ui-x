@@ -3,14 +3,14 @@ import type { NestFastifyApplication } from '@nestjs/platform-fastify'
 import type { TestingModule } from '@nestjs/testing'
 
 import type { WsEventEmitter } from '../../src/modules/platform-tools/terminal/terminal.service'
+
 import { EventEmitter } from 'node:events'
 import { resolve } from 'node:path'
-
 import process from 'node:process'
+
 import { FastifyAdapter } from '@nestjs/platform-fastify'
 import { Test } from '@nestjs/testing'
 import { copy } from 'fs-extra'
-
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { ConfigService } from '../../src/core/config/config.service'

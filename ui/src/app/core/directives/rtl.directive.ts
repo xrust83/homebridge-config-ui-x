@@ -1,5 +1,6 @@
-import { SettingsService } from '@/app/core/settings.service'
 import { Directive, ElementRef, inject, Input, OnInit } from '@angular/core'
+
+import { SettingsService } from '@/app/core/settings.service'
 
 @Directive({
   selector: '[rtl]',

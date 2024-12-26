@@ -6,6 +6,7 @@
  */
 
 import { dirname, resolve } from 'node:path'
+
 import { readdir, readFile, readJson, stat, writeJson } from 'fs-extra'
 
 // Path to the project directory

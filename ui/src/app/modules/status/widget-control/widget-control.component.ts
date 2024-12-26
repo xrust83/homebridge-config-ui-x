@@ -1,5 +1,3 @@
-import { ApiService } from '@/app/core/api.service'
-import { environment } from '@/environments/environment'
 import { DatePipe, NgClass } from '@angular/common'
 import { HttpClient, HttpParams } from '@angular/common/http'
 import { Component, inject, Input, OnInit } from '@angular/core'
@@ -15,6 +13,9 @@ import {
   switchMap,
   tap,
 } from 'rxjs/operators'
+
+import { ApiService } from '@/app/core/api.service'
+import { environment } from '@/environments/environment'
 
 @Component({
   templateUrl: './widget-control.component.html',

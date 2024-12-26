@@ -1,6 +1,5 @@
 import type { CharacteristicType } from '@homebridge/hap-client'
-import { ServiceTypeX } from '@/app/core/accessories/accessories.interfaces'
-import { ConvertTempPipe } from '@/app/core/pipes/convert-temp.pipe'
+
 import { DecimalPipe, NgClass } from '@angular/common'
 import { Component, inject, Input, OnInit } from '@angular/core'
 import { FormsModule } from '@angular/forms'
@@ -9,6 +8,9 @@ import { TranslatePipe } from '@ngx-translate/core'
 import { NouisliderComponent } from 'ng2-nouislider'
 import { Subject } from 'rxjs'
 import { debounceTime } from 'rxjs/operators'
+
+import { ServiceTypeX } from '@/app/core/accessories/accessories.interfaces'
+import { ConvertTempPipe } from '@/app/core/pipes/convert-temp.pipe'
 
 @Component({
   selector: 'app-heatercooler-manage',

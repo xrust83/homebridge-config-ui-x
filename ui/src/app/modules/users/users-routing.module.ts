@@ -1,6 +1,7 @@
-import { UsersResolver } from '@/app/modules/users/users.resolver'
 import { NgModule } from '@angular/core'
 import { RouterModule, Routes } from '@angular/router'
+
+import { UsersResolver } from '@/app/modules/users/users.resolver'
 
 const routes: Routes = [
   {

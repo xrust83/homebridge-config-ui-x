@@ -1,10 +1,3 @@
-import { ApiService } from '@/app/core/api.service'
-import { RestartHomebridgeComponent } from '@/app/core/components/restart-homebridge/restart-homebridge.component'
-import { HbUpdateConfirmComponent } from '@/app/core/manage-plugins/hb-update-confirm/hb-update-confirm.component'
-import { PluginLogsComponent } from '@/app/core/manage-plugins/plugin-logs/plugin-logs.component'
-import { SettingsService } from '@/app/core/settings.service'
-import { IoNamespace, WsService } from '@/app/core/ws.service'
-
 import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core'
 import { Router } from '@angular/router'
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap'
@@ -15,6 +8,14 @@ import { ToastrService } from 'ngx-toastr'
 import { firstValueFrom } from 'rxjs'
 import { Terminal } from 'xterm'
 import { FitAddon } from 'xterm-addon-fit'
+
+import { ApiService } from '@/app/core/api.service'
+import { RestartHomebridgeComponent } from '@/app/core/components/restart-homebridge/restart-homebridge.component'
+import { HbUpdateConfirmComponent } from '@/app/core/manage-plugins/hb-update-confirm/hb-update-confirm.component'
+import { PluginLogsComponent } from '@/app/core/manage-plugins/plugin-logs/plugin-logs.component'
+import { SettingsService } from '@/app/core/settings.service'
+import { IoNamespace, WsService } from '@/app/core/ws.service'
+
 import { PluginsMarkdownDirective } from '../../directives/plugins.markdown.directive'
 
 @Component({

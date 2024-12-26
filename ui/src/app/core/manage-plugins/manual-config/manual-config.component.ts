@@ -1,10 +1,3 @@
-import { ApiService } from '@/app/core/api.service'
-import { RestartChildBridgesComponent } from '@/app/core/components/restart-child-bridges/restart-child-bridges.component'
-import { RestartHomebridgeComponent } from '@/app/core/components/restart-homebridge/restart-homebridge.component'
-import { ManagePluginsService } from '@/app/core/manage-plugins/manage-plugins.service'
-import { MobileDetectService } from '@/app/core/mobile-detect.service'
-import { SettingsService } from '@/app/core/settings.service'
-
 import { Component, inject, Input, OnInit } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { Router } from '@angular/router'
@@ -14,6 +7,13 @@ import json5 from 'json5'
 import { EditorComponent } from 'ngx-monaco-editor-v2'
 import { ToastrService } from 'ngx-toastr'
 import { firstValueFrom } from 'rxjs'
+
+import { ApiService } from '@/app/core/api.service'
+import { RestartChildBridgesComponent } from '@/app/core/components/restart-child-bridges/restart-child-bridges.component'
+import { RestartHomebridgeComponent } from '@/app/core/components/restart-homebridge/restart-homebridge.component'
+import { ManagePluginsService } from '@/app/core/manage-plugins/manage-plugins.service'
+import { MobileDetectService } from '@/app/core/mobile-detect.service'
+import { SettingsService } from '@/app/core/settings.service'
 
 @Component({
   templateUrl: './manual-config.component.html',

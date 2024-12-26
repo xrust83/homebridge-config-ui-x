@@ -1,8 +1,9 @@
-import { AuthService } from '@/app/core/auth/auth.service'
-import { environment } from '@/environments/environment'
 import { inject, Injectable } from '@angular/core'
 import { Observable, Subject } from 'rxjs'
 import { io as ioFn, Socket } from 'socket.io-client'
+
+import { AuthService } from '@/app/core/auth/auth.service'
+import { environment } from '@/environments/environment'
 
 export interface IoNamespace {
   connected?: Subject<any>

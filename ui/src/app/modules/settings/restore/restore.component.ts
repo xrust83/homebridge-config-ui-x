@@ -1,6 +1,3 @@
-import { ApiService } from '@/app/core/api.service'
-import { IoNamespace, WsService } from '@/app/core/ws.service'
-
 import { HttpEventType, HttpResponse } from '@angular/common/http'
 import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core'
 import { Router } from '@angular/router'
@@ -9,6 +6,9 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core'
 import { ToastrService } from 'ngx-toastr'
 import { Terminal } from 'xterm'
 import { FitAddon } from 'xterm-addon-fit'
+
+import { ApiService } from '@/app/core/api.service'
+import { IoNamespace, WsService } from '@/app/core/ws.service'
 
 @Component({
   templateUrl: './restore.component.html',

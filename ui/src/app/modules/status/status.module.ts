@@ -1,5 +1,14 @@
-import { AccessoriesCoreModule } from '@/app/core/accessories/accessories.module'
+import { CommonModule } from '@angular/common'
+import { NgModule } from '@angular/core'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
+import { RouterModule } from '@angular/router'
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
+import { TranslateModule } from '@ngx-translate/core'
+import { GridsterModule } from 'angular-gridster2'
+import { BaseChartDirective, provideCharts, withDefaultRegisterables } from 'ng2-charts'
+import { DragulaModule } from 'ng2-dragula'
 
+import { AccessoriesCoreModule } from '@/app/core/accessories/accessories.module'
 import { ManagePluginsModule } from '@/app/core/manage-plugins/manage-plugins.module'
 import { CreditsComponent } from '@/app/modules/status/credits/credits.component'
 import { StatusComponent } from '@/app/modules/status/status.component'
@@ -19,15 +28,6 @@ import { TerminalWidgetComponent } from '@/app/modules/status/widgets/terminal-w
 import { UptimeWidgetComponent } from '@/app/modules/status/widgets/uptime-widget/uptime-widget.component'
 import { WeatherWidgetComponent } from '@/app/modules/status/widgets/weather-widget/weather-widget.component'
 import { WidgetsComponent } from '@/app/modules/status/widgets/widgets.component'
-import { CommonModule } from '@angular/common'
-import { NgModule } from '@angular/core'
-import { FormsModule, ReactiveFormsModule } from '@angular/forms'
-import { RouterModule } from '@angular/router'
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
-import { TranslateModule } from '@ngx-translate/core'
-import { GridsterModule } from 'angular-gridster2'
-import { BaseChartDirective, provideCharts, withDefaultRegisterables } from 'ng2-charts'
-import { DragulaModule } from 'ng2-dragula'
 
 @NgModule({
   imports: [

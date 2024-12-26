@@ -1,9 +1,9 @@
-import { SettingsService } from '@/app/core/settings.service'
-
 import { Component, inject, Input, OnInit } from '@angular/core'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
 import { TranslatePipe } from '@ngx-translate/core'
 import { minVersion, SemVer } from 'semver'
+
+import { SettingsService } from '@/app/core/settings.service'
 
 @Component({
   templateUrl: './plugin-compatibility.component.html',

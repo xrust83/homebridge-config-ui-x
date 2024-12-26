@@ -1,10 +1,10 @@
-import { ApiService } from '@/app/core/api.service'
-
 import { Component, inject, OnInit } from '@angular/core'
 import { NgbActiveModal, NgbAlert } from '@ng-bootstrap/ng-bootstrap'
 import { TranslatePipe, TranslateService } from '@ngx-translate/core'
 import { ToastrService } from 'ngx-toastr'
 import { firstValueFrom } from 'rxjs'
+
+import { ApiService } from '@/app/core/api.service'
 
 @Component({
   templateUrl: './remove-all-accessories.component.html',

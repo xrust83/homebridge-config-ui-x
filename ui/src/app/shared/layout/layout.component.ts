@@ -1,8 +1,3 @@
-import { AuthService } from '@/app/core/auth/auth.service'
-import { ConfirmComponent } from '@/app/core/components/confirm/confirm.component'
-import { SettingsService } from '@/app/core/settings.service'
-import { IoNamespace, WsService } from '@/app/core/ws.service'
-import { environment } from '@/environments/environment'
 import { NgClass } from '@angular/common'
 import { Component, inject, OnInit } from '@angular/core'
 import { Router, RouterOutlet } from '@angular/router'
@@ -10,6 +5,13 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { TranslateService } from '@ngx-translate/core'
 import { firstValueFrom } from 'rxjs'
 import { lt } from 'semver'
+
+import { AuthService } from '@/app/core/auth/auth.service'
+import { ConfirmComponent } from '@/app/core/components/confirm/confirm.component'
+import { SettingsService } from '@/app/core/settings.service'
+import { IoNamespace, WsService } from '@/app/core/ws.service'
+import { environment } from '@/environments/environment'
+
 import { SidebarComponent } from './sidebar/sidebar.component'
 
 @Component({

@@ -1,14 +1,16 @@
-import { AccessoriesService } from '@/app/core/accessories/accessories.service'
-import { AuthService } from '@/app/core/auth/auth.service'
-import { MobileDetectService } from '@/app/core/mobile-detect.service'
-import { SettingsService } from '@/app/core/settings.service'
-import { AddRoomComponent } from '@/app/modules/accessories/add-room/add-room.component'
 import { NgClass } from '@angular/common'
 import { Component, inject, OnDestroy, OnInit } from '@angular/core'
 import { NgbModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { TranslatePipe } from '@ngx-translate/core'
 import { DragulaModule, DragulaService } from 'ng2-dragula'
 import { Subscription } from 'rxjs'
+
+import { AccessoriesService } from '@/app/core/accessories/accessories.service'
+import { AuthService } from '@/app/core/auth/auth.service'
+import { MobileDetectService } from '@/app/core/mobile-detect.service'
+import { SettingsService } from '@/app/core/settings.service'
+import { AddRoomComponent } from '@/app/modules/accessories/add-room/add-room.component'
+
 import { AccessoryTileComponent } from '../../core/accessories/accessory-tile/accessory-tile.component'
 import { DragHerePlaceholderComponent } from './drag-here-placeholder/drag-here-placeholder.component'
 

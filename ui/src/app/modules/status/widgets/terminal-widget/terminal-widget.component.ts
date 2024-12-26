@@ -1,9 +1,10 @@
-import { TerminalService } from '@/app/core/terminal.service'
 import { NgClass, NgStyle } from '@angular/common'
 import { Component, ElementRef, inject, Input, OnDestroy, OnInit, viewChild } from '@angular/core'
 import { TranslatePipe } from '@ngx-translate/core'
 import { Subject } from 'rxjs'
 import { ITerminalOptions } from 'xterm'
+
+import { TerminalService } from '@/app/core/terminal.service'
 
 @Component({
   templateUrl: './terminal-widget.component.html',

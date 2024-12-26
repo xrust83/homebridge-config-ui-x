@@ -1,15 +1,15 @@
+import { Component, inject, OnInit } from '@angular/core'
+import { ActivatedRoute } from '@angular/router'
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
+import { TranslatePipe, TranslateService } from '@ngx-translate/core'
+import { ToastrService } from 'ngx-toastr'
+
 import { ApiService } from '@/app/core/api.service'
 import { AuthService } from '@/app/core/auth/auth.service'
 import { Users2faDisableComponent } from '@/app/modules/users/users-2fa-disable/users-2fa-disable.component'
 import { Users2faEnableComponent } from '@/app/modules/users/users-2fa-enable/users-2fa-enable.component'
 import { UsersAddComponent } from '@/app/modules/users/users-add/users-add.component'
 import { UsersEditComponent } from '@/app/modules/users/users-edit/users-edit.component'
-
-import { Component, inject, OnInit } from '@angular/core'
-import { ActivatedRoute } from '@angular/router'
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
-import { TranslatePipe, TranslateService } from '@ngx-translate/core'
-import { ToastrService } from 'ngx-toastr'
 
 @Component({
   selector: 'app-users',

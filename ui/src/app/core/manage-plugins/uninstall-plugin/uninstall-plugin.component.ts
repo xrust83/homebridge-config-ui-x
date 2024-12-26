@@ -1,13 +1,13 @@
-import { ApiService } from '@/app/core/api.service'
-import { ManagePluginComponent } from '@/app/core/manage-plugins/manage-plugin/manage-plugin.component'
-import { SettingsService } from '@/app/core/settings.service'
-
 import { Component, inject, Input, OnInit } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { NgbActiveModal, NgbAlert, NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { TranslatePipe, TranslateService } from '@ngx-translate/core'
 import { ToastrService } from 'ngx-toastr'
 import { firstValueFrom } from 'rxjs'
+
+import { ApiService } from '@/app/core/api.service'
+import { ManagePluginComponent } from '@/app/core/manage-plugins/manage-plugin/manage-plugin.component'
+import { SettingsService } from '@/app/core/settings.service'
 
 @Component({
   templateUrl: './uninstall-plugin.component.html',

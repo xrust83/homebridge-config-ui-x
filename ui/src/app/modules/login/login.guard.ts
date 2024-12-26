@@ -1,8 +1,9 @@
-import { AuthService } from '@/app/core/auth/auth.service'
-import { SettingsService } from '@/app/core/settings.service'
 import { inject, Injectable } from '@angular/core'
 import { CanActivate, Router } from '@angular/router'
 import { firstValueFrom } from 'rxjs'
+
+import { AuthService } from '@/app/core/auth/auth.service'
+import { SettingsService } from '@/app/core/settings.service'
 
 @Injectable({
   providedIn: 'root',

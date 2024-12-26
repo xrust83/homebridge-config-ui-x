@@ -1,3 +1,5 @@
+import { ApplicationRef, Component, ComponentFactoryResolver, ElementRef, EmbeddedViewRef, inject, Injector, Input, OnDestroy, OnInit } from '@angular/core'
+
 import { AccessoriesWidgetComponent } from '@/app/modules/status/widgets/accessories-widget/accessories-widget.component'
 import { ChildBridgeWidgetComponent } from '@/app/modules/status/widgets/child-bridge-widget/child-bridge-widget.component'
 import { ClockWidgetComponent } from '@/app/modules/status/widgets/clock-widget/clock-widget.component'
@@ -11,7 +13,6 @@ import { SystemInfoWidgetComponent } from '@/app/modules/status/widgets/system-i
 import { TerminalWidgetComponent } from '@/app/modules/status/widgets/terminal-widget/terminal-widget.component'
 import { UptimeWidgetComponent } from '@/app/modules/status/widgets/uptime-widget/uptime-widget.component'
 import { WeatherWidgetComponent } from '@/app/modules/status/widgets/weather-widget/weather-widget.component'
-import { ApplicationRef, Component, ComponentFactoryResolver, ElementRef, EmbeddedViewRef, inject, Injector, Input, OnDestroy, OnInit } from '@angular/core'
 
 @Component({
   selector: 'app-widgets',
