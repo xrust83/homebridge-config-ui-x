@@ -11,6 +11,7 @@ All notable changes to `homebridge-config-ui-x` will be documented in this file.
 - fix spacing issue with hidden accessories
 - make margins consistent of un/lock buttons on status screen
 - fix ui not restarting properly after updating the ui
+- use broom icon in remove bridge accessories (to match similar modal from plugin menu)
 
 ### Other Changes
 
