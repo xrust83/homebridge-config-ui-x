@@ -52,7 +52,7 @@ export class LayoutComponent implements OnInit {
       await firstValueFrom(this.$settings.onSettingsLoaded)
     }
 
-    if (lt(this.$settings.uiVersion, environment.serverTarget)) {
+    if (this.$router.url !== '/restart' && lt(this.$settings.uiVersion, environment.serverTarget)) {
       // eslint-disable-next-line no-console
       console.log(`Server restart required. UI Version: ${environment.serverTarget} - Server Version: ${this.$settings.uiVersion} `)
       const ref = this.$modal.open(ConfirmComponent, {

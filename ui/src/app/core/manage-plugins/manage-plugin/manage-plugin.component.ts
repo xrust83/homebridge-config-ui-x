@@ -286,8 +286,20 @@ export class ManagePluginComponent implements OnInit, OnDestroy {
   }
 
   public onRestartHomebridgeClick() {
-    this.$router.navigate(['/restart'])
-    this.$activeModal.close()
+    if (this.pluginName === 'homebridge-config-ui-x') {
+      this.$api.put('/platform-tools/hb-service/set-full-service-restart-flag', {}).subscribe({
+        next: () => {
+          window.location.href = '/restart'
+        },
+        error: (error) => {
+          console.error(error)
+          window.location.href = '/restart'
+        },
+      })
+    } else {
+      this.$router.navigate(['/restart'])
+      this.$activeModal.close()
+    }
   }
 
   public async onRestartChildBridgeClick() {
