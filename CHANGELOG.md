@@ -8,6 +8,7 @@ All notable changes to `homebridge-config-ui-x` will be documented in this file.
 
 - add explanation of deleting child bridges when un-toggling
 - add filtering to search to improve results (#2286) (@justjam2013) (fixes [#2266](https://github.com/homebridge/homebridge-config-ui-x/issues/2266))
+- fix spacing issue with hidden accessories
 
 ### Other Changes
 

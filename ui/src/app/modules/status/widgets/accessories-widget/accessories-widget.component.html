@@ -8,13 +8,11 @@
     [dragula]='"widget-accessories-bag"'
     [(dragulaModel)]="dashboardAccessories"
   >
-    @for (service of dashboardAccessories; track service) {
+    @for (service of dashboardAccessories; track service) { @if (!service.hidden) {
     <div class="accessory-item accessory-widget-box noselect">
-      @if (!service.hidden) {
       <app-accessory-tile [service]="service"></app-accessory-tile>
-      }
     </div>
-    }
+    } }
   </div>
   } @if (loaded && !dashboardAccessories.length) {
   <div class="d-flex flex-row flex-grow-1 align-items-center w-100 gridster-item-content text-center">

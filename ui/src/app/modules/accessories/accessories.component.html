@@ -88,13 +88,11 @@
           [dragula]="'services-bag'"
           [(dragulaModel)]="room.services"
         >
-          @for (service of room.services; track service) {
+          @for (service of room.services; track service) { @if (!hideHidden || !service.hidden) {
           <div class="accessory-item accessory-tab">
-            @if (!hideHidden || !service.hidden) {
             <app-accessory-tile [service]="service"></app-accessory-tile>
-            }
           </div>
-          }
+          } }
           <div style="height: 0 !important" class="accessory-box invisible py-0 my-0"></div>
           <div style="height: 0 !important" class="accessory-box invisible py-0 my-0"></div>
           <div style="height: 0 !important" class="accessory-box invisible py-0 my-0"></div>
