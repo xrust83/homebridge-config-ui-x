@@ -300,24 +300,39 @@ export class PluginsService {
         return plugin
       })
 
-    const searchTerms: string[] = query
+    const searchTerm: string = query
       .replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, '') // remove punctuation
       .toLowerCase() // convert to lowercase
+
+    const searchTerms: string[] = searchTerm
       .split(/\s+/) // split into words
       .filter(term => term.length > 0) // remove empty strings
 
-    // Filter matching plugins
-    const matchPlugins = result.filter((plugin) => {
-      const pluginName = plugin.name.toLowerCase()
-      const pluginKeywords = plugin.keywords.map(keyword => keyword.toLowerCase())
-      const pluginDescription = plugin.description.toLowerCase()
+    // Separate lists for exact matches and partial matches
+    const exactMatchPlugins: HomebridgePlugin[] = []
+    const partialMatchPlugins: HomebridgePlugin[] = []
 
-      return searchTerms.some(term => pluginName.includes(term))
-        || searchTerms.some(term => pluginKeywords.includes(term))
+    // Filter matching plugins
+    result.forEach((plugin) => {
+      const pluginKeywords = plugin.keywords.map(keyword => keyword.toLowerCase())
+      const isExactMatch = pluginKeywords.includes(searchTerm)
+      if (isExactMatch) {
+        exactMatchPlugins.push(plugin)
+        return
+      }
+
+      const pluginName = plugin.name.toLowerCase()
+      const pluginDescription = plugin.description.toLowerCase()
+      const isPartialMatch = searchTerms.some(term => pluginName.includes(term))
+        || searchTerms.some(term => pluginKeywords.some(keyword => keyword.includes(term)))
         || searchTerms.some(term => pluginDescription.includes(term))
+
+      if (isPartialMatch) {
+        partialMatchPlugins.push(plugin)
+      }
     })
 
-    return orderBy(matchPlugins, ['verifiedPlusPlugin', 'verifiedPlugin'], ['desc', 'desc']).slice(0, 30)
+    return orderBy([...exactMatchPlugins, ...partialMatchPlugins], ['verifiedPlusPlugin', 'verifiedPlugin'], ['desc', 'desc']).slice(0, 30)
   }
 
   /**
