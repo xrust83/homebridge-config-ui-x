@@ -7,6 +7,7 @@ All notable changes to `homebridge-config-ui-x` will be documented in this file.
 ### UI Changes
 
 - updates to the `cs.json` language file (#2311) (@DavidHuljak)
+- improved messaging on plugin child bridge modal
 
 ### Other Changes
 

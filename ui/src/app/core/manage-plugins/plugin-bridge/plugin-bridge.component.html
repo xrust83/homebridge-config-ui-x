@@ -31,7 +31,10 @@
     </p>
     @if (configBlocks.length) {
     <div>
-      <p>{{ 'child_bridge.bridges_paired' | translate }}</p>
+      <ul>
+        <li>{{ 'child_bridge.bridges_paired' | translate }}</li>
+        <li>{{ 'child_bridge.bridges_paired_2' | translate }}</li>
+      </ul>
       <p>{{ 'child_bridge.select_type' | translate }}:</p>
       @if (configBlocks.length) {
       <ul class="list-group list-group-box my-2">
