@@ -417,6 +417,17 @@ export class PluginsService {
       pluginAction.version = await this.getNpmModuleLatestVersion(pluginAction.name)
     }
 
+    const userPlatform = platform()
+
+    // disallow updates of homebridge ui on Raspberry Pi 1 / Zero to versions 5 and above
+    if (pluginAction.name === this.configService.name && userPlatform === 'linux') {
+      const uname = execSync('uname -m').toString().trim()
+      const majorVersion = +pluginAction.version.split('.')[0]
+      if (uname === 'armv6l' && majorVersion > 4) {
+        throw new Error('Versions 5 and above of the Homebridge UI are not compatible with your armv6l device.')
+      }
+    }
+
     // set default install path
     let installPath = (this.configService.customPluginPath)
       ? this.configService.customPluginPath
@@ -480,7 +491,7 @@ export class PluginsService {
     installPath = resolve(installPath, '../')
 
     // set global flag
-    if (!this.configService.customPluginPath || platform() === 'win32' || existingPlugin?.globalInstall === true) {
+    if (!this.configService.customPluginPath || userPlatform === 'win32' || existingPlugin?.globalInstall === true) {
       installOptions.push('-g')
     }
 

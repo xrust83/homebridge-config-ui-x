@@ -11,6 +11,7 @@ All notable changes to `homebridge-config-ui-x` will be documented in this file.
 ### Other Changes
 
 - auto-fix ui theme setting property if existing value is not valid
+- do not allow `armv6l` users to update to UI `v5`
 
 ### Homebridge Dependencies
 
