@@ -20,7 +20,7 @@
     } @if (!loading) {
     <div class="w-100">
       <i class="fas fa-fw fa-trash primary-text mb-4" style="font-size: 75px"></i>
-      <p>{{ 'plugins.uninstall_remove_confirmation' | translate: { pluginName: plugin.name } }}</p>
+      <p [innerHTML]="'plugins.uninstall_remove_confirmation' | translate: { pluginName: plugin.name }"></p>
       <div class="text-center">
         @if (pluginAlias && pluginType) {
         <p class="d-inline-block text-left">

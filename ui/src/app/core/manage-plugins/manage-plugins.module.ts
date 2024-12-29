@@ -20,6 +20,7 @@ import { PluginCompatibilityComponent } from '@/app/core/manage-plugins/plugin-c
 import { PluginConfigComponent } from '@/app/core/manage-plugins/plugin-config/plugin-config.component'
 import { PluginLogsComponent } from '@/app/core/manage-plugins/plugin-logs/plugin-logs.component'
 import { ResetAccessoriesComponent } from '@/app/core/manage-plugins/reset-accessories/reset-accessories.component'
+import { SwitchToScopedComponent } from '@/app/core/manage-plugins/switch-to-scoped/switch-to-scoped.component'
 import { UninstallPluginComponent } from '@/app/core/manage-plugins/uninstall-plugin/uninstall-plugin.component'
 
 @NgModule({
@@ -46,6 +47,7 @@ import { UninstallPluginComponent } from '@/app/core/manage-plugins/uninstall-pl
     ResetAccessoriesComponent,
     DisablePluginComponent,
     HbUpdateConfirmComponent,
+    SwitchToScopedComponent,
   ],
   providers: [
     ManagePluginsService,

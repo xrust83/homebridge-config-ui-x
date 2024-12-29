@@ -104,22 +104,27 @@ export class PluginsComponent implements OnInit, OnDestroy {
           return a.updateAvailable ? -1 : 1
         }
 
-        // Priority 2: disabled (false first, sorted alphabetically by 'name')
+        // Priority 2: newHbScope (true first, sorted alphabetically by 'name')
+        if (a.newHbScope && !b.newHbScope) {
+          return -1
+        }
+
+        // Priority 3: disabled (false first, sorted alphabetically by 'name')
         if (a.disabled !== b.disabled) {
           return a.disabled ? 1 : -1
         }
 
-        // Priority 3: isConfigured (false first, sorted alphabetically by 'name')
+        // Priority 4: isConfigured (false first, sorted alphabetically by 'name')
         if (a.isConfigured !== b.isConfigured) {
           return a.isConfigured ? 1 : -1
         }
 
-        // Priority 4: hasChildBridgesUnpaired (true first, sorted alphabetically by 'name')
+        // Priority 5: hasChildBridgesUnpaired (true first, sorted alphabetically by 'name')
         if (a.hasChildBridgesUnpaired !== b.hasChildBridgesUnpaired) {
           return a.hasChildBridgesUnpaired ? -1 : 1
         }
 
-        // Priority 5: hasChildBridges (false first, sorted alphabetically by 'name', only when recommendChildBridges is true)
+        // Priority 6: hasChildBridges (false first, sorted alphabetically by 'name', only when recommendChildBridges is true)
         if (a.hasChildBridges !== b.hasChildBridges && this.$settings.env.recommendChildBridges) {
           return a.hasChildBridges ? 1 : -1
         }
@@ -172,7 +177,28 @@ export class PluginsComponent implements OnInit, OnDestroy {
 
     this.$api.get(`/plugins/search/${encodeURIComponent(this.form.value.query)}`).subscribe({
       next: (data) => {
-        this.installedPlugins = data.filter(x => x.name !== 'homebridge-config-ui-x')
+        // Some filtering in regard to the changeover to scoped plugins
+        // A plugin may have two versions, like homebridge-foo and @homebridge-plugins/homebridge-foo
+        // If the user does not have either installed, or has the scoped version installed, then hide the unscoped version
+        // If the user has the unscoped version installed, but not the scoped version, then hide the scoped version
+        const hiddenPlugins = new Set<string>()
+        this.installedPlugins = data
+          .reduce((acc: any, x: any) => {
+            if (x.name === 'homebridge-config-ui-x' || hiddenPlugins.has(x.name)) {
+              return acc
+            }
+            if (x.newHbScope) {
+              const y = x.newHbScope.to
+              const yExists = data.some((plugin: any) => plugin.name === y)
+              if (x.installedVersion || !yExists) {
+                hiddenPlugins.add(y)
+                acc.push(x)
+              }
+            } else {
+              acc.push(x)
+            }
+            return acc
+          }, [])
         this.appendMetaInfo()
         this.loading = false
       },
