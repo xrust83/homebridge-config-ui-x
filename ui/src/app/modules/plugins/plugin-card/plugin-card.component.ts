@@ -103,30 +103,6 @@ export class PluginCardComponent implements OnInit {
     ref.componentInstance.plugin = plugin
   }
 
-  openVerifiedModal() {
-    const ref = this.$modal.open(InformationComponent, {
-      size: 'lg',
-      backdrop: 'static',
-    })
-    if (this.plugin.verifiedPlugin || this.plugin.verifiedPlusPlugin) {
-      ref.componentInstance.title = this.$translate.instant('plugins.manage.verified_title')
-      ref.componentInstance.subtitle = this.$translate.instant('plugins.manage.verified_subtitle', {
-        pluginName: this.plugin.displayName || this.plugin.name,
-      })
-      ref.componentInstance.message = this.$translate.instant('plugins.manage.verified_message')
-      ref.componentInstance.faIconClass = 'fa-shield-alt green-text'
-    } else {
-      ref.componentInstance.title = this.$translate.instant('plugins.manage.unverified_title')
-      ref.componentInstance.subtitle = this.$translate.instant('plugins.manage.unverified_subtitle', {
-        pluginName: this.plugin.displayName || this.plugin.name,
-      })
-      ref.componentInstance.message = this.$translate.instant('plugins.manage.unverified_message')
-      ref.componentInstance.faIconClass = 'fa-shield-alt grey-text'
-    }
-    ref.componentInstance.ctaButtonLabel = this.$translate.instant('form.button_more_info')
-    ref.componentInstance.ctaButtonLink = 'https://github.com/homebridge/homebridge/wiki/verified-Plugins'
-  }
-
   pluginInfoModal(plugin: any) {
     const ref = this.$modal.open(PluginInfoComponent, {
       size: 'lg',

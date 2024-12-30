@@ -13,10 +13,42 @@
   </div>
   <div class="modal-body w-100 text-center">
     <img [src]="plugin.icon" (error)="handleIconError()" alt="Plugin Icon" class="mb-3 plugin-icon" />
-    <h4>{{ plugin.displayName || plugin.name }}</h4>
+    <h4><code>{{ plugin.name }}</code></h4>
     <p class="my-3">{{ plugin.description }}</p>
-    <p class="m-0 grey-text">{{ plugin.name }}</p>
-    <p class="m-0 grey-text">&#64;{{ plugin.author }}</p>
+    <p class="grey-text mb-4">&#64;{{ plugin.author }}</p>
+    <i
+      class="fas fa-fw fa-shield-alt mb-3"
+      style="font-size: 48px"
+      [ngClass]="{ 'orange-text': !plugin.verifiedPlugin && !plugin.verifiedPlusPlugin, 'grey-text': plugin.verifiedPlugin || plugin.verifiedPlusPlugin }"
+      [ngStyle]="{ 'opacity': !plugin.verifiedPlugin && !plugin.verifiedPlusPlugin ? 1 : 0.25 }"
+    ></i>
+    <i
+      class="fas fa-fw fa-shield-alt mb-3"
+      style="font-size: 48px"
+      [ngClass]="{ 'green-text': !plugin.isHbScoped && (plugin.verifiedPlugin || plugin.verifiedPlusPlugin), 'grey-text': plugin.isHbScoped || (!plugin.verifiedPlugin && !plugin.verifiedPlusPlugin) }"
+      [ngStyle]="{ 'opacity': !plugin.isHbScoped && (plugin.verifiedPlugin || plugin.verifiedPlusPlugin) ? 1 : 0.25 }"
+    ></i>
+    <i
+      class="fas fa-fw fa-shield-alt mb-3"
+      style="font-size: 48px"
+      [ngClass]="{ 'blue-text': plugin.isHbScoped, 'grey-text': !plugin.isHbScoped }"
+      [ngStyle]="{ 'opacity': plugin.isHbScoped ? 1 : 0.25 }"
+    ></i>
+    @if (plugin.isHbScoped) {
+    <p class="mb-3">{{ 'plugins.manage.scoped_subtitle' | translate }}</p>
+    <p class="grey-text">{{ 'plugins.manage.scoped_message' | translate }}</p>
+    <p class="grey-text">{{ 'plugins.manage.verified_message' | translate }}</p>
+    } @if (!plugin.isHbScoped && (plugin.verifiedPlugin || plugin.verifiedPlusPlugin)) {
+    <p class="mb-3">{{ 'plugins.manage.verified_subtitle' | translate }}</p>
+    <p class="grey-text">{{ 'plugins.manage.verified_message' | translate }}</p>
+    } @if (!plugin.verifiedPlugin && !plugin.verifiedPlusPlugin) {
+    <p class="mb-3">{{ 'plugins.manage.unverified_subtitle' | translate }}</p>
+    <p class="grey-text">{{ 'plugins.manage.unverified_message' | translate }}</p>
+    }
+    <p
+      class="grey-text"
+      [innerHTML]="'plugins.manage.more_info' | translate: { scoped: linkScoped, verified: linkVerified }"
+    ></p>
   </div>
   <div class="modal-footer justify-content-between">
     <div class="text-left">

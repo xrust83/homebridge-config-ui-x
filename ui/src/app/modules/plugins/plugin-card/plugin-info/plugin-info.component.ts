@@ -1,3 +1,4 @@
+import { NgClass, NgStyle } from '@angular/common'
 import { Component, inject, Input, OnInit } from '@angular/core'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
 import { TranslatePipe } from '@ngx-translate/core'
@@ -6,7 +7,7 @@ import { TranslatePipe } from '@ngx-translate/core'
   templateUrl: './plugin-info.component.html',
   styleUrls: ['./plugin-info.component.scss'],
   standalone: true,
-  imports: [TranslatePipe],
+  imports: [TranslatePipe, NgClass, NgStyle],
 })
 export class PluginInfoComponent implements OnInit {
   $activeModal = inject(NgbActiveModal)
@@ -14,6 +15,8 @@ export class PluginInfoComponent implements OnInit {
   @Input() plugin: any
 
   public defaultIcon = 'assets/hb-icon.png'
+  public linkScoped = '<a href="https://github.com/homebridge/plugins/wiki/Scoped-Plugins" target="_blank">scoped <i class="fa fa/fw fas fa-fw fa-external-link-alt"></i></a>'
+  public linkVerified = '<a href="https://github.com/homebridge/plugins/wiki/Verified-Plugins" target="_blank">verified <i class="fa fa/fw fas fa-fw fa-external-link-alt"></i></a>'
 
   constructor() {}
 
