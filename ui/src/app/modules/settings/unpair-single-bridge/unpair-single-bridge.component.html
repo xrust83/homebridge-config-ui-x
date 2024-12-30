@@ -32,7 +32,7 @@
         @for (item of pairings; track item) {
         <li class="list-group-item d-flex justify-content-between align-items-center">
           <span>
-            {{ item.displayName }} ({{ item._main ? 'Homebridge' : (item._category | titlecase) }})
+            {{ item.name }}
             <br />
             <small class="grey-text">
               <i
@@ -42,8 +42,8 @@
                   'red-text': !item._isPaired
                 }"
               ></i>
-              {{ (item._isPaired ? 'status.widget.qr_paired' : 'status.widget.qr_unpaired') | translate }} &middot; {{
-              item._username }}
+              {{ (item._isPaired ? 'status.widget.qr_paired' : 'status.widget.qr_unpaired') | translate }} &middot;
+              <code>{{item._username }}</code> &middot; {{ item._main ? 'Homebridge' : (item._category | titlecase) }}
             </small>
           </span>
           <button

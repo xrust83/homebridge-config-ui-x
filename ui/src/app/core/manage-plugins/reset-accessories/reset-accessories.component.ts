@@ -91,8 +91,8 @@ export class ResetAccessoriesComponent implements OnInit {
       })
 
       ref.componentInstance.bridges = this.deleted.map((id) => {
-        const { _username: username, displayName } = this.pairings.find(pairing => pairing._id === id)
-        return { displayName, username }
+        const { name, _username: username } = this.pairings.find(pairing => pairing._id === id)
+        return { name, username }
       })
     }
   }

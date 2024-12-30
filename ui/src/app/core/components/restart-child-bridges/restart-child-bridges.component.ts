@@ -17,7 +17,7 @@ export class RestartChildBridgesComponent {
   private $toastr = inject(ToastrService)
   private $translate = inject(TranslateService)
 
-  @Input() bridges: { username: string, displayName: string }[] = []
+  @Input() bridges: { username: string, name: string }[] = []
 
   constructor() {}
 

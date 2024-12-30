@@ -65,7 +65,7 @@ export class PluginBridgeComponent implements OnInit {
   public showConfigFields: boolean[] = []
   public saveInProgress = false
   public canShowBridgeDebug = false
-  public deleteBridges: { id: string, blockName: string, bridgeName: string }[] = []
+  public deleteBridges: { id: string, bridgeName: string }[] = []
 
   constructor() {}
 
@@ -106,11 +106,11 @@ export class PluginBridgeComponent implements OnInit {
   async toggleExternalBridge(block: any, enable: boolean, index: number) {
     if (!enable) {
       // Store unpaired child bridge id for deletion, so no bridges are orphaned
-      if (this.originalBridges.some(b => b.username === block._bridge.username)) {
+      const originalBridge = this.originalBridges.find(b => b.username === block._bridge.username)
+      if (originalBridge) {
         this.deleteBridges.push({
           id: block._bridge.username,
-          blockName: block.name,
-          bridgeName: block._bridge.name,
+          bridgeName: block._bridge.name || originalBridge.displayName,
         })
       }
 
@@ -224,15 +224,5 @@ export class PluginBridgeComponent implements OnInit {
 
   toggleConfigFields(index: number) {
     this.showConfigFields[index] = !this.showConfigFields[index]
-  }
-
-  formatName(bridge: { id: string, blockName: string, bridgeName: string }) {
-    if (bridge.blockName && bridge.bridgeName) {
-      return ` (${bridge.blockName} - ${bridge.bridgeName})`
-    } else if (bridge.blockName || bridge.bridgeName) {
-      return ` (${bridge.blockName || bridge.bridgeName})`
-    } else {
-      return ''
-    }
   }
 }

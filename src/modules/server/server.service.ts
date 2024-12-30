@@ -125,16 +125,19 @@ export class ServerService {
     const devices = (await readdir(persistPath))
       .filter(x => x.match(/AccessoryInfo\.([A-F,a-f0-9]+)\.json/))
 
+    const configFile = await this.configEditorService.getConfigFile()
+
     return Promise.all(devices.map(async (x) => {
-      return await this.getDevicePairingById(x.split('.')[1])
+      return await this.getDevicePairingById(x.split('.')[1], configFile)
     }))
   }
 
   /**
    * Return a single device pairing
    * @param deviceId
+   * @param configFile
    */
-  public async getDevicePairingById(deviceId: string) {
+  public async getDevicePairingById(deviceId: string, configFile = null) {
     const persistPath = join(this.configService.storagePath, 'persist')
 
     let device: any
@@ -144,11 +147,23 @@ export class ServerService {
       throw new NotFoundException()
     }
 
+    if (!configFile) {
+      configFile = await this.configEditorService.getConfigFile()
+    }
+
+    const username = deviceId.match(/.{1,2}/g).join(':')
+    const isMain = this.configService.homebridgeConfig.bridge.username.toUpperCase() === username.toUpperCase()
+    const pluginBlock = configFile.accessories
+      .concat(configFile.platforms)
+      .concat([{ _bridge: configFile.bridge }])
+      .find((block: any) => block._bridge?.username === username)
+
     device._id = deviceId
-    device._username = device._id.match(/.{1,2}/g).join(':')
-    device._main = this.configService.homebridgeConfig.bridge.username.toUpperCase() === device._username.toUpperCase()
+    device._username = username
+    device._main = isMain
     device._isPaired = device.pairedClients && Object.keys(device.pairedClients).length > 0
     device._setupCode = this.generateSetupCode(device)
+    device.name = pluginBlock?._bridge.name || pluginBlock?.name || device.displayName
 
     // filter out some properties
     delete device.signSk

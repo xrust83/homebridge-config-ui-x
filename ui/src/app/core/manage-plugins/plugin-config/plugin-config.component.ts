@@ -145,8 +145,8 @@ export class PluginConfigComponent implements OnInit {
             backdrop: 'static',
           })
           ref.componentInstance.bridges = this.childBridges.map(childBridge => ({
-            displayName: childBridge.name,
-            username: childBridge.username.replace(/:/g, ''),
+            name: childBridge.name,
+            username: childBridge.username,
           }))
           return
         }
