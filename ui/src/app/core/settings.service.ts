@@ -42,6 +42,7 @@ interface AppSettingsInterface {
   formAuth: boolean
   theme: string
   lightingMode: 'auto' | 'light' | 'dark'
+  menuMode: 'default' | 'freeze'
   loginWallpaper: string
   serverTimestamp: string
 }
@@ -63,6 +64,7 @@ export class SettingsService {
   public currentLightingMode: 'auto' | 'light' | 'dark'
   public actualLightingMode: 'light' | 'dark'
   public browserLightingMode: 'light' | 'dark'
+  public menuMode: 'default' | 'freeze'
   public loginWallpaper: string
   public serverTimeOffset = 0
   private readonly defaultTheme = 'orange'
@@ -82,10 +84,10 @@ export class SettingsService {
     'brown',
   ]
 
-  // set true if current translation is RLT
+  // Set true if current translation is RLT
   public rtl = false
 
-  // track to see if settings have been loaded
+  // Track to see if settings have been loaded
   private settingsLoadedSubject = new Subject()
   public onSettingsLoaded = this.settingsLoadedSubject.pipe(first())
   public settingsLoaded = false
@@ -102,6 +104,7 @@ export class SettingsService {
     this.loginWallpaper = data.loginWallpaper
     this.setLightingMode(this.lightingMode, 'user')
     this.setTheme(data.theme)
+    this.setMenuMode(data.menuMode)
     this.setTitle(this.env.homebridgeInstanceName)
     this.checkServerTime(data.serverTimestamp)
     this.setUiVersion(data.env.packageVersion)
@@ -133,11 +136,9 @@ export class SettingsService {
     if (!theme || !this.themeList.includes(theme)) {
       theme = this.defaultTheme
 
-      // save the new property to the config file
+      // Save the new property to the config file
       firstValueFrom(this.$api.put('/config-editor/ui', { key: 'theme', value: theme }))
-        .catch((error) => {
-          console.error(error)
-        })
+        .catch(error => console.error(error))
     }
 
     // Grab the body element
@@ -160,6 +161,10 @@ export class SettingsService {
         bodySelector.classList.remove('dark-mode')
       }
     }
+  }
+
+  setMenuMode(value: 'default' | 'freeze') {
+    this.menuMode = value
   }
 
   setTitle(title: string) {

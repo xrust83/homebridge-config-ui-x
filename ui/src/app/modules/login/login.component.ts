@@ -81,7 +81,7 @@ export class LoginComponent implements OnInit {
     this.invalid2faCode = false
     this.inProgress = true
 
-    // grab the values from the native element as they may be "populated" via autofill.
+    // Grab the values from the native element as they may be "populated" via autofill.
     const passwordInputValue = this.passwordInput()?.nativeElement.value
     if (passwordInputValue && passwordInputValue !== this.form.get('password').value) {
       this.form.controls.password.setValue(passwordInputValue)
@@ -99,29 +99,31 @@ export class LoginComponent implements OnInit {
       }
     }
 
-    await this.$auth.login(this.form.getRawValue()).then(() => {
-      this.$router.navigateByUrl(this.targetRoute)
-      window.sessionStorage.removeItem('target_route')
-    }).catch((err) => {
-      if (err.status === 412) {
-        if (!this.form.controls.otp) {
-          this.form.addControl('otp', new FormControl('', [
-            Validators.required,
-            Validators.minLength(6),
-            Validators.maxLength(6),
-          ]))
+    await this.$auth.login(this.form.getRawValue())
+      .then(() => {
+        this.$router.navigateByUrl(this.targetRoute)
+        window.sessionStorage.removeItem('target_route')
+      })
+      .catch((err) => {
+        if (err.status === 412) {
+          if (!this.form.controls.otp) {
+            this.form.addControl('otp', new FormControl('', [
+              Validators.required,
+              Validators.minLength(6),
+              Validators.maxLength(6),
+            ]))
+          } else {
+            this.form.controls.otp.setErrors(['Invalid Code'])
+            this.invalid2faCode = true
+          }
+          this.twoFactorCodeRequired = true
+          setTimeout(() => {
+            document.getElementById('form-ota').focus()
+          }, 100)
         } else {
-          this.form.controls.otp.setErrors(['Invalid Code'])
-          this.invalid2faCode = true
+          this.invalidCredentials = true
         }
-        this.twoFactorCodeRequired = true
-        setTimeout(() => {
-          document.getElementById('form-ota').focus()
-        }, 100)
-      } else {
-        this.invalidCredentials = true
-      }
-    })
+      })
 
     this.inProgress = false
   }

@@ -26,7 +26,7 @@ export class AuthService {
   private logoutTimer: NodeJS.Timeout
 
   constructor() {
-    // load the token (if present) from local storage on page init
+    // Load the token (if present) from local storage on page init
     this.loadToken()
   }
 
@@ -87,7 +87,7 @@ export class AuthService {
       return await firstValueFrom(this.$api.get('/auth/check'))
     } catch (err) {
       if (err.status === 401) {
-        // token is no longer valid, do logout
+        // Token is no longer valid, do logout
         console.error('Current token is not valid')
         this.logout()
       }
@@ -99,7 +99,7 @@ export class AuthService {
     if (!this.$jwtHelper.isTokenExpired(this.token, this.$settings.serverTimeOffset)) {
       const expires = dayjs(this.$jwtHelper.getTokenExpirationDate(this.token))
       const timeout = expires.diff(dayjs().add(this.$settings.serverTimeOffset, 's'), 'millisecond')
-      // setTimeout only accepts a 32bit integer, if the number is larger than this, do not time out
+      // SetTimeout only accepts a 32bit integer, if the number is larger than this, do not time out
       if (timeout <= 2147483647) {
         this.logoutTimer = setTimeout(async () => {
           if (this.$settings.formAuth === false) {

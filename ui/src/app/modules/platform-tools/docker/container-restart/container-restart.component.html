@@ -19,11 +19,9 @@
       </div>
     </div>
     } @if (timeout) {
-    <div>
-      <div class="alert alert-warning my-4">
-        <p>{{ 'platform.docker.server_long_time' | translate }}</p>
-        <p class="grey-text mb-0" [innerHTML]="'platform.docker.run_with_restart' | translate"></p>
-      </div>
+    <div class="alert alert-warning my-4">
+      <p>{{ 'platform.docker.server_long_time' | translate }}</p>
+      <p class="grey-text mb-0" [innerHTML]="'platform.docker.run_with_restart' | translate: { command }"></p>
     </div>
     }
   </div>

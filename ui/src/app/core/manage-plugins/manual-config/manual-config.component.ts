@@ -145,7 +145,7 @@ export class ManualConfigComponent implements OnInit {
       let currentBlockString: string = this.monacoEditor.getModel().getValue().trim()
       let currentBlockNew: any
 
-      // fix the object if the user has pasted an example that did not include the opening and closing brackets
+      // Fix the object if the user has pasted an example that did not include the opening and closing brackets
       if (currentBlockString.charAt(0) === '"' && currentBlockString.charAt(currentBlockString.length - 1) === ']') {
         currentBlockString = `{${currentBlockString}}`
       }
@@ -163,7 +163,7 @@ export class ManualConfigComponent implements OnInit {
         return false
       }
 
-      // fix the object if the user pasted an example that included the "accessories" or "platforms" array
+      // Fix the object if the user pasted an example that included the "accessories" or "platforms" array
       if (
         !currentBlockNew[this.pluginType]
         && Array.isArray(currentBlockNew[this.arrayKey])
@@ -173,7 +173,7 @@ export class ManualConfigComponent implements OnInit {
         currentBlockNew = currentBlockNew[this.arrayKey][0]
       }
 
-      // accessory types need a valid name
+      // Accessory types need a valid name
       if (this.pluginType === 'accessory' && (!currentBlockNew.name || typeof currentBlockNew.name !== 'string')) {
         this.$toastr.error(this.$translate.instant('plugins.config.name_property'), this.$translate.instant('toast.title_error'))
         currentBlockNew.name = ''
@@ -185,7 +185,7 @@ export class ManualConfigComponent implements OnInit {
       Object.keys(currentBlock).forEach(x => delete currentBlock[x])
       Object.assign(currentBlock, currentBlockNew)
 
-      // ensure the plugin alias is set
+      // Ensure the plugin alias is set
       currentBlock[this.pluginType] = this.pluginAlias
     }
 

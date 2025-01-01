@@ -24,7 +24,7 @@ export class TelevisionComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    // build inputService list
+    // Build inputService list
     for (const [, inputService] of Object.entries(this.service.linkedServices)) {
       this.channelList[inputService.values.Identifier] = inputService.values.ConfiguredName
     }

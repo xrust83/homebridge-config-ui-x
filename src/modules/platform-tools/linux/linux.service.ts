@@ -20,7 +20,7 @@ export class LinuxService {
       ? this.configService.ui.linux.restart
       : 'sudo -n shutdown -r now']
 
-    this.logger.warn(`Rebooting linux server with command: "${cmd.join(' ')}"`)
+    this.logger.warn(`Rebooting linux server with command ${cmd.join(' ')}.`)
 
     setTimeout(() => {
       exec(cmd.join(' '), (err) => {
@@ -41,7 +41,7 @@ export class LinuxService {
       ? this.configService.ui.linux.shutdown
       : 'sudo -n shutdown -h now']
 
-    this.logger.warn(`Shutting down linux server with command: "${cmd.join(' ')}"`)
+    this.logger.warn(`Shutting down linux server with command ${cmd.join(' ')}.`)
 
     setTimeout(() => {
       exec(cmd.join(' '), (err) => {

@@ -34,7 +34,7 @@ export class AccessoriesService {
    */
   public async connect(client: any) {
     if (!this.configService.homebridgeInsecureMode) {
-      this.logger.error('Homebridge must be running in insecure mode to control accessories')
+      this.logger.error('Homebridge must be running in insecure mode to control accessories.')
       return
     }
 
@@ -55,10 +55,10 @@ export class AccessoriesService {
       this.accessoriesCache.set('services', services)
     }
 
-    // initial load
+    // Initial load
     await loadAllAccessories(false)
 
-    // handling incoming requests
+    // Handling incoming requests
     const requestHandler = async (msg?: any) => {
       if (msg.set) {
         const service: ServiceType = services.find(x => x.uniqueId === msg.set.uniqueId)
@@ -66,7 +66,7 @@ export class AccessoriesService {
           try {
             await service.setCharacteristic(msg.set.iid, msg.set.value)
             services = await this.loadAccessories()
-            // do a refresh to check if any accessories changed after this action
+            // Do a refresh to check if any accessories changed after this action
             setTimeout(() => {
               this.refreshCharacteristics(services)
             }, 1500)
@@ -91,12 +91,12 @@ export class AccessoriesService {
     }
     this.hapClient.on('instance-discovered', instanceUpdateHandler)
 
-    // load a second time in case anything was missed
+    // Load a second time in case anything was missed
     const secondaryLoadTimeout = setTimeout(async () => {
       await loadAllAccessories(true)
     }, 3000)
 
-    // clean up on disconnect
+    // Clean up on disconnect
     const onEnd = () => {
       clearTimeout(secondaryLoadTimeout)
       client.removeAllListeners('end')
@@ -110,7 +110,7 @@ export class AccessoriesService {
     client.on('disconnect', onEnd.bind(this))
     client.on('end', onEnd.bind(this))
 
-    // send a refresh instances request
+    // Send a refresh instances request
     this.hapClient.refreshInstances()
   }
 
@@ -130,16 +130,17 @@ export class AccessoriesService {
       throw new BadRequestException('Homebridge must be running in insecure mode to access accessories.')
     }
 
-    return this.hapClient.getAllServices().then((services) => {
-      return services
-    }).catch((e) => {
-      if (e.response?.status === 401) {
-        this.logger.warn('Homebridge must be running in insecure mode to view and control accessories from this plugin.')
-      } else {
-        this.logger.error(`Failed load accessories from Homebridge: ${e.message}`)
-      }
-      return []
-    })
+    return this.hapClient
+      .getAllServices()
+      .then(services => services)
+      .catch((e) => {
+        if (e.response?.status === 401) {
+          this.logger.warn('Homebridge must be running in insecure mode to view and control accessories from this plugin.')
+        } else {
+          this.logger.error(`Failed load accessories from Homebridge as ${e.message}.`)
+        }
+        return []
+      })
   }
 
   /**
@@ -183,7 +184,7 @@ export class AccessoriesService {
       throw new BadRequestException(`Invalid characteristicType. Valid types are: ${types}.`)
     }
 
-    // integers
+    // Integers
     if (['uint8', 'uint16', 'uint32', 'uint64'].includes(characteristic.format)) {
       value = Number.parseInt(value as string, 10)
       if (characteristic.minValue !== undefined && value < characteristic.minValue) {
@@ -194,7 +195,7 @@ export class AccessoriesService {
       }
     }
 
-    // floats
+    // Floats
     if (characteristic.format === 'float') {
       value = Number.parseFloat(value as string)
       if (characteristic.minValue !== undefined && value < characteristic.minValue) {
@@ -205,7 +206,7 @@ export class AccessoriesService {
       }
     }
 
-    // booleans
+    // Booleans
     if (characteristic.format === 'bool') {
       if (typeof value === 'string') {
         if (['true', '1'].includes(value.toLowerCase())) {
@@ -272,7 +273,7 @@ export class AccessoriesService {
 
     accessoryLayout[user] = layout
     writeJsonSync(this.configService.accessoryLayoutPath, accessoryLayout)
-    this.logger.log(`[${user}] Accessory layout changes saved.`)
+    this.logger.log(`Accessory layout changes saved for ${user}.`)
     return layout
   }
 

@@ -60,7 +60,6 @@ export class SystemInfoWidgetComponent implements OnInit {
     ref.componentInstance.message = this.$translate.instant('status.widget.info.glibc_message')
     ref.componentInstance.ctaButtonLabel = this.$translate.instant('form.button_more_info')
     ref.componentInstance.faIconClass = 'fab fa-fw fa-node-js primary-text'
-
     ref.componentInstance.ctaButtonLink = 'https://github.com/homebridge/homebridge-config-ui-x/wiki/Troubleshooting/#error---update-node---your-version-of-linux-does-not-meet-the-glibc-version'
   }
 
@@ -73,7 +72,6 @@ export class SystemInfoWidgetComponent implements OnInit {
     ref.componentInstance.message = this.$translate.instant('status.widget.info.servicemode_message')
     ref.componentInstance.ctaButtonLabel = this.$translate.instant('form.button_more_info')
     ref.componentInstance.faIconClass = 'fas fa-fw fa-circle-exclamation primary-text'
-
     ref.componentInstance.ctaButtonLink = 'https://github.com/homebridge/homebridge-config-ui-x/wiki/How-To-Swap-From-Standalone-Mode-to-Service-Mode'
   }
 
@@ -83,7 +81,8 @@ export class SystemInfoWidgetComponent implements OnInit {
       backdrop: 'static',
     })
 
-    ref.componentInstance.title = `${this.$translate.instant('status.widget.info.node_update_title')} - ${this.nodejsInfo.latestVersion}`
+    ref.componentInstance.title = `${this.$translate.instant('status.widget.info.node_update_title')}`
+    ref.componentInstance.subtitle = `${this.serverInfo.nodeVersion} &rarr; ${this.nodejsInfo.latestVersion}`
     ref.componentInstance.message = this.$translate.instant('status.widget.info.node_update_message')
     ref.componentInstance.ctaButtonLabel = this.$translate.instant('form.button_more_info')
     ref.componentInstance.faIconClass = 'fab fa-fw fa-node-js primary-text'

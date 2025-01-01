@@ -82,7 +82,7 @@ async function bootstrap(): Promise<NestFastifyApplication> {
   const configService: ConfigService = app.get(ConfigService)
   const logger: Logger = app.get(Logger)
 
-  // serve index.html without a cache
+  // Serve index.html without a cache
   app.getHttpAdapter().get('/', async (req: FastifyRequest, res: FastifyReply) => {
     res.type('text/html')
     res.header('Cache-Control', 'no-cache, no-store, must-revalidate')
@@ -91,7 +91,7 @@ async function bootstrap(): Promise<NestFastifyApplication> {
     res.send(await readFile(resolve(process.env.UIX_BASE_PATH, 'public/index.html')))
   })
 
-  // serve static assets with a long cache timeout
+  // Serve static assets with a long cache timeout
   app.useStaticAssets({
     root: resolve(process.env.UIX_BASE_PATH, 'public'),
     setHeaders(res) {
@@ -99,22 +99,22 @@ async function bootstrap(): Promise<NestFastifyApplication> {
     },
   })
 
-  // set prefix
+  // Set prefix
   app.setGlobalPrefix('/api')
 
-  // setup cors
+  // Setup cors
   app.enableCors({
     origin: ['http://localhost:8080', 'http://localhost:4200'],
   })
 
-  // validation pipes
+  // Validation pipes
   // https://github.com/typestack/class-validator
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true,
     skipMissingProperties: true,
   }))
 
-  // setup swagger api doc generator
+  // Setup swagger api doc generator
   const options = new DocumentBuilder()
     .setTitle('Homebridge UI API Reference')
     .setVersion(configService.package.version)
@@ -132,10 +132,10 @@ async function bootstrap(): Promise<NestFastifyApplication> {
   const document = SwaggerModule.createDocument(app, options)
   SwaggerModule.setup('swagger', app, document)
 
-  // serve spa on all 404
+  // Serve spa on all 404
   app.useGlobalFilters(new SpaFilter())
 
-  logger.warn(`Homebridge UI v${configService.package.version} is listening on ${startupConfig.host} port ${configService.ui.port}`)
+  logger.warn(`Homebridge UI v${configService.package.version} is listening on ${startupConfig.host} port ${configService.ui.port}.`)
   await app.listen(configService.ui.port, startupConfig.host)
 
   return app

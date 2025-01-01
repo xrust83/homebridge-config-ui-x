@@ -43,18 +43,16 @@
     </div>
 
     @if (targetBrightness) {
-    <div>
-      <h5 class="mb-0">{{ 'accessories.control.brightness' | translate }}</h5>
-      <p>{{ targetBrightness.value }}%</p>
-      <nouislider
-        [min]="targetBrightness.min"
-        [max]="targetBrightness.max"
-        [step]="targetBrightness.step"
-        [(ngModel)]="targetBrightness.value"
-        (ngModelChange)="onBrightnessStateChange()"
-      >
-      </nouislider>
-    </div>
+    <h5 class="mb-0">{{ 'accessories.control.brightness' | translate }}</h5>
+    <p>{{ targetBrightness.value }}%</p>
+    <nouislider
+      [min]="targetBrightness.min"
+      [max]="targetBrightness.max"
+      [step]="targetBrightness.step"
+      [(ngModel)]="targetBrightness.value"
+      (ngModelChange)="onBrightnessStateChange()"
+    >
+    </nouislider>
     }
   </div>
   <div class="modal-footer"></div>

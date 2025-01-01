@@ -1,5 +1,5 @@
 import { Component, ElementRef, inject, Input, OnDestroy, OnInit, viewChild } from '@angular/core'
-import { NgbActiveModal, NgbModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { TranslatePipe, TranslateService } from '@ngx-translate/core'
 import { ToastrService } from 'ngx-toastr'
 import { firstValueFrom, Subject } from 'rxjs'
@@ -8,13 +8,12 @@ import { debounceTime, skip } from 'rxjs/operators'
 import { ApiService } from '@/app/core/api.service'
 import { RestartChildBridgesComponent } from '@/app/core/components/restart-child-bridges/restart-child-bridges.component'
 import { RestartHomebridgeComponent } from '@/app/core/components/restart-homebridge/restart-homebridge.component'
+import { SchemaFormComponent } from '@/app/core/components/schema-form/schema-form.component'
 import { ManagePluginsService } from '@/app/core/manage-plugins/manage-plugins.service'
 import { PluginSchema } from '@/app/core/manage-plugins/plugin-config/plugin-config.component'
 import { SettingsService } from '@/app/core/settings.service'
 import { IoNamespace, WsService } from '@/app/core/ws.service'
 import { environment } from '@/environments/environment'
-
-import { SchemaFormComponent } from '../../components/schema-form/schema-form.component'
 
 @Component({
   templateUrl: './custom-plugins.component.html',
@@ -22,7 +21,6 @@ import { SchemaFormComponent } from '../../components/schema-form/schema-form.co
   standalone: true,
   imports: [
     SchemaFormComponent,
-    NgbTooltip,
     TranslatePipe,
   ],
 })
@@ -46,6 +44,7 @@ export class CustomPluginsComponent implements OnInit, OnDestroy {
   public loading = true
   public saveInProgress = false
   public pluginSpinner = false
+  public saveButtonDisabled = false
   public uiLoaded = false
   public showSchemaForm = false
   public schemaFormUpdatedSubject = new Subject()
@@ -78,7 +77,7 @@ export class CustomPluginsComponent implements OnInit, OnDestroy {
       this.isFirstSave = true
     }
 
-    // start accessory subscription
+    // Start accessory subscription
     if (this.io.connected) {
       this.io.socket.emit('start', this.plugin.name)
       setTimeout(() => {
@@ -217,6 +216,12 @@ export class CustomPluginsComponent implements OnInit, OnDestroy {
         case 'spinner.hide':
           this.pluginSpinner = false
           break
+        case 'button.save.disabled':
+          this.saveButtonDisabled = true
+          break
+        case 'button.save.enabled':
+          this.saveButtonDisabled = false
+          break
         default:
           console.log(e) // eslint-disable-line no-console
       }
@@ -236,16 +241,16 @@ export class CustomPluginsComponent implements OnInit, OnDestroy {
   }
 
   handleUpdateConfig(event: MessageEvent, pluginConfig: Array<any>) {
-    // refresh the schema form
+    // Refresh the schema form
     this.schemaFormRefreshSubject.next(undefined)
 
-    // ensure the update contains an array
+    // Ensure the update contains an array
     if (!Array.isArray(pluginConfig)) {
       this.$toastr.error(this.$translate.instant('plugins.config.must_be_array'), this.$translate.instant('toast.title_error'))
       return this.requestResponse(event, { message: this.$translate.instant('plugins.config.must_be_array') }, false)
     }
 
-    // validate each block in the array
+    // Validate each block in the array
     for (const block of pluginConfig) {
       if (typeof block !== 'object' || Array.isArray(block)) {
         this.$toastr.error(this.$translate.instant('plugins.config.must_be_array_objects'), this.$translate.instant('toast.title_error'))
@@ -267,17 +272,17 @@ export class CustomPluginsComponent implements OnInit, OnDestroy {
   }
 
   async injectDefaultStyles(event) {
-    // fetch current theme
+    // Fetch current theme
     const currentTheme = Array.from(window.document.body.classList).find(x => x.startsWith('config-ui-x-'))
     const darkMode = window.document.body.classList.contains('dark-mode')
 
-    // set body class
+    // Set body class
     event.source.postMessage({ action: 'body-class', class: currentTheme }, event.origin)
     if (darkMode) {
       event.source.postMessage({ action: 'body-class', class: 'dark-mode' }, event.origin)
     }
 
-    // use parent's linked style sheets
+    // Use parent's linked style sheets
     const externalCss = Array.from(document.querySelectorAll('link'))
     for (const css of externalCss) {
       if (css.getAttribute('rel') === 'stylesheet') {
@@ -287,13 +292,13 @@ export class CustomPluginsComponent implements OnInit, OnDestroy {
       }
     }
 
-    // use parent's inline css
+    // Use parent's inline css
     const inlineCss = Array.from(document.querySelectorAll('style'))
     for (const css of inlineCss) {
       event.source.postMessage({ action: 'inline-style', style: css.innerHTML }, event.origin)
     }
 
-    // add custom css
+    // Add custom css
     const customStyles = `
       body {
         height: unset !important;
@@ -363,7 +368,7 @@ export class CustomPluginsComponent implements OnInit, OnDestroy {
    * Create a new other-form
    */
   async formCreate(formId: string, schema, data, submitButton?: string, cancelButton?: string) {
-    // need to clear out existing forms
+    // Need to clear out existing forms
     await this.formEnd()
 
     this.formId = formId
@@ -489,11 +494,6 @@ export class CustomPluginsComponent implements OnInit, OnDestroy {
       this.$toastr.error(error.message, this.$translate.instant('toast.title_error'))
       this.childBridges = []
     }
-  }
-
-  deletePluginConfig() {
-    this.updateConfigBlocks([])
-    this.savePluginConfig(true)
   }
 
   ngOnDestroy() {

@@ -75,6 +75,7 @@ export class HomebridgeStatusWidgetComponent implements OnInit {
     try {
       const response = await firstValueFrom(this.io.request('homebridge-version-check'))
       this.homebridgePkg = response
+      this.homebridgePkg.displayName = 'Homebridge'
       this.$settings.env.homebridgeVersion = response.installedVersion
     } catch (error) {
       console.error(error)

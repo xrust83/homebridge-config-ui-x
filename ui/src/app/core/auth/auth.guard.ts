@@ -19,7 +19,7 @@ export class AuthGuard implements CanActivate {
     _next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot,
   ): Promise<boolean> {
-    // ensure app settings are loaded
+    // Ensure app settings are loaded
     if (!this.$settings.settingsLoaded) {
       await firstValueFrom(this.$settings.onSettingsLoaded)
     }
@@ -27,16 +27,16 @@ export class AuthGuard implements CanActivate {
     if (this.$auth.isLoggedIn()) {
       return true
     } else {
-      // if using not using auth, get a token
+      // If using not using auth, get a token
       if (this.$settings.formAuth === false) {
         await this.$auth.noauth()
         return true
       }
 
-      // store desired route in session storage
+      // Store desired route in session storage
       window.sessionStorage.setItem('target_route', state.url)
 
-      // redirect to login page
+      // Redirect to login page
       this.$router.navigate(['login'])
 
       return false

@@ -15,14 +15,14 @@ export class LinuxController {
   ) {}
 
   @UseGuards(AdminGuard)
-  @ApiOperation({ summary: 'Restart / reboot the host server.' })
+  @ApiOperation({ summary: 'Restart the host server.' })
   @Put('restart-host')
   restartHost() {
     return this.linuxServer.restartHost()
   }
 
   @UseGuards(AdminGuard)
-  @ApiOperation({ summary: 'Shutdown / power off the host server.' })
+  @ApiOperation({ summary: 'Shutdown the host server.' })
   @Put('shutdown-host')
   shutdownHost() {
     return this.linuxServer.shutdownHost()

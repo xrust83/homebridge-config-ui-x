@@ -79,7 +79,7 @@ export class NetworkWidgetComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.io = this.$ws.getExistingNamespace('status')
-    // lookup the chart color based on the current theme
+    // Lookup the chart color based on the current theme
     const userColor = getComputedStyle(this.widgetBackground().nativeElement).backgroundColor
     if (userColor) {
       this.lineChartOptions.elements.line.backgroundColor = userColor
@@ -126,7 +126,7 @@ export class NetworkWidgetComponent implements OnInit, OnDestroy {
       this.receivedPerSec = (data.net.rx_sec / 1024 / 1024) * 8
       this.sentPerSec = (data.net.tx_sec / 1024 / 1024) * 8
 
-      // the chart looks strange if the data rate is < 1.
+      // The chart looks strange if the data rate is < 1.
       if (data.point < 1) {
         data.point = 0
       }

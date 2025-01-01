@@ -31,14 +31,14 @@ export class ConfigEditorController {
   ) {}
 
   @UseGuards(AdminGuard)
-  @ApiOperation({ summary: 'Return the current Homebridge config.json file.' })
+  @ApiOperation({ summary: 'Return the current Homebridge `config.json` file.' })
   @Get()
   getConfig() {
     return this.configEditorService.getConfigFile()
   }
 
   @UseGuards(AdminGuard)
-  @ApiOperation({ summary: 'Update the Homebridge config.json file.' })
+  @ApiOperation({ summary: 'Update the Homebridge `config.json` file.' })
   @ApiBody({ description: 'Homebridge config.json', type: 'json', isArray: false })
   @Post()
   updateConfig(@Body() body) {
@@ -68,7 +68,7 @@ export class ConfigEditorController {
 
   @UseGuards(AdminGuard)
   @ApiOperation({
-    summary: 'Mark the plugin as disabled.',
+    summary: 'Mark a plugin as disabled.',
   })
   @ApiParam({ name: 'pluginName', type: 'string' })
   @Put('plugin/:pluginName/disable')
@@ -78,7 +78,7 @@ export class ConfigEditorController {
 
   @UseGuards(AdminGuard)
   @ApiOperation({
-    summary: 'Mark the plugin as enabled.',
+    summary: 'Mark a plugin as enabled.',
   })
   @ApiParam({ name: 'pluginName', type: 'string' })
   @Put('plugin/:pluginName/enable')
@@ -94,14 +94,14 @@ export class ConfigEditorController {
   }
 
   @UseGuards(AdminGuard)
-  @ApiOperation({ summary: 'List the available Homebridge config.json backups.' })
+  @ApiOperation({ summary: 'List the available Homebridge `config.json` backups.' })
   @Get('/backups')
   listConfigBackups() {
     return this.configEditorService.listConfigBackups()
   }
 
   @UseGuards(AdminGuard)
-  @ApiOperation({ summary: 'Return the Homebridge config.json file for the given backup ID.' })
+  @ApiOperation({ summary: 'Return the Homebridge `config.json` file for the given backup ID.' })
   @ApiParam({ name: 'backupId', type: 'number' })
   @Get('/backups/:backupId(\\d+)')
   getBackup(@Param('backupId', ParseIntPipe) backupId) {
@@ -109,7 +109,7 @@ export class ConfigEditorController {
   }
 
   @UseGuards(AdminGuard)
-  @ApiOperation({ summary: 'Delete all the Homebridge config.json backups.' })
+  @ApiOperation({ summary: 'Delete all the Homebridge `config.json` backups.' })
   @Delete('/backups')
   deleteAllConfigBackups() {
     return this.configEditorService.deleteAllConfigBackups()

@@ -23,7 +23,7 @@ import { satisfies } from 'semver'
 export class ConfigService {
   public name = 'homebridge-config-ui-x'
 
-  // homebridge env
+  // Homebridge env
   public configPath = process.env.UIX_CONFIG_PATH || resolve(homedir(), '.homebridge/config.json')
   public storagePath = process.env.UIX_STORAGE_PATH || resolve(homedir(), '.homebridge')
   public customPluginPath = process.env.UIX_CUSTOM_PLUGIN_PATH
@@ -36,7 +36,7 @@ export class ConfigService {
   public homebridgeInsecureMode = Boolean(process.env.UIX_INSECURE_MODE === '1')
   public homebridgeVersion: string
 
-  // server env
+  // Server env
   public minimumNodeVersion = '14.15.0'
   public serviceMode = (process.env.UIX_SERVICE_MODE === '1')
   public runningInDocker = Boolean(process.env.HOMEBRIDGE_CONFIG_UI === '1')
@@ -47,31 +47,31 @@ export class ConfigService {
   public canShutdownRestartHost = (this.runningInLinux || process.env.UIX_CAN_SHUTDOWN_RESTART_HOST === '1')
   public enableTerminalAccess = this.runningInDocker || this.runningInSynologyPackage || this.runningInPackageMode || Boolean(process.env.HOMEBRIDGE_CONFIG_UI_TERMINAL === '1')
 
-  // plugin management
+  // Plugin management
   public usePnpm = (process.env.UIX_USE_PNPM === '1')
   public usePluginBundles = (process.env.UIX_USE_PLUGIN_BUNDLES === '1')
 
-  // recommend child bridges on platforms with > 2GB ram
+  // Recommend child bridges on platforms with > 2GB ram
   public recommendChildBridges = (totalmem() > 2e+9)
 
-  // check this async
+  // Check this async
   public runningOnRaspberryPi = false
 
-  // docker settings
+  // Docker settings
   public startupScript = resolve(this.storagePath, 'startup.sh')
   public dockerOfflineUpdate = this.runningInDocker && satisfies(process.env.CONFIG_UI_VERSION, '>=4.6.2 <=4.44.1', { includePrerelease: true })
 
   // package.json
   public package = readJsonSync(resolve(process.env.UIX_BASE_PATH, 'package.json'))
 
-  // first user setup wizard
+  // First user setup wizard
   public setupWizardComplete = true
 
-  // custom wallpaper
+  // Custom wallpaper
   public customWallpaperPath = resolve(this.storagePath, 'ui-wallpaper.jpg')
   public customWallpaperHash: string
 
-  // set true to force the ui to restart on next restart request
+  // Set true to force the ui to restart on next restart request
   public hbServiceUiRestartRequired = false
 
   public homebridgeConfig: HomebridgeConfig
@@ -83,6 +83,7 @@ export class ConfigService {
     auth: 'form' | 'none'
     theme: string
     lightingMode: 'auto' | 'light' | 'dark'
+    menuMode?: 'default' | 'freeze'
     sudo?: boolean
     restart?: string
     lang?: string
@@ -209,6 +210,7 @@ export class ConfigService {
       lightingMode: this.ui.lightingMode || 'auto',
       serverTimestamp: new Date().toISOString(),
       theme: this.ui.theme || 'orange',
+      menuMode: this.ui.menuMode || 'default',
     }
 
     if (!authorized) {
@@ -240,18 +242,18 @@ export class ConfigService {
    * Checks to see if the UI requires a restart due to changed ui or bridge settings
    */
   public async uiRestartRequired(): Promise<boolean> {
-    // if the flag is set, force a restart
+    // If the flag is set, force a restart
     if (this.hbServiceUiRestartRequired) {
       return true
     }
 
-    // if the ui version has changed on disk, a restart is required
+    // If the ui version has changed on disk, a restart is required
     const currentPackage = await readJson(resolve(process.env.UIX_BASE_PATH, 'package.json'))
     if (currentPackage.version !== this.package.version) {
       return true
     }
 
-    // if the ui or bridge config has changed, a restart is required
+    // If the ui or bridge config has changed, a restart is required
     return !(isEqual(this.ui, this.uiFreeze) && isEqual(this.homebridgeConfig.bridge, this.bridgeFreeze))
   }
 
@@ -260,13 +262,13 @@ export class ConfigService {
    */
   private freezeUiSettings() {
     if (!this.uiFreeze) {
-      // freeze ui
+      // Freeze ui
       this.uiFreeze = {} as this['ui']
       Object.assign(this.uiFreeze, this.ui)
     }
 
     if (!this.bridgeFreeze) {
-      // freeze bridge port
+      // Freeze bridge port
       this.bridgeFreeze = {} as this['homebridgeConfig']['bridge']
       Object.assign(this.bridgeFreeze, this.homebridgeConfig.bridge)
     }
@@ -276,7 +278,7 @@ export class ConfigService {
    * Populate the required config for homebridge/homebridge docker
    */
   private setConfigForDocker() {
-    // forced config
+    // Forced config
     this.ui.restart = 'killall -15 homebridge; sleep 5.1; killall -9 homebridge; kill -9 $(pidof homebridge-config-ui-x);'
     this.homebridgeInsecureMode = Boolean(process.env.HOMEBRIDGE_INSECURE === '1')
     this.ui.sudo = false
@@ -285,7 +287,7 @@ export class ConfigService {
       path: '/homebridge/logs/homebridge.log',
     }
 
-    // these options can be overridden using the config.json file
+    // These options can be overridden using the config.json file
     if (!this.ui.port && process.env.HOMEBRIDGE_CONFIG_UI_PORT) {
       this.ui.port = Number.parseInt(process.env.HOMEBRIDGE_CONFIG_UI_PORT, 10)
     }
@@ -357,7 +359,7 @@ export class ConfigService {
       hash.update(`${fileStat.birthtime}${fileStat.ctime}${fileStat.size}${fileStat.blocks}`)
       this.customWallpaperHash = `${hash.digest('hex')}.jpg`
     } catch (e) {
-      // do nothing
+      // Do nothing
     }
   }
 

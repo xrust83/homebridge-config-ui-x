@@ -66,7 +66,7 @@ export class JsonSchemaFormPatchDirective {
         }
 
         if (Array.isArray(data)) {
-          // add missing items
+          // Add missing items
           while (item.items.length - 1 < data.length) {
             const newItem = cloneDeep(template)
             newItem._id = uniqueId('new_')

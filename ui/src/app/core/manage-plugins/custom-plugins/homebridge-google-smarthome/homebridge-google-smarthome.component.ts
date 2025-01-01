@@ -40,6 +40,7 @@ export class HomebridgeGoogleSmarthomeComponent implements OnInit, OnDestroy {
   public justLinked = false
   public gshConfig: Record<string, any>
   public linkType: string
+  public readonly linkInsecure = '<a href="https://github.com/homebridge/homebridge-config-ui-x/wiki/Enabling-Accessory-Control" target="_blank"><i class="fa fa-fw fa-external-link-alt"></i></a>'
 
   private linkDomain = 'https://homebridge-gsh.iot.oz.nu'
   private linkUrl = `${this.linkDomain}/link-account`
@@ -47,7 +48,7 @@ export class HomebridgeGoogleSmarthomeComponent implements OnInit, OnDestroy {
   private originCheckInterval: NodeJS.Timeout
 
   constructor() {
-    // listen for sign in events from the link account popup
+    // Listen for sign in events from the link account popup
     window.addEventListener('message', this.windowMessageListener, false)
   }
 
@@ -89,7 +90,7 @@ export class HomebridgeGoogleSmarthomeComponent implements OnInit, OnDestroy {
       + `width=${w}, height=${h}, top=${y}, left=${x}`,
     )
 
-    // simple message popup to provide the current hostname
+    // Simple message popup to provide the current hostname
     this.originCheckInterval = setInterval(() => {
       this.popup.postMessage('origin-check', this.linkDomain)
     }, 2000)

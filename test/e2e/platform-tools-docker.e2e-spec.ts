@@ -34,10 +34,10 @@ describe('PlatformToolsDocker (e2e)', () => {
     secretsFilePath = resolve(process.env.UIX_STORAGE_PATH, '.uix-secrets')
     startupFilePath = resolve(process.env.UIX_STORAGE_PATH, 'startup.sh')
 
-    // setup test config
+    // Setup test config
     await copy(resolve(__dirname, '../mocks', 'config.json'), process.env.UIX_CONFIG_PATH)
 
-    // setup test auth file
+    // Setup test auth file
     await copy(resolve(__dirname, '../mocks', 'auth.json'), authFilePath)
     await copy(resolve(__dirname, '../mocks', '.uix-secrets'), secretsFilePath)
 
@@ -59,14 +59,14 @@ describe('PlatformToolsDocker (e2e)', () => {
   })
 
   beforeEach(async () => {
-    // setup mock functions
+    // Setup mock functions
     restartDockerContainerFn = vi.fn()
     dockerService.restartDockerContainer = restartDockerContainerFn as any
 
-    // restore startup.sh
+    // Restore startup.sh
     await copy(resolve(__dirname, '../mocks', 'startup.sh'), startupFilePath)
 
-    // get auth token before each test
+    // Get auth token before each test
     authorization = `bearer ${(await app.inject({
       method: 'POST',
       path: '/auth/login',

@@ -11,15 +11,13 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <div class="modal-body w-100 text-center">
+  <div class="modal-body text-center">
     @if (faIconClass) {
-    <i class="fas fa-fw {{ faIconClass }} mb-4" style="font-size: 75px"></i>
+    <i class="fas fa-fw {{ faIconClass }} mb-3" style="font-size: 75px"></i>
     } @if (subtitle) {
-    <div class="alert" role="alert">
-      <h5 class="mb-0">{{ subtitle }}</h5>
-    </div>
+    <h5 class="mb-3" [innerHTML]="subtitle"></h5>
     }
-    <p class="w-100 text-center">{{ message }}</p>
+    <p class="mb-0" [innerHTML]="message"></p>
   </div>
   <div class="modal-footer justify-content-between">
     <div class="text-left">

@@ -1,8 +1,6 @@
-<div class="modal-content hb-plugin-settings-modal">
+<div class="modal-content">
   <div class="modal-header">
-    <h5 class="modal-title">
-      {{ 'plugins.settings.title_settings' | translate }}: {{ plugin.displayName || plugin.name }}
-    </h5>
+    <h5 class="modal-title">{{ plugin.displayName || plugin.name }}</h5>
     <button
       type="button"
       class="close"
@@ -20,11 +18,9 @@
       <i class="fa fa-fw fa-cog fa-spin" style="font-size: 75px"></i>
     </div>
     } @if (!loading && !canConfigure) {
-    <div>
-      <div class="alert alert-warning">
-        {{ 'plugins.settings.message_manual_config_required' | translate }} {{
-        'plugins.settings.message_consult_documentation' | translate }}
-      </div>
+    <div class="alert alert-warning">
+      {{ 'plugins.settings.message_manual_config_required' | translate }} {{
+      'plugins.settings.message_consult_documentation' | translate }}
     </div>
     }
 
@@ -44,7 +40,7 @@
             <div>
               @if (show === 'configBlock.' + $index) {
               <button
-                class="btn btn-danger ml-2"
+                class="btn btn-danger m-0 ml-3"
                 (click)="removeBlock($index)"
                 [ngbTooltip]="'form.button_delete' | translate"
                 container="modal"
@@ -55,7 +51,7 @@
               </button>
               }
               <button
-                class="btn btn-primary ml-2"
+                class="btn btn-primary m-0 ml-2"
                 ngbAccordionButton
                 (click)="editBlock($index)"
                 [ngbTooltip]="'form.button_edit' | translate"
@@ -104,9 +100,7 @@
       </button>
       } @if (canConfigure) {
       <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="save()" [disabled]="saveInProgress">
-        @if (!saveInProgress) {
-        <span>{{ 'form.button_save' | translate }}</span>
-        } @if (saveInProgress) {
+        @if (!saveInProgress) { {{ 'form.button_save' | translate }} } @if (saveInProgress) {
         <i class="fas fa-fw fa-spinner fa-pulse"></i>
         }
       </button>

@@ -53,7 +53,7 @@ export class PluginsSettingsUiService {
         return reply.code(404).send('Not Found')
       }
 
-      // this will severely limit the ability for this page to do anything if loaded outside the UI
+      // This will severely limit the ability for this page to do anything if loaded outside the UI
       reply.header('Content-Security-Policy', '')
 
       if (assetPath === 'index.html') {
@@ -66,7 +66,7 @@ export class PluginsSettingsUiService {
         return await this.serveAssetsFromDevServer(reply, pluginUi, assetPath)
       }
 
-      // fallback path (to serve static assets from the plugin ui public folder)
+      // Fallback path (to serve static assets from the plugin ui public folder)
       const fallbackPath = resolve(process.env.UIX_BASE_PATH, 'public', basename(filePath))
 
       if (await pathExists(filePath)) {
@@ -74,11 +74,11 @@ export class PluginsSettingsUiService {
       } else if (fallbackPath.match(/^.*\.(jpe?g|gif|png|svg|ttf|woff2|css)$/i) && await pathExists(fallbackPath)) {
         return reply.sendFile(basename(fallbackPath), dirname(fallbackPath))
       } else {
-        this.loggerService.warn('Asset Not Found:', `${pluginName}/${assetPath}`)
+        this.loggerService.warn(`[${pluginName}] asset not found: ${assetPath}.`)
         return reply.code(404).send('Not Found')
       }
     } catch (e) {
-      this.loggerService.error(`[${pluginName}]`, e.message)
+      this.loggerService.error(`[${pluginName}] UI threw an error - ${e.message}.`)
       return e.message === 'Not Found' ? reply.code(404).send(e.message) : reply.code(500).send(e.message)
     }
   }
@@ -93,7 +93,7 @@ export class PluginsSettingsUiService {
       this.pluginUiLastVersionCache.set(pluginName, pluginUi.plugin.installedVersion)
       return pluginUi
     } catch (e) {
-      this.loggerService.warn(`[${pluginName}] Custom UI:`, e.message)
+      this.loggerService.warn(`[${pluginName}] custom UI threw an error - ${e.message}.`)
       throw new NotFoundException()
     }
   }
@@ -102,14 +102,16 @@ export class PluginsSettingsUiService {
    * Serve assets from the custom ui dev server (only for private packages in development)
    */
   async serveAssetsFromDevServer(reply, pluginUi: HomebridgePluginUiMetadata, assetPath: string) {
-    return firstValueFrom(this.httpService.get(`${pluginUi.devServer}/${assetPath}`, { responseType: 'text' })).then((response) => {
-      for (const [key, value] of Object.entries(response.headers)) {
-        reply.header(key, value)
-      }
-      reply.send(response.data)
-    }).catch(() => {
-      return reply.code(404).send('Not Found')
-    })
+    return firstValueFrom(this.httpService.get(`${pluginUi.devServer}/${assetPath}`, { responseType: 'text' }))
+      .then((response) => {
+        for (const [key, value] of Object.entries(response.headers)) {
+          reply.header(key, value)
+        }
+        reply.send(response.data)
+      })
+      .catch(() => {
+        return reply.code(404).send('Not Found')
+      })
   }
 
   /**
@@ -117,7 +119,7 @@ export class PluginsSettingsUiService {
    */
   async getIndexHtmlBody(pluginUi: HomebridgePluginUiMetadata) {
     if (pluginUi.devServer) {
-      // dev server is only enabled for private plugins
+      // Dev server is only enabled for private plugins
       return (await firstValueFrom(this.httpService.get(pluginUi.devServer, { responseType: 'text' }))).data
     } else {
       return await readFile(join(pluginUi.publicPath, 'index.html'), 'utf8')
@@ -170,28 +172,28 @@ export class PluginsSettingsUiService {
       return
     }
 
-    // pass all env vars to server side script
+    // Pass all env vars to server side script
     const childEnv = Object.assign({}, process.env)
     childEnv.HOMEBRIDGE_STORAGE_PATH = this.configService.storagePath
     childEnv.HOMEBRIDGE_CONFIG_PATH = this.configService.configPath
     childEnv.HOMEBRIDGE_UI_VERSION = this.configService.package.version
 
-    // launch the server side script
+    // Launch the server side script
     const child = fork(pluginUi.serverPath, [], {
       silent: true,
       env: childEnv,
     })
 
     child.stdout.on('data', (data) => {
-      this.loggerService.log(`[${pluginName}]`, data.toString().trim())
+      this.loggerService.log(`[${pluginName}] ${data.toString().trim()}`)
     })
 
     child.stderr.on('data', (data) => {
-      this.loggerService.error(`[${pluginName}]`, data.toString().trim())
+      this.loggerService.error(`[${pluginName}] ${data.toString().trim()}`)
     })
 
     child.on('exit', () => {
-      this.loggerService.debug(`[${pluginName}]`, 'Custom UI: closed (child process ended)')
+      this.loggerService.debug(`[${pluginName}] custom UI closed (child process ended).`)
     })
 
     child.addListener('message', (response: { action: string, payload: any }) => {
@@ -201,9 +203,9 @@ export class PluginsSettingsUiService {
       }
     })
 
-    // function to handle cleanup
+    // Function to handle cleanup
     const cleanup = () => {
-      this.loggerService.debug(`[${pluginName}]`, 'Custom UI: closing (terminating child process)...')
+      this.loggerService.debug(`[${pluginName}] custom UI closing (terminating child process)...`)
 
       const childPid = child.pid
       if (child.connected) {

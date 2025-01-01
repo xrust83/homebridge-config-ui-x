@@ -1,4 +1,4 @@
-import { DecimalPipe, NgClass, TitleCasePipe } from '@angular/common'
+import { DecimalPipe, NgClass, TitleCasePipe, UpperCasePipe } from '@angular/common'
 import { HttpClient, HttpParams } from '@angular/common/http'
 import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core'
 import { TranslatePipe, TranslateService } from '@ngx-translate/core'
@@ -6,6 +6,7 @@ import dayjs from 'dayjs'
 import { interval, Subject, Subscription } from 'rxjs'
 
 import { ConvertTempPipe } from '@/app/core/pipes/convert-temp.pipe'
+import { SettingsService } from '@/app/core/settings.service'
 import { IoNamespace, WsService } from '@/app/core/ws.service'
 import { environment } from '@/environments/environment'
 
@@ -18,6 +19,7 @@ import { environment } from '@/environments/environment'
     TitleCasePipe,
     TranslatePipe,
     ConvertTempPipe,
+    UpperCasePipe,
   ],
 })
 export class WeatherWidgetComponent implements OnInit, OnDestroy {
@@ -29,7 +31,7 @@ export class WeatherWidgetComponent implements OnInit, OnDestroy {
   @Input() configureEvent: Subject<any>
 
   public currentWeather: any
-
+  public $settings = inject(SettingsService)
   private io: IoNamespace
   private intervalSubscription: Subscription
 

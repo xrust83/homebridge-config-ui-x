@@ -14,12 +14,12 @@ export class HomebridgeHueService {
   async streamDumpFile(): Promise<StreamableFile> {
     const dumpPath = resolve(this.configService.storagePath, 'homebridge-hue.json.gz')
 
-    // check file exists
+    // Check file exists
     if (!await pathExists(dumpPath)) {
       throw new NotFoundException()
     }
 
-    // stream file to client
+    // Stream file to client
     return new StreamableFile(createReadStream(dumpPath))
   }
 }

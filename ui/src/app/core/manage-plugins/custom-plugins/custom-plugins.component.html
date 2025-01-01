@@ -1,8 +1,6 @@
-<div class="modal-content hb-plugin-settings-modal">
+<div class="modal-content">
   <div class="modal-header">
-    <h5 class="modal-title">
-      {{ 'plugins.settings.title_settings' | translate }}: {{ plugin.displayName || plugin.name }}
-    </h5>
+    <h5 class="modal-title">{{ plugin.displayName || plugin.name }}</h5>
     <button
       type="button"
       class="close"
@@ -14,7 +12,7 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <div class="modal-body" style="min-height: 110px">
+  <div class="modal-body pb-0" style="min-height: 110px">
     @if (loading) {
     <div class="text-center primary-text">
       <i class="fa fa-fw fa-cog fa-spin" style="font-size: 75px"></i>
@@ -78,29 +76,14 @@
     </div>
     <div class="text-center"></div>
     <div class="text-right">
-      @if (plugin.name !== 'homebridge-config-ui-x') {
-      <button
-        class="btn btn-danger"
-        [ngbTooltip]="'form.button_delete' | translate"
-        container="modal"
-        openDelay="150"
-        triggers="hover"
-        [disabled]="saveInProgress"
-        (click)="deletePluginConfig()"
-      >
-        <i class="fa fa-fw fa-trash"></i>
-      </button>
-      }
       <button
         type="button"
         class="btn btn-primary"
         data-dismiss="modal"
         (click)="savePluginConfig(true)"
-        [disabled]="saveInProgress"
+        [disabled]="saveInProgress || saveButtonDisabled"
       >
-        @if (!saveInProgress) {
-        <span>{{ 'form.button_save' | translate }}</span>
-        } @if (saveInProgress) {
+        @if (!saveInProgress) { {{ 'form.button_save' | translate }} } @if (saveInProgress) {
         <i class="fas fa-fw fa-spinner fa-pulse"></i>
         }
       </button>

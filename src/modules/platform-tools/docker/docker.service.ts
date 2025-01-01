@@ -36,7 +36,7 @@ export class DockerService {
   async restartDockerContainer() {
     const cmd = 'sudo kill 1'
 
-    this.logger.log('Restarting the docker container, make sure you have --restart=always turned on or the container will not come back online')
+    this.logger.log('Restarting the docker container, make sure you have --restart=always turned on or the container will not come back online.')
 
     setTimeout(() => {
       exec(cmd)

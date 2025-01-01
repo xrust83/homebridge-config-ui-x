@@ -31,7 +31,7 @@ export class DonateComponent implements OnInit {
       this.plugin.author = 'oznu'
     }
 
-    // normalise the different funding attribute formats
+    // Normalise the different funding attribute formats
     if (Array.isArray(this.plugin.funding)) {
       // eslint-disable-next-line array-callback-return
       this.fundingOptions = this.plugin.funding.map((option: any) => {

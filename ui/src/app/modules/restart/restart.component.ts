@@ -41,28 +41,37 @@ export class RestartComponent implements OnInit, OnDestroy {
     this.io = this.$ws.connectToNamespace('status')
     this.io.connected.subscribe(() => {
       this.io.socket.emit('monitor-server-status')
-      this.$settings.getAppSettings().catch(/* do nothing */)
+      this.$settings.getAppSettings().catch(() => { /* do nothing */ })
     })
 
-    this.$api.put('/server/restart', {}).subscribe({
-      next: (data) => {
-        this.resp = data
-        this.checkIfServerUp()
-        if (!data.restartingUI) {
-          this.uiOnline = true
-        }
-      },
-      error: (error) => {
-        console.error(error)
-        this.error = this.$translate.instant('restart.toast_server_restart_error')
-        this.$toastr.error(this.$translate.instant('restart.toast_server_restart_error'), this.$translate.instant('toast.title_error'))
-      },
-    })
+    // Some actions like accessory cache removal have already started the restart process
+    // So don't bother restarting the server again when not needed
+    const restarting = this.$router.parseUrl(this.$router.url).queryParams.restarting
+
+    if (restarting) {
+      this.uiOnline = true
+      this.checkIfServerUp()
+    } else {
+      this.$api.put('/server/restart', {}).subscribe({
+        next: (data) => {
+          this.resp = data
+          this.checkIfServerUp()
+          if (!data.restartingUI) {
+            this.uiOnline = true
+          }
+        },
+        error: (error) => {
+          console.error(error)
+          this.error = this.$translate.instant('restart.toast_server_restart_error')
+          this.$toastr.error(this.$translate.instant('restart.toast_server_restart_error'), this.$translate.instant('toast.title_error'))
+        },
+      })
+    }
   }
 
   checkIfServerUp() {
     this.checkDelay = setTimeout(() => {
-      // listen to homebridge-status events to see when it's back online
+      // Listen to homebridge-status events to see when it's back online
       this.io.socket.on('homebridge-status', (data) => {
         this.uiOnline = true
         if (data.status === 'up' || data.status === 'pending') {

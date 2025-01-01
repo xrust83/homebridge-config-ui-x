@@ -79,7 +79,7 @@ export class StatusService {
     private serverService: ServerService,
     private homebridgeIpcService: HomebridgeIpcService,
   ) {
-    // systeminformation cpu data is not supported in FreeBSD Jail Shells
+    // Systeminformation cpu data is not supported in FreeBSD Jail Shells
     if (platform() === 'freebsd') {
       this.getCpuLoadPoint = this.getCpuLoadPointAlt
       this.getCpuTemp = this.getCpuTempAlt
@@ -165,7 +165,7 @@ export class StatusService {
         max: cpuTemp,
       }
     } catch (e) {
-      this.logger.error(`Failed to read temp from ${this.configService.ui.temp} - ${e.message}`)
+      this.logger.error(`Failed to read temp from ${this.configService.ui.temp} as ${e.message}.`)
       return this.getCpuTempAlt()
     }
   }
@@ -301,7 +301,7 @@ export class StatusService {
 
     client.emit('homebridge-status', await this.getHomebridgeStats())
 
-    // ipc status events are only available when running in service mode
+    // IPC status events are only available when running in service mode
     if (this.configService.serviceMode) {
       homebridgeStatusChangeSub = this.homebridgeStatusChange.subscribe(async () => {
         client.emit('homebridge-status', await this.getHomebridgeStats())
@@ -312,7 +312,7 @@ export class StatusService {
       }, 10000)
     }
 
-    // cleanup on disconnect
+    // Cleanup on disconnect
     const onEnd = () => {
       client.removeAllListeners('end')
       client.removeAllListeners('disconnect')
@@ -421,7 +421,7 @@ export class StatusService {
       this.statusCache.set('glibcVersion', glibcVersion, 86400)
       return glibcVersion
     } catch (e) {
-      this.logger.debug('Could not check glibc version:', e.message)
+      this.logger.debug(`Could not check glibc version as ${e.message}.`)
       return ''
     }
   }
@@ -498,11 +498,11 @@ export class StatusService {
             const glibcVersion = this.getGlibcVersion()
             if (glibcVersion) {
               if (Number.parseFloat(glibcVersion) >= 2.31) {
-                // glibc version is high enough to support v20
+                // Glibc version is high enough to support v20
                 updateAvailable = true
                 latestVersion = latest20.version
               } else {
-                // glibc version is too low to support v20
+                // Glibc version is too low to support v20
                 // Check if there is a new minor/patch version available
                 if (gt(latest18.version, process.version)) {
                   updateAvailable = true
@@ -557,7 +557,7 @@ export class StatusService {
       this.statusCache.set('nodeJsVersion', versionInformation, 86400)
       return versionInformation
     } catch (e) {
-      this.logger.log('Failed to check for Node.js version updates - check your internet connection.')
+      this.logger.log(`Failed to check for Node.js version updates (check your internet connection) as ${e.message}.`)
       const versionInformation = {
         currentVersion: process.version,
         latestVersion: process.version,
@@ -594,7 +594,7 @@ export class StatusService {
         }
       }
     } catch (e) {
-      this.logger.debug('Could not check vcgencmd get_throttled:', e.message)
+      this.logger.debug(`Could not check vcgencmd get_throttled as ${e.message}.`)
     }
 
     return output

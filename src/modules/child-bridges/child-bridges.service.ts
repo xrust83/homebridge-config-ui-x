@@ -19,7 +19,7 @@ export class ChildBridgesService {
    */
   public async getChildBridges() {
     if (!this.configService.serviceMode) {
-      throw new BadRequestException('This command is only available in service mode')
+      throw new BadRequestException('This command is only available in service mode.')
     }
 
     try {
@@ -42,7 +42,7 @@ export class ChildBridgesService {
     this.homebridgeIpcService.setMaxListeners(this.homebridgeIpcService.getMaxListeners() + 1)
     this.homebridgeIpcService.on('childBridgeStatusUpdate', listener)
 
-    // cleanup on disconnect
+    // Cleanup on disconnect
     const onEnd = () => {
       client.removeAllListeners('end')
       client.removeAllListeners('disconnect')
@@ -64,8 +64,8 @@ export class ChildBridgesService {
    */
   public stopStartRestartChildBridge(event: 'startChildBridge' | 'stopChildBridge' | 'restartChildBridge', deviceId: string) {
     if (!this.configService.serviceMode) {
-      this.logger.error('The restart child bridge command is only available in service mode')
-      throw new BadRequestException('This command is only available in service mode')
+      this.logger.error('The restart child bridge command is only available in service mode.')
+      throw new BadRequestException('This command is only available in service mode.')
     }
 
     if (deviceId.length === 12) {

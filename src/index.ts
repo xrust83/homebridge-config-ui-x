@@ -11,7 +11,7 @@ import { satisfies } from 'semver'
 
 let homebridge: any
 
-class HomebridgeConfigUi {
+class HomebridgeUi {
   log: any
 
   constructor(log: any, config: any) {
@@ -37,13 +37,13 @@ class HomebridgeConfigUi {
     }
 
     if (process.env.UIX_SERVICE_MODE === '1' && process.connected) {
-      this.log('Running in Service Mode')
+      this.log('Running in service mode.')
     } else if (config.standalone || process.env.UIX_SERVICE_MODE === '1'
       || (process.env.HOMEBRIDGE_CONFIG_UI === '1' && satisfies(process.env.CONFIG_UI_VERSION, '>=3.5.5', { includePrerelease: true }))) {
       this.log.warn('*********** Homebridge Standalone Mode Is Deprecated **********')
-      this.log.warn('* Please swap to "service mode" using the hb-service command.  *')
+      this.log.warn('* Please swap to service mode using the hb-service command.  *')
       this.log.warn('* See https://homebridge.io/w/JUvQr for instructions on how to migrate. *')
-      this.log('Running in Standalone Mode.')
+      this.log('Running in standalone mode.')
     } else if (config.noFork) {
       this.noFork()
     } else {
@@ -59,14 +59,14 @@ class HomebridgeConfigUi {
       env: process.env,
     })
 
-    this.log('Spawning homebridge-config-ui-x with PID', ui.pid)
+    this.log('Spawning Homebridge UI with PID', ui.pid)
 
     ui.on('close', () => {
       process.kill(process.pid, 'SIGTERM')
     })
 
     ui.on('error', () => {
-      // do nothing
+      // Do nothing
     })
   }
 
@@ -97,9 +97,9 @@ class HomebridgeConfigUi {
 // eslint-disable-next-line no-restricted-syntax
 export = (api) => {
   homebridge = api
-  homebridge.registerPlatform('homebridge-config-ui-x', 'config', HomebridgeConfigUi)
+  homebridge.registerPlatform('homebridge-config-ui-x', 'config', HomebridgeUi)
 
   if (process.env.UIX_SERVICE_MODE === '1' && process.connected) {
-    HomebridgeConfigUi.serviceMode()
+    HomebridgeUi.serviceMode()
   }
 }

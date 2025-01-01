@@ -69,7 +69,7 @@ export class LinuxInstaller extends BasePlatform {
     this.checkForRoot()
     await this.stop()
 
-    // try and disable the service
+    // Try and disable the service
     await this.disableService()
 
     try {
@@ -80,7 +80,7 @@ export class LinuxInstaller extends BasePlatform {
         unlinkSync(this.systemdEnvPath)
       }
 
-      // reload services
+      // Reload services
       await this.reloadSystemd()
 
       this.hbService.logger(`Removed ${this.hbService.serviceName} Service`, 'succeed')
@@ -160,7 +160,7 @@ export class LinuxInstaller extends BasePlatform {
       '/usr/lib/node_modules',
     ].includes(dirname(process.env.UIX_BASE_PATH))) {
       // systemd has a 90-second default timeout in the pre-start jobs
-      // terminate this task after 60 seconds to be safe
+      // Terminate this task after 60 seconds to be safe
       setTimeout(() => {
         process.exit(0)
       }, 60000)
@@ -191,7 +191,7 @@ export class LinuxInstaller extends BasePlatform {
   public async rebuild(all = false) {
     try {
       if (this.isPackage()) {
-        // must not run as root in package mode
+        // Must not run as root in package mode
         this.checkIsNotRoot()
       } else {
         this.checkForRoot()
@@ -200,7 +200,7 @@ export class LinuxInstaller extends BasePlatform {
       const targetNodeVersion = execSync('node -v').toString('utf8').trim()
 
       if (this.isPackage() && process.env.UIX_USE_PNPM === '1' && process.env.UIX_CUSTOM_PLUGIN_PATH) {
-        // pnpm+package mode
+        // PNPM+package mode
         const cwd = dirname(process.env.UIX_CUSTOM_PLUGIN_PATH)
 
         if (!await pathExists(cwd)) {
@@ -214,7 +214,7 @@ export class LinuxInstaller extends BasePlatform {
         })
         this.hbService.logger(`Rebuilt plugins in ${process.env.UIX_CUSTOM_PLUGIN_PATH} for Node.js ${targetNodeVersion}.`, 'succeed')
       } else {
-        // normal global npm setups
+        // Normal global npm setups
         const npmGlobalPath = execSync('/bin/echo -n "$(npm -g prefix)/lib/node_modules"', {
           env: Object.assign({
             npm_config_loglevel: 'silent',
@@ -229,7 +229,7 @@ export class LinuxInstaller extends BasePlatform {
         this.hbService.logger(`Rebuilt homebridge-config-ui-x for Node.js ${targetNodeVersion}.`, 'succeed')
 
         if (all === true) {
-          // rebuild all global node_modules
+          // Rebuild all global node_modules
           try {
             execSync('npm rebuild --unsafe-perm', {
               cwd: npmGlobalPath,
@@ -286,13 +286,13 @@ export class LinuxInstaller extends BasePlatform {
    */
   public async updateNodejs(job: { target: string, rebuild: boolean }) {
     if (this.isPackage()) {
-      // must not run as root in package mode
+      // Must not run as root in package mode
       this.checkIsNotRoot()
     } else {
       this.checkForRoot()
     }
 
-    // check target path
+    // Check target path
     const targetPath = dirname(dirname(process.execPath))
 
     if (targetPath !== '/usr' && targetPath !== '/usr/local' && targetPath !== '/opt/homebridge' && !targetPath.endsWith('/@appstore/homebridge/app')) {
@@ -301,20 +301,20 @@ export class LinuxInstaller extends BasePlatform {
     }
 
     if (targetPath === '/usr' && await pathExists('/etc/apt/sources.list.d/nodesource.list')) {
-      // update from nodesource
+      // Update from nodesource
       await this.updateNodeFromNodesource(job)
     } else {
-      // update from tarball
+      // Update from tarball
       await this.updateNodeFromTarball(job, targetPath)
     }
 
-    // rebuild node modules if required
+    // Rebuild node modules if required
     if (job.rebuild) {
       this.hbService.logger(`Rebuilding for Node.js ${job.target}...`)
       await this.rebuild(true)
     }
 
-    // restart
+    // Restart
     if (await pathExists(this.systemdServicePath)) {
       await this.restart()
     } else {
@@ -362,8 +362,8 @@ export class LinuxInstaller extends BasePlatform {
   private async updateNodeFromTarball(job: { target: string, rebuild: boolean }, targetPath: string) {
     try {
       if (process.env.HOMEBRIDGE_SYNOLOGY_PACKAGE === '1') {
-        // skip glibc version check on Synology DSM
-        // we know node > 18 requires glibc > 2.28, while DSM 7 only has 2.27 at the moment
+        // Skip glibc version check on Synology DSM
+        // We know node > 18 requires glibc > 2.28, while DSM 7 only has 2.27 at the moment
         if (gte(job.target, '18.0.0')) {
           this.hbService.logger('Cannot update Node.js on your system. Synology DSM 7 does not currently support Node.js 18 or later.', 'fail')
           process.exit(1)
@@ -422,13 +422,13 @@ export class LinuxInstaller extends BasePlatform {
         unlink: true,
       }
 
-      // remove npm package as this can cause issues when overwritten by the node tarball
+      // Remove npm package as this can cause issues when overwritten by the node tarball
       await this.hbService.removeNpmPackage(resolve(targetPath, 'lib', 'node_modules', 'npm'))
 
-      // extract
+      // Extract
       await this.hbService.extractNodejs(job.target, extractConfig)
 
-      // clean up
+      // Clean up
       await remove(archivePath)
     } catch (e) {
       this.hbService.logger(`Failed to update Node.js: ${e.message}`, 'fail')
@@ -445,7 +445,7 @@ export class LinuxInstaller extends BasePlatform {
     try {
       await this.glibcVersionCheck(job.target)
       const majorVersion = parse(job.target).major
-      // update apt (and accept release info changes)
+      // Update apt (and accept release info changes)
       execSync('apt-get update --allow-releaseinfo-change && sudo apt-get install -y ca-certificates curl gnupg', {
         stdio: 'inherit',
       })
@@ -466,19 +466,19 @@ export class LinuxInstaller extends BasePlatform {
         })
       }
 
-      // update repo
+      // Update repo
       execSync(`echo "deb [signed-by=/etc/apt/keyrings/nodes] https://deb.nodesource.com/node_${majorVersion}.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list`, {
         stdio: 'inherit',
       })
 
-      // remove current node.js if downgrading
+      // Remove current node.js if downgrading
       if (majorVersion < parse(process.version).major) {
         execSync('apt-get remove -y nodejs', {
           stdio: 'inherit',
         })
       }
 
-      // update node.js
+      // Update node.js
       execSync('apt-get update && apt-get install -y nodejs', {
         stdio: 'inherit',
       })
@@ -557,10 +557,10 @@ export class LinuxInstaller extends BasePlatform {
    */
   private async checkUser() {
     try {
-      // check if user exists
+      // Check if user exists
       execSync(`id ${this.hbService.asUser} 2> /dev/null`)
     } catch (e) {
-      // if not create the user
+      // If not create the user
       execSync(`useradd -m --system ${this.hbService.asUser}`)
       this.hbService.logger(`Created service user: ${this.hbService.asUser}`, 'info')
       if (this.hbService.addGroup) {
@@ -570,14 +570,14 @@ export class LinuxInstaller extends BasePlatform {
     }
 
     try {
-      // try and add the user to commonly required groups if on Raspbian
+      // Try and add the user to commonly required groups if on Raspbian
       const os = await osInfo()
       if (os.distro === 'Raspbian GNU/Linux') {
         execSync(`usermod -a -G audio,bluetooth,dialout,gpio,video ${this.hbService.asUser} 2> /dev/null`)
         execSync(`usermod -a -G input,i2c,spi ${this.hbService.asUser} 2> /dev/null`)
       }
     } catch (e) {
-      // do nothing
+      // Do nothing
     }
   }
 
@@ -591,13 +591,13 @@ export class LinuxInstaller extends BasePlatform {
       const shutdownPath = execSync('which shutdown').toString('utf8').trim()
       const sudoersEntry = `${this.hbService.asUser}    ALL=(ALL) NOPASSWD:SETENV: ${shutdownPath}, ${npmPath}, /usr/bin/npm, /usr/local/bin/npm`
 
-      // check if the sudoers file already contains the entry
+      // Check if the sudoers file already contains the entry
       const sudoers = readFileSync('/etc/sudoers', 'utf-8')
       if (sudoers.includes(sudoersEntry)) {
         return
       }
 
-      // grant the user restricted sudo privileges to /sbin/shutdown
+      // Grant the user restricted sudo privileges to /sbin/shutdown
       execSync(`echo '${sudoersEntry}' | sudo EDITOR='tee -a' visudo`)
     } catch (e) {
       this.hbService.logger('WARNING: Failed to setup /etc/sudoers, you may not be able to shutdown/restart your server from the Homebridge UI.', 'warn')
@@ -620,18 +620,18 @@ export class LinuxInstaller extends BasePlatform {
   private fixPermissions() {
     if (existsSync(this.systemdServicePath) && existsSync(this.systemdEnvPath)) {
       try {
-        // extract the user this process is running as
+        // Extract the user this process is running as
         const serviceUser = execSync(`cat "${this.systemdServicePath}" | grep "User=" | awk -F'=' '{print $2}'`)
           .toString('utf8')
           .trim()
 
-        // get the storage path (we may not know it when running the start command)
+        // Get the storage path (we may not know it when running the start command)
         const storagePath = execSync(`cat "${this.systemdEnvPath}" | grep "UIX_STORAGE_PATH" | awk -F'=' '{print $2}' | sed -e 's/^"//' -e 's/"$//'`)
           .toString('utf8')
           .trim()
 
         if (storagePath.length > 5 && existsSync(storagePath)) {
-          // chown the storage directory to the service user
+          // Chown the storage directory to the service user
           execSync(`chown -R ${serviceUser}: "${storagePath}"`)
         }
         execSync(`chmod a+x ${this.hbService.selfPath}`)
@@ -645,12 +645,12 @@ export class LinuxInstaller extends BasePlatform {
    * Opens the port in the firewall if required
    */
   private async createFirewallRules() {
-    // check ufw is present on the system (debian based linux)
+    // Check ufw is present on the system (debian based linux)
     if (await pathExists('/usr/sbin/ufw')) {
       return await this.createUfwRules()
     }
 
-    // check firewall-cmd is present on the system (enterprise linux)
+    // Check firewall-cmd is present on the system (enterprise linux)
     if (await pathExists('/usr/bin/firewall-cmd')) {
       return await this.createFirewallCmdRules()
     }
@@ -662,21 +662,21 @@ export class LinuxInstaller extends BasePlatform {
    */
   private async createUfwRules() {
     try {
-      // check the firewall is active before doing anything
+      // Check the firewall is active before doing anything
       const status = execSync('/bin/echo -n "$(ufw status)" 2> /dev/null').toString('utf8')
       if (!status.includes('Status: active')) {
         return
       }
 
-      // load the current config to get the Homebridge port
+      // Load the current config to get the Homebridge port
       const currentConfig = await readJson(process.env.UIX_CONFIG_PATH)
       const bridgePort = currentConfig.bridge?.port
 
-      // add ui rule
+      // Add ui rule
       execSync(`ufw allow ${this.hbService.uiPort}/tcp 2> /dev/null`)
       this.hbService.logger(`Added firewall rule to allow inbound traffic on port ${this.hbService.uiPort}/tcp`, 'info')
 
-      // add bridge rule
+      // Add bridge rule
       if (bridgePort) {
         execSync(`ufw allow ${bridgePort}/tcp 2> /dev/null`)
         this.hbService.logger(`Added firewall rule to allow inbound traffic on port ${bridgePort}/tcp`, 'info')
@@ -692,26 +692,26 @@ export class LinuxInstaller extends BasePlatform {
    */
   private async createFirewallCmdRules() {
     try {
-      // check the firewall is running before doing anything
+      // Check the firewall is running before doing anything
       const status = execSync('/bin/echo -n "$(firewall-cmd --state)" 2> /dev/null').toString('utf8')
       if (status !== 'running') {
         return
       }
-      // load the current config to get the Homebridge port
+      // Load the current config to get the Homebridge port
       const currentConfig = await readJson(process.env.UIX_CONFIG_PATH)
       const bridgePort = currentConfig.bridge?.port
 
-      // add ui rule
+      // Add ui rule
       execSync(`firewall-cmd --permanent --add-port=${this.hbService.uiPort}/tcp 2> /dev/null`)
       this.hbService.logger(`Added firewall rule to allow inbound traffic on port ${this.hbService.uiPort}/tcp`, 'info')
 
-      // add bridge rule
+      // Add bridge rule
       if (bridgePort) {
         execSync(`firewall-cmd --permanent --add-port=${bridgePort}/tcp 2> /dev/null`)
         this.hbService.logger(`Added firewall rule to allow inbound traffic on port ${bridgePort}/tcp`, 'info')
       }
 
-      // reload the firewall
+      // Reload the firewall
       execSync('firewall-cmd --reload 2> /dev/null')
       this.hbService.logger('Firewall reloaded', 'info')
     } catch (e) {

@@ -1,6 +1,6 @@
 <div class="modal-content">
   <div class="modal-header">
-    <h5 class="modal-title">{{ 'reset.bridges_all.title' | translate }}</h5>
+    <h5 class="modal-title">{{ 'reset.bridge_all.title' | translate }}</h5>
     <button
       type="button"
       class="close"
@@ -13,15 +13,15 @@
     </button>
   </div>
   <div class="modal-body">
-    <div class="text-center mb-4"><i class="fas fa-fw fa-bridge primary-text" style="font-size: 75px"></i></div>
-    <ngb-alert type="error" [dismissible]="false" style="margin-bottom: 0">
-      <p class="font-weight-bold">{{ 'reset.action_is_irreversible' | translate }}</p>
-      <ul class="mb-0 text-left">
-        <li>{{ 'reset.bridges_all.list_1' | translate }}</li>
-        <li>{{ 'reset.bridges_all.list_2' | translate }}</li>
-        <li>{{ 'reset.bridges_all.list_3' | translate }}</li>
-        <li class="mb-0">{{ 'reset.bridges_all.list_4' | translate }}</li>
-      </ul>
+    <div class="text-center mb-3"><i class="fas fa-fw fa-bridge primary-text" style="font-size: 75px"></i></div>
+    <ul class="mb-3">
+      <li>{{ 'reset.bridge_all.list_1' | translate }}</li>
+      <li>{{ 'reset.bridge_all.list_2' | translate }}</li>
+      <li>{{ 'reset.bridge_all.list_3' | translate }}</li>
+      <li>{{ 'reset.bridge_all.list_4' | translate }}</li>
+    </ul>
+    <ngb-alert type="error" [dismissible]="false" class="mb-0">
+      <p class="text-center mb-0">{{ 'reset.action_is_irreversible' | translate }}</p>
     </ngb-alert>
   </div>
   <div class="modal-footer justify-content-between">
@@ -46,9 +46,7 @@
         (click)="onResetHomebridgeAccessoryClick()"
         [disabled]="clicked"
       >
-        @if (!clicked) {
-        <span>{{ 'form.button_reset' | translate }}</span>
-        } @if (clicked) {
+        @if (!clicked) { {{ 'form.button_reset' | translate }} } @if (clicked) {
         <i class="fas fa-fw fa-spinner fa-pulse"></i>
         }
       </button>

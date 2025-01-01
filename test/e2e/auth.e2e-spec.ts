@@ -31,10 +31,10 @@ describe('AuthController (e2e)', () => {
     authFilePath = resolve(process.env.UIX_STORAGE_PATH, 'auth.json')
     secretsFilePath = resolve(process.env.UIX_STORAGE_PATH, '.uix-secrets')
 
-    // setup test config
+    // Setup test config
     await copy(resolve(__dirname, '../mocks', 'config.json'), process.env.UIX_CONFIG_PATH)
 
-    // remove any existing auth / secret files
+    // Remove any existing auth / secret files
     await remove(authFilePath)
     await remove(secretsFilePath)
 
@@ -57,13 +57,13 @@ describe('AuthController (e2e)', () => {
   })
 
   beforeEach(async () => {
-    // setup test auth file
+    // Setup test auth file
     await copy(resolve(__dirname, '../mocks', 'auth.json'), authFilePath)
     configService.setupWizardComplete = true
   })
 
   afterEach(async () => {
-    // restore auth mode after each test
+    // Restore auth mode after each test
     const thisConfigService: ConfigService = app.get(ConfigService)
     thisConfigService.ui.auth = 'form'
   })
@@ -73,14 +73,14 @@ describe('AuthController (e2e)', () => {
   })
 
   it('should flag first run setup wizard as not complete if authfile not created', async () => {
-    // remove test auth file
+    // Remove test auth file
     await remove(authFilePath)
     await authService.checkAuthFile()
     expect(configService.setupWizardComplete).toBe(false)
   })
 
   it('should flag first run setup wizard as complete if authfile is created', async () => {
-    // test authfile created in beforeEach hook
+    // Test authfile created in beforeEach hook
     await authService.checkAuthFile()
     expect(configService.setupWizardComplete).toBe(true)
   })
@@ -152,7 +152,7 @@ describe('AuthController (e2e)', () => {
   })
 
   it('POST /auth/noauth (auth disabled)', async () => {
-    // set auth mode to none
+    // Set auth mode to none
     const thisConfigService: ConfigService = app.get(ConfigService)
     thisConfigService.ui.auth = 'none'
 

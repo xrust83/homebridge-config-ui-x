@@ -85,7 +85,7 @@ export class CpuWidgetComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.io = this.$ws.getExistingNamespace('status')
-    // lookup the chart color based on the current theme
+    // Lookup the chart color based on the current theme
     const userColor = getComputedStyle(this.widgetBackground().nativeElement).backgroundColor
     if (userColor) {
       this.lineChartOptions.elements.line.backgroundColor = userColor

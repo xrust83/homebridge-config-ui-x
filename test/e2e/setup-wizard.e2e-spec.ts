@@ -31,10 +31,10 @@ describe('SetupWizard (e2e)', () => {
     authFilePath = resolve(process.env.UIX_STORAGE_PATH, 'auth.json')
     secretsFilePath = resolve(process.env.UIX_STORAGE_PATH, '.uix-secrets')
 
-    // setup test config
+    // Setup test config
     await copy(resolve(__dirname, '../mocks', 'config.json'), process.env.UIX_CONFIG_PATH)
 
-    // remove any existing auth / secret files
+    // Remove any existing auth / secret files
     await remove(authFilePath)
     await remove(secretsFilePath)
 
@@ -56,7 +56,7 @@ describe('SetupWizard (e2e)', () => {
   })
 
   beforeEach(async () => {
-    // remove auth file
+    // Remove auth file
     await remove(authFilePath)
     configService.setupWizardComplete = false
   })

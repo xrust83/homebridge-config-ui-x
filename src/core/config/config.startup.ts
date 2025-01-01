@@ -31,29 +31,29 @@ export async function getStartupConfig() {
     debug?: boolean
   }
 
-  // check if IPv6 is available on this host
+  // Check if IPv6 is available on this host
   const ipv6 = Object.entries(networkInterfaces()).filter(([, addresses]) => {
     return addresses.find(x => x.family === 'IPv6')
   }).length
 
   config.host = ipv6 ? '::' : '0.0.0.0'
 
-  // if no ui settings configured - we are done
+  // If no ui settings configured - we are done
   if (!ui) {
     return config
   }
 
-  // preload custom host settings
+  // Preload custom host settings
   if (ui.host) {
     config.host = ui.host
   }
 
-  // preload ssl settings
+  // Preload ssl settings
   if (ui.ssl && ((ui.ssl.key && ui.ssl.cert) || ui.ssl.pfx)) {
     for (const attribute of ['key', 'cert', 'pfx']) {
       if (ui.ssl[attribute]) {
         if (!(await (stat(ui.ssl[attribute]))).isFile()) {
-          logger.error(`SSL Config Error: ui.ssl.${attribute}: ${ui.ssl[attribute]} is not a valid file`)
+          logger.error(`SSL config error: ui.ssl.${attribute}: ${ui.ssl[attribute]} is not a valid file.`)
         }
       }
     }
@@ -66,17 +66,17 @@ export async function getStartupConfig() {
         passphrase: ui.ssl.passphrase,
       }
     } catch (e) {
-      logger.error('WARNING: COULD NOT START SERVER WITH SSL ENABLED')
+      logger.error(`Could not start server with SSL enabled as ${e.message}.`)
       logger.error(e)
     }
   }
 
-  // preload proxy host settings
+  // Preload proxy host settings
   if (ui.proxyHost) {
     config.cspWsOverride = `wss://${ui.proxyHost} ws://${ui.proxyHost}`
   }
 
-  // preload debug settings
+  // Preload debug settings
   if (ui.debug) {
     config.debug = true
     process.env.UIX_DEBUG_LOGGING = '1'

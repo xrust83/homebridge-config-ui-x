@@ -82,8 +82,8 @@
               class="btn btn-primary"
               [disabled]="createUserForm.invalid || loading"
               [ngClass]="{
-              'button-loading': loading
-            }"
+                'button-loading': loading
+              }"
             >
               {{ 'setup.create_account' | translate }}
               <i class="button-loading-overlay fas fa-fw fa-spinner fa-pulse"></i>
@@ -117,7 +117,7 @@
         <button
           type="button"
           class="btn btn-elegant ml-0"
-          [disabled]="restoreUploadStarted"
+          [disabled]="restoreUploading"
           (click)="onClickCancelRestore()"
         >
           {{ 'form.button_cancel' | translate }}
@@ -133,9 +133,7 @@
             <i class="fas fa-fw fa-spinner fa-pulse"></i>
             {{ 'backup.label_uploading' | translate }}
           </span>
-          } @if (!restoreUploading) {
-          <span>{{ 'backup.button_restore_backup' | translate }}</span>
-          }
+          } @if (!restoreUploading) { {{ 'backup.button_restore_backup' | translate }} }
         </button>
       </div>
     </div>

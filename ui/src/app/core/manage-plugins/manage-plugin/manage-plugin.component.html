@@ -1,6 +1,6 @@
 <div class="modal-content">
   <div class="modal-header">
-    <h5 class="modal-title">{{ presentTenseVerb }}: {{ pluginName }}</h5>
+    <h5 class="modal-title">{{ pluginDisplayName }}</h5>
     <button
       type="button"
       class="close"
@@ -15,60 +15,76 @@
   @if (actionComplete) {
   <div class="modal-body plugin-modal-body">
     @if (justUpdatedPlugin) {
-    <div>
-      @if (!isDisabled) {
-      <h3 class="text-center primary-text">{{ 'platform.version.service_restart_required' | translate }}</h3>
-      }
-      <p class="text-center grey-text">
-        {{ 'plugins.manage.thanks_for_updating' | translate:{ pluginName: pluginName, targetVersion: targetVersion } }}
-      </p>
-      @if (!isDisabled) {
-      <div>
-        @if (['homebridge', 'homebridge-config-ui-x'].includes(pluginName) || childBridges.length === 0) {
-        <p class="text-center grey-text">{{ 'restart.homebridge' | translate }}</p>
-        } @if (!['homebridge', 'homebridge-config-ui-x'].includes(pluginName) && childBridges.length > 0) {
-        <p class="text-center grey-text">{{ 'restart.child_bridges' | translate }}</p>
-        }
-      </div>
-      } @if (changeLog) {
-      <div class="alert pt-3 px-3 pb-0 mb-0">
-        <markdown class="plugin-md" [data]="changeLog"></markdown>
-      </div>
-      }
+    <div class="mb-3 text-center">
+      <i class="far fa-fw fa-check-circle primary-text" style="font-size: 75px"></i>
     </div>
-    }
+    <h5 class="text-center mb-3">
+      {{ 'plugins.manage.thanks_for_updating' | translate:{ pluginName: pluginDisplayName, targetVersion } }}
+    </h5>
+    @if (!isDisabled) {
+    <p
+      class="mb-3 text-center grey-text"
+      [innerHTML]="'plugins.manage.github_support' | translate:{ iconStar, iconThumbsUp }"
+    ></p>
+    @if (['homebridge', 'homebridge-config-ui-x'].includes(pluginName) || childBridges.length === 0) {
+    <p class="text-center mb-0">{{ 'plugins.settings.restart_required' | translate }}</p>
+    } @if (!['homebridge', 'homebridge-config-ui-x'].includes(pluginName) && childBridges.length > 0) {
+    <p class="text-center mb-0">{{ 'restart.child_bridges' | translate }}</p>
+    } } @if (changeLog) {
+    <div class="alert pt-3 px-3 pb-0 mb-3">
+      <markdown class="plugin-md" [data]="changeLog"></markdown>
+    </div>
+    } }
   </div>
   } @if (!onlineUpdateOk) {
   <div class="modal-body">
-    <h4 class="primary-text text-center">{{ 'plugins.manage.manual_update_required' | translate }}</h4>
-    <p>{{ 'plugins.manage.online_updates' | translate }}</p>
+    <div class="mb-3 text-center">
+      <i
+        class="fas fa-fw primary-text"
+        [ngClass]="{
+          'fa-arrow-alt-circle-down': action === 'Install',
+          'fa-code-compare': action === 'Update' && installedVersion,
+          'fa-arrow-alt-circle-up': action === 'Update' && !installedVersion,
+          'fa-trash': action === 'Uninstall',
+        }"
+        style="font-size: 75px"
+      ></i>
+    </div>
+    <ul class="mb-3">
+      <li>{{ 'plugins.manage.online_updates' | translate }}</li>
+      @if ($settings.env.serviceMode) {
+      <li>{{ 'plugins.manage.manual_update_command' | translate }}</li>
+      }
+    </ul>
     @if ($settings.env.serviceMode) {
-    <div>
-      <p>{{ 'plugins.manage.manual_update_command' | translate }}</p>
-      <pre class="p-2" style="background-color: #efefef">
+    <pre class="p-2 mb-0" style="background-color: #efefef">
 hb-service stop
 npm install -g {{ pluginName }}&#64;{{targetVersion}}
 hb-service start</pre
-      >
-    </div>
+    >
     }
   </div>
-  } @if (showReleaseNotes && !actionComplete) {
+  } @if (showReleaseNotes && !actionComplete && onlineUpdateOk) {
   <div class="modal-body plugin-modal-body">
-    @if (release.name || latestVersion) {
-    <div class="alert text-center">
-      <h5 class="mb-0">
-        @if (installedVersion) {
-        <span>v{{ installedVersion }} &rarr; </span>
-        } @if (release.name) {
-        <span>{{ release.name }}</span>
-        } @if (!release.name) {
-        <span>v{{ latestVersion }}</span>
-        }
-      </h5>
+    <div class="mb-3 text-center">
+      <i
+        class="far fa-fw primary-text"
+        [ngClass]="{
+          'fa-arrow-alt-circle-down': action === 'Install' && !installedVersion,
+          'fa-code-compare': action === 'Install' && installedVersion,
+          'fa-arrow-alt-circle-up': action === 'Update',
+          'fa-trash': action === 'Uninstall',
+        }"
+        style="font-size: 75px"
+      ></i>
     </div>
+    @if (release.name || latestVersion) {
+    <h6 class="mb-3 text-center">
+      @if (installedVersion) {
+      <span>v{{ installedVersion }} &rarr; </span>
+      } @if (release.name) { {{ release.name }} } @if (!release.name) { v{{ latestVersion }} }
+    </h6>
     }
-    <h5>{{ 'plugins.manage.release_notes' | translate }}</h5>
     <div class="alert pt-3 px-3 pb-0 mb-0">
       <markdown class="plugin-md" [data]="release.changelog"></markdown>
     </div>
@@ -76,7 +92,7 @@ hb-service start</pre
   } @if (!onlineUpdateOk || actionComplete || showReleaseNotes || actionFailed) {
   <div class="modal-footer justify-content-between">
     <div class="text-left">
-      @if (!justUpdatedPlugin || (justUpdatedPlugin && (!isDisabled || actionFailed))) {
+      @if ((!justUpdatedPlugin && onlineUpdateOk) || (justUpdatedPlugin && (!isDisabled || actionFailed))) {
       <button
         type="button"
         class="btn btn-elegant"
@@ -89,7 +105,7 @@ hb-service start</pre
       }
     </div>
     <div class="text-center">
-      @if (justUpdatedPlugin && isDisabled && !actionFailed) {
+      @if ((justUpdatedPlugin && isDisabled && !actionFailed || !onlineUpdateOk)) {
       <button
         type="button"
         class="btn btn-elegant"

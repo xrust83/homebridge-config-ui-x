@@ -62,7 +62,7 @@ export class LogService {
     }
 
     if (this.command) {
-      client.emit('stdout', cyan(`Loading logs using "${this.configService.ui.log.method}" method...\r\n`))
+      client.emit('stdout', cyan(`Loading logs using ${this.configService.ui.log.method} method...\r\n`))
       client.emit('stdout', cyan(`CMD: ${this.command.join(' ')}\r\n\r\n`))
       this.tailLog(client, size)
     } else if (this.useNative) {
@@ -70,7 +70,7 @@ export class LogService {
       client.emit('stdout', cyan(`File: ${this.configService.ui.log.path}\r\n\r\n`))
       this.tailLogFromFileNative(client)
     } else {
-      client.emit('stdout', red('Cannot show logs. "log" option is not configured correctly in your Homebridge config.json file.\r\n\r\n'))
+      client.emit('stdout', red('Cannot show logs. The log option is not configured correctly in your Homebridge config.json file.\r\n\r\n'))
       client.emit('stdout', cyan('See https://homebridge.io/w/JtHrm for instructions or use hb-service.\r\n'))
     }
   }
@@ -83,7 +83,7 @@ export class LogService {
   private tailLog(client: EventEmitter, size: LogTermSize) {
     const command = [...this.command]
 
-    // spawn the process that will output the logs
+    // Spawn the process that will output the logs
     const term = this.nodePtyService.spawn(command.shift(), command, {
       name: 'xterm-color',
       cols: size.cols,
@@ -92,33 +92,33 @@ export class LogService {
       env: process.env,
     })
 
-    // send stdout data from the process to the client
+    // Send stdout data from the process to the client
     term.onData((data) => {
       client.emit('stdout', data)
     })
 
-    // send an error message to the client if the log tailing process exits early
+    // Send an error message to the client if the log tailing process exits early
     term.onExit((code) => {
       try {
         if (!this.ending) {
           client.emit('stdout', '\n\r')
-          client.emit('stdout', red(`The log tail command "${command.join(' ')}" exited with code ${code.exitCode}.\n\r`))
+          client.emit('stdout', red(`The log tail command ${command.join(' ')} exited with code ${code.exitCode}.\n\r`))
           client.emit('stdout', red('Please check the command in your config.json is correct.\n\r\n\r'))
           client.emit('stdout', cyan('See https://github.com/homebridge/homebridge-config-ui-x/wiki/Manual-Configuration#log-viewer-configuration for instructions.\r\n'))
         }
       } catch (e) {
-        // the client socket probably closed
+        // The client socket probably closed
       }
     })
 
-    // handle resize events
+    // Handle resize events
     client.on('resize', (resize: { rows: number, cols: number }) => {
       try {
         term.resize(resize.cols, resize.rows)
       } catch (e) {}
     })
 
-    // cleanup on disconnect
+    // Cleanup on disconnect
     const onEnd = () => {
       this.ending = true
 
@@ -129,7 +129,7 @@ export class LogService {
       try {
         term.kill()
       } catch (e) {}
-      // really make sure the log tail command is killed when using sudo mode
+      // Really make sure the log tail command is killed when using sudo mode
       if (this.configService.ui.sudo && term && term.pid) {
         exec(`sudo -n kill -9 ${term.pid}`)
       }
@@ -145,13 +145,13 @@ export class LogService {
   private logFromFile() {
     let command: string[]
     if (platform() === 'win32') {
-      // windows - use powershell to tail log
+      // Windows - use powershell to tail log
       command = ['powershell.exe', '-command', `Get-Content -Path '${this.configService.ui.log.path}' -Wait -Tail 200`]
     } else {
-      // linux / macos etc
+      // Linux / macos etc
       command = ['tail', '-n', '500', '-f', this.configService.ui.log.path]
 
-      // sudo mode is requested in plugin config
+      // Sudo mode is requested in plugin config
       if (this.configService.ui.sudo) {
         command.unshift('sudo', '-n')
       }
@@ -166,7 +166,7 @@ export class LogService {
   private logFromSystemd() {
     const command = ['journalctl', '-o', 'cat', '-n', '500', '-f', '-u', this.configService.ui.log.service || 'homebridge']
 
-    // sudo mode is requested in plugin config
+    // Sudo mode is requested in plugin config
     if (this.configService.ui.sudo) {
       command.unshift('sudo', '-n')
     }
@@ -183,7 +183,7 @@ export class LogService {
       client.emit('stdout', red(`No log file exists at path: ${this.configService.ui.log.path}\n\r`))
     }
 
-    // read the first 50000 bytes of the log and emit to the client
+    // Read the first 50000 bytes of the log and emit to the client
     try {
       const logStats = await stat(this.configService.ui.log.path)
       const logStartPosition = logStats.size <= 50000 ? 0 : logStats.size - 50000
@@ -216,7 +216,7 @@ export class LogService {
       }
     }
 
-    // watch for lines and emit to client
+    // Watch for lines and emit to client
     const onLine = (line: string) => {
       client.emit('stdout', `${line}\n\r`)
     }
@@ -228,7 +228,7 @@ export class LogService {
     this.nativeTail.on('line', onLine)
     this.nativeTail.on('error', onError)
 
-    // cleanup on disconnect
+    // Cleanup on disconnect
     const onEnd = () => {
       this.ending = true
 
@@ -238,7 +238,7 @@ export class LogService {
       // @ts-expect-error - TS2339: Property removeListener does not exist on type Tail
       this.nativeTail.removeListener('error', onError)
 
-      // stop watching the file if there are no other watchers
+      // Stop watching the file if there are no other watchers
       // @ts-expect-error - TS2339: Property listenerCount does not exist on type Tail
       if (this.nativeTail.listenerCount('line') === 0) {
         this.nativeTail.unwatch()

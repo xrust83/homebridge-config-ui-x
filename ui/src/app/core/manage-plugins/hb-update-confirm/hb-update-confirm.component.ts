@@ -52,6 +52,11 @@ export class HbUpdateConfirmComponent implements OnInit {
           }
         })
 
+      // Skip if there are no plugins installed
+      if (this.installedPlugins.length === 0) {
+        this.$activeModal.close('update')
+      }
+
       this.loading = false
     } catch (error) {
       console.error(error)

@@ -1,9 +1,9 @@
 <div
   class="accessory-box"
   [ngClass]="{
-  'switch-on': service.values.ContactSensorState,
-  'switch-off': !service.values.ContactSensorState
-}"
+    'switch-on': service.values.ContactSensorState,
+    'switch-off': !service.values.ContactSensorState
+  }"
 >
   <div class="d-flex flex-column h-100">
     @if (service.values.ContactSensorState) {

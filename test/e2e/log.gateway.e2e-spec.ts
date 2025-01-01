@@ -39,10 +39,10 @@ describe('LogGateway (e2e)', () => {
     secretsFilePath = resolve(process.env.UIX_STORAGE_PATH, '.uix-secrets')
     logFilePath = resolve(process.env.UIX_STORAGE_PATH, 'homebridge.log')
 
-    // setup test config
+    // Setup test config
     await copy(resolve(__dirname, '../mocks', 'config.json'), process.env.UIX_CONFIG_PATH)
 
-    // setup test auth file
+    // Setup test auth file
     await copy(resolve(__dirname, '../mocks', 'auth.json'), authFilePath)
     await copy(resolve(__dirname, '../mocks', '.uix-secrets'), secretsFilePath)
 
@@ -77,14 +77,14 @@ describe('LogGateway (e2e)', () => {
     vi.spyOn(client, 'emit')
     vi.spyOn(client, 'on')
 
-    // unset log mode between each test
+    // Unset log mode between each test
     configService.ui.sudo = false
     configService.ui.log = undefined
     logService.setLogMethod()
   })
 
   it('ON /log/tail-log (native)', async () => {
-    // set log mode to native
+    // Set log mode to native
     configService.ui.log = { method: 'native', path: logFilePath }
     logService.setLogMethod()
 
@@ -102,12 +102,12 @@ describe('LogGateway (e2e)', () => {
   })
 
   it('ON /log/tail-log (tail)', async () => {
-    // this test will not run on windows
+    // This test will not run on windows
     if (platform() === 'win32') {
       return
     }
 
-    // set log mode to file
+    // Set log mode to file
     configService.ui.log = { method: 'file', path: logFilePath }
     logService.setLogMethod()
 
@@ -125,12 +125,12 @@ describe('LogGateway (e2e)', () => {
   })
 
   it('ON /log/tail-log (tail - with sudo)', async () => {
-    // this test will not run on windows
+    // This test will not run on windows
     if (platform() === 'win32') {
       return
     }
 
-    // set log mode to file and enable sudo
+    // Set log mode to file and enable sudo
     configService.ui.sudo = true
     configService.ui.log = { method: 'file', path: logFilePath }
     logService.setLogMethod()
@@ -141,12 +141,12 @@ describe('LogGateway (e2e)', () => {
   })
 
   it('ON /log/tail-log (systemd)', async () => {
-    // this test will not run on windows
+    // This test will not run on windows
     if (platform() === 'win32') {
       return
     }
 
-    // set log mode to systemd
+    // Set log mode to systemd
     configService.ui.log = { method: 'systemd' }
     logService.setLogMethod()
 
@@ -156,12 +156,12 @@ describe('LogGateway (e2e)', () => {
   })
 
   it('ON /log/tail-log (systemd - with sudo)', async () => {
-    // this test will not run on windows
+    // This test will not run on windows
     if (platform() === 'win32') {
       return
     }
 
-    // set log mode to systemd
+    // Set log mode to systemd
     configService.ui.sudo = true
     configService.ui.log = { method: 'systemd' }
     logService.setLogMethod()
@@ -172,12 +172,12 @@ describe('LogGateway (e2e)', () => {
   })
 
   it('ON /log/tail-log (powershell)', async () => {
-    // this test will only run on Windows
+    // This test will only run on Windows
     if (platform() !== 'win32') {
       return
     }
 
-    // set log mode to file
+    // Set log mode to file
     configService.ui.log = { method: 'file', path: logFilePath }
     logService.setLogMethod()
 
@@ -195,7 +195,7 @@ describe('LogGateway (e2e)', () => {
   })
 
   it('ON /log/tail-log (cleans up connections)', async () => {
-    // set log mode to native
+    // Set log mode to native
     configService.ui.log = { method: 'native', path: logFilePath }
     logService.setLogMethod()
 
@@ -203,20 +203,20 @@ describe('LogGateway (e2e)', () => {
 
     await new Promise(res => setTimeout(res, 100))
 
-    // ensure the log is working
+    // Ensure the log is working
     expect(client.emit).toHaveBeenCalledWith('stdout', expect.stringContaining('line 1'))
 
-    // initial listeners
+    // Initial listeners
     expect((logService as any).nativeTail.listenerCount('line')).toBe(1)
     expect(client.listenerCount('disconnect')).toBe(1)
     expect(client.listenerCount('end')).toBe(1)
 
-    // emit disconnect
+    // Emit disconnect
     client.emit('disconnect')
 
     await new Promise(res => setTimeout(res, 100))
 
-    // ensure listeners have been removed
+    // Ensure listeners have been removed
     expect((logService as any).nativeTail.listenerCount('line')).toBe(0)
     expect(client.listenerCount('disconnect')).toBe(0)
     expect(client.listenerCount('end')).toBe(0)

@@ -77,39 +77,6 @@ const routes: Routes = [
         loadChildren: () => import('./modules/platform-tools/platform-tools.module').then(m => m.PlatformToolsModule),
         canActivate: [AdminGuard],
       },
-      // redirects from old urls below
-      {
-        path: 'docker/terminal',
-        redirectTo: 'platform-tools/terminal',
-      },
-      {
-        path: 'docker/startup-script',
-        redirectTo: 'platform-tools/docker/startup-script',
-      },
-      {
-        path: 'docker/restart',
-        redirectTo: 'platform-tools/docker/restart-container',
-      },
-      {
-        path: 'docker/settings',
-        redirectTo: 'platform-tools/docker/settings',
-      },
-      {
-        path: 'linux/terminal',
-        redirectTo: 'platform-tools/terminal',
-      },
-      {
-        path: 'linux/restart',
-        redirectTo: 'platform-tools/linux/restart-server',
-      },
-      {
-        path: 'linux/shutdown',
-        redirectTo: 'platform-tools/linux/shutdown-server',
-      },
-      {
-        path: 'platform-tools/docker/settings',
-        redirectTo: '/settings',
-      },
     ],
   },
   {

@@ -94,20 +94,20 @@ export class HomebridgeIpcService extends EventEmitter {
    */
   public restartHomebridge(): void {
     if (this.homebridge) {
-      this.logger.log('Sending SIGTERM to Homebridge')
+      this.logger.log('Sending SIGTERM to Homebridge...')
 
-      // send SIGTERM command
+      // Send SIGTERM command
       this.homebridge.kill('SIGTERM')
 
-      // prepare a timeout to send SIGKILL after 7 seconds if not shutdown before then
+      // Prepare a timeout to send SIGKILL after 7 seconds if not shutdown before then
       const shutdownTimeout = setTimeout(() => {
         try {
-          this.logger.warn('Sending SIGKILL to Homebridge')
+          this.logger.warn('Sending SIGKILL to Homebridge...')
           this.homebridge.kill('SIGKILL')
         } catch (e) {}
       }, 7000)
 
-      // if homebridge ends before the timeout, clear the timeout
+      // If homebridge ends before the timeout, clear the timeout
       this.homebridge.once('close', () => {
         clearTimeout(shutdownTimeout)
       })
@@ -135,7 +135,7 @@ export class HomebridgeIpcService extends EventEmitter {
    */
   public async killHomebridge() {
     if (this.homebridge) {
-      this.logger.log('Sending SIGKILL to Homebridge')
+      this.logger.log('Sending SIGKILL to Homebridge...')
       this.homebridge.kill('SIGKILL')
     }
   }

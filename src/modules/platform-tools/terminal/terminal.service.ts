@@ -32,19 +32,19 @@ export class TerminalService {
   async startSession(client: WsEventEmitter, size: TermSize) {
     this.ending = false
 
-    // if terminal is not enabled, disconnect the client
+    // If terminal is not enabled, disconnect the client
     if (!this.configService.enableTerminalAccess) {
-      this.logger.error('Terminal is not enabled. Disconnecting client...')
+      this.logger.error('Terminal is not enabled, disconnecting client...')
       client.disconnect()
       return
     }
 
-    this.logger.log('Starting terminal session')
+    this.logger.log('Starting terminal session.')
 
     // check if we should use bash or sh
     const shell = await pathExists('/bin/bash') ? '/bin/bash' : '/bin/sh'
 
-    // spawn a new shell
+    // Spawn a new shell
     const term = this.nodePtyService.spawn(shell, [], {
       name: 'xterm-color',
       cols: size.cols,
@@ -53,23 +53,23 @@ export class TerminalService {
       env: process.env,
     })
 
-    // write to the client
+    // Write to the client
     term.onData((data) => {
       client.emit('stdout', data)
     })
 
-    // let the client know when the session ends
+    // Let the client know when the session ends
     term.onExit((code) => {
       try {
         if (!this.ending) {
           client.emit('process-exit', code)
         }
       } catch (e) {
-        // the client socket probably closed
+        // The client socket probably closed
       }
     })
 
-    // write input to the terminal
+    // Write input to the terminal
     client.on('stdin', (data) => {
       term.write(data)
     })

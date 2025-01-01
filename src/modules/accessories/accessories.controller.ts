@@ -24,7 +24,7 @@ export class AccessoriesController {
 
   @ApiOperation({
     summary: 'Return a list of Homebridge accessories.',
-    description: 'Homebridge must be running in "insecure" mode to access the accessory list.',
+    description: 'Homebridge must be running in `insecure` mode to access the accessory list.',
   })
   @Get('/')
   getAccessories() {
@@ -40,8 +40,8 @@ export class AccessoriesController {
   }
 
   @ApiOperation({
-    summary: 'Get a single accessory and refresh it\'s characteristics.',
-    description: 'Get the "uniqueId" from the GET /api/accessories method.',
+    summary: 'Get a single accessory and refresh its characteristics.',
+    description: 'Get the `uniqueId` from `GET /api/accessories`.',
   })
   @Get('/:uniqueId')
   getAccessory(@Param('uniqueId') uniqueId: string) {
@@ -50,7 +50,7 @@ export class AccessoriesController {
 
   @ApiOperation({
     summary: 'Set the value of an accessory characteristic.',
-    description: 'Get the "uniqueId" and "characteristicType" values from the GET /api/accessories method.',
+    description: 'Get the `uniqueId` and `characteristicType` values from `GET /api/accessories`.',
   })
   @ApiParam({ name: 'uniqueId' })
   @Put('/:uniqueId')

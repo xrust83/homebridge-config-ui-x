@@ -1,7 +1,7 @@
 import { HttpEventType, HttpResponse } from '@angular/common/http'
 import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core'
 import { Router } from '@angular/router'
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { TranslatePipe, TranslateService } from '@ngx-translate/core'
 import { ToastrService } from 'ngx-toastr'
 import { Terminal } from 'xterm'
@@ -9,6 +9,7 @@ import { FitAddon } from 'xterm-addon-fit'
 
 import { ApiService } from '@/app/core/api.service'
 import { IoNamespace, WsService } from '@/app/core/ws.service'
+import { BackupComponent } from '@/app/modules/settings/backup/backup.component'
 
 @Component({
   templateUrl: './restore.component.html',
@@ -18,6 +19,7 @@ import { IoNamespace, WsService } from '@/app/core/ws.service'
 export class RestoreComponent implements OnInit, OnDestroy {
   $activeModal = inject(NgbActiveModal)
   private $api = inject(ApiService)
+  private $modal = inject(NgbModal)
   private $route = inject(Router)
   private $toastr = inject(ToastrService)
   private $translate = inject(TranslateService)
@@ -196,6 +198,14 @@ export class RestoreComponent implements OnInit, OnDestroy {
         this.$route.navigate(['/'])
       },
       error: () => {},
+    })
+  }
+
+  reopenBackupModal() {
+    this.$activeModal.dismiss()
+    this.$modal.open(BackupComponent, {
+      size: 'lg',
+      backdrop: 'static',
     })
   }
 

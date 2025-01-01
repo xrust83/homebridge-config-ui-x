@@ -52,10 +52,10 @@ describe('PlatformToolsTerminal (e2e)', () => {
     authFilePath = resolve(process.env.UIX_STORAGE_PATH, 'auth.json')
     secretsFilePath = resolve(process.env.UIX_STORAGE_PATH, '.uix-secrets')
 
-    // setup test config
+    // Setup test config
     await copy(resolve(__dirname, '../mocks', 'config.json'), process.env.UIX_CONFIG_PATH)
 
-    // setup test auth file
+    // Setup test auth file
     await copy(resolve(__dirname, '../mocks', 'auth.json'), authFilePath)
     await copy(resolve(__dirname, '../mocks', '.uix-secrets'), secretsFilePath)
 
@@ -123,7 +123,7 @@ describe('PlatformToolsTerminal (e2e)', () => {
     expect(client.listenerCount('end')).toBe(1)
     expect(client.listenerCount('disconnect')).toBe(1)
 
-    // end the session
+    // End the session
     client.emit('end')
 
     // check the listeners were removed
@@ -144,7 +144,7 @@ describe('PlatformToolsTerminal (e2e)', () => {
 
     expect(nodePtyService.spawn).toHaveBeenCalled()
 
-    // send stdin
+    // Send stdin
     client.emit('stdin', 'help')
     expect(mockTerm.write).toHaveBeenCalledWith('help')
   })
@@ -156,7 +156,7 @@ describe('PlatformToolsTerminal (e2e)', () => {
 
     expect(nodePtyService.spawn).toHaveBeenCalled()
 
-    // send stdin
+    // Send stdin
     client.emit('resize', { cols: 20, rows: 25 })
     expect(mockTerm.resize).toHaveBeenCalledWith(20, 25)
   })

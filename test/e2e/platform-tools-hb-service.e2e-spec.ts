@@ -34,10 +34,10 @@ describe('PlatformToolsHbService (e2e)', () => {
     envFilePath = resolve(process.env.UIX_STORAGE_PATH, '.uix-hb-service-homebridge-startup.json')
     logFilePath = resolve(process.env.UIX_STORAGE_PATH, 'homebridge.log')
 
-    // setup test config
+    // Setup test config
     await copy(resolve(__dirname, '../mocks', 'config.json'), process.env.UIX_CONFIG_PATH)
 
-    // setup test auth file
+    // Setup test auth file
     await copy(resolve(__dirname, '../mocks', 'auth.json'), authFilePath)
     await copy(resolve(__dirname, '../mocks', '.uix-secrets'), secretsFilePath)
 
@@ -59,20 +59,20 @@ describe('PlatformToolsHbService (e2e)', () => {
   })
 
   beforeEach(async () => {
-    // restore hb-service env file
+    // Restore hb-service env file
     await copy(resolve(__dirname, '../mocks', '.uix-hb-service-homebridge-startup.json'), envFilePath)
 
-    // ensure restart required flag is cleared
+    // Ensure restart required flag is cleared
     configService.hbServiceUiRestartRequired = false
 
-    // enable service mode
+    // Enable service mode
     configService.serviceMode = true
     configService.ui.log = {
       method: 'file',
       path: logFilePath,
     }
 
-    // get auth token before each test
+    // Get auth token before each test
     authorization = `bearer ${(await app.inject({
       method: 'POST',
       path: '/auth/login',
@@ -136,12 +136,12 @@ describe('PlatformToolsHbService (e2e)', () => {
     expect(envFile.env.DEBUG).toBe('*')
     expect(envFile.env.NODE_OPTIONS).toBe('--inspect')
 
-    // the restart flag should be set
+    // The restart flag should be set
     expect(configService.hbServiceUiRestartRequired).toBe(true)
   })
 
   it('PUT /platform-tools/hb-service/set-full-service-restart-flag', async () => {
-    // sanity check
+    // Sanity check
     expect(configService.hbServiceUiRestartRequired).toBe(false)
 
     const res = await app.inject({
@@ -157,7 +157,7 @@ describe('PlatformToolsHbService (e2e)', () => {
   })
 
   it('GET /platform-tools/hb-service/log/download', async () => {
-    // write some data to the log file
+    // Write some data to the log file
     const sampleLogData = ['line 1', 'line 2', 'line 3'].join('\n')
     await writeFile(logFilePath, sampleLogData)
 
@@ -174,7 +174,7 @@ describe('PlatformToolsHbService (e2e)', () => {
   })
 
   it('GET /platform-tools/hb-service/log/download (with colour)', async () => {
-    // write some data to the log file
+    // Write some data to the log file
     const sampleLogData = ['line 1', 'line 2', 'line 3'].join('\n')
     await writeFile(logFilePath, sampleLogData)
 
@@ -191,7 +191,7 @@ describe('PlatformToolsHbService (e2e)', () => {
   })
 
   it('PUT /platform-tools/hb-service/log/truncate', async () => {
-    // write some data to the log file
+    // Write some data to the log file
     const sampleLogData = ['line 1', 'line 2', 'line 3'].join('\n')
     await writeFile(logFilePath, sampleLogData)
 

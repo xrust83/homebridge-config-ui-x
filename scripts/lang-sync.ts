@@ -74,14 +74,14 @@ async function main() {
     const translationStrings = await readJson(langPath)
 
     if (lang !== 'en.json') {
-      // find any keys in the main file that are not in the translation file, and add
+      // Find any keys in the main file that are not in the translation file, and add
       for (const [key, value] of Object.entries(main)) {
         if (!Object.prototype.hasOwnProperty.call(translationStrings, key)) {
           translationStrings[key] = value
         }
       }
 
-      // find any keys in the translation file that are not in the main file, and remove
+      // Find any keys in the translation file that are not in the main file, and remove
       for (const key of Object.keys(translationStrings)) {
         if (!Object.prototype.hasOwnProperty.call(main, key)) {
           delete translationStrings[key]
@@ -89,7 +89,7 @@ async function main() {
       }
     }
 
-    // sort keys
+    // Sort keys
     const ordered = {}
     Object.keys(translationStrings).sort().forEach((key) => {
       ordered[key] = translationStrings[key]
@@ -100,4 +100,4 @@ async function main() {
 }
 
 // Call the main function
-main().catch(console.error)
+main().catch(error => console.error(error))

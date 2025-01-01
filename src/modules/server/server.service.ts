@@ -29,7 +29,6 @@ import { ConfigService, HomebridgeConfig } from '../../core/config/config.servic
 import { HomebridgeIpcService } from '../../core/homebridge-ipc/homebridge-ipc.service'
 import { Logger } from '../../core/logger/logger.service'
 import { AccessoriesService } from '../accessories/accessories.service'
-import { ChildBridgesService } from '../child-bridges/child-bridges.service'
 import { ConfigEditorService } from '../config-editor/config-editor.service'
 import { HomebridgeMdnsSettingDto } from './server.dto'
 
@@ -47,7 +46,6 @@ export class ServerService {
     private readonly configService: ConfigService,
     private readonly configEditorService: ConfigEditorService,
     private readonly accessoriesService: AccessoriesService,
-    private readonly childBridgesService: ChildBridgesService,
     private readonly homebridgeIpcService: HomebridgeIpcService,
     private readonly logger: Logger,
   ) {
@@ -55,28 +53,95 @@ export class ServerService {
     this.accessoryInfoPath = join(this.configService.storagePath, 'persist', `AccessoryInfo.${this.accessoryId}.json`)
   }
 
+  private async deleteSingleDeviceAccessories(id: string, cachedAccessoriesDir: string) {
+    const cachedAccessories = join(cachedAccessoriesDir, `cachedAccessories.${id}`)
+    const cachedAccessoriesBackup = join(cachedAccessoriesDir, `.cachedAccessories.${id}.bak`)
+
+    if (await pathExists(cachedAccessories)) {
+      await unlink(cachedAccessories)
+      this.logger.warn(`Bridge ${id} accessory removal: removed ${cachedAccessories}.`)
+    }
+
+    if (await pathExists(cachedAccessoriesBackup)) {
+      await unlink(cachedAccessoriesBackup)
+      this.logger.warn(`Bridge ${id} accessory removal: removed ${cachedAccessoriesBackup}.`)
+    }
+  }
+
+  private async deleteSingleDevicePairing(id: string, resetPairingInfo: boolean) {
+    const persistPath = join(this.configService.storagePath, 'persist')
+    const accessoryInfo = join(persistPath, `AccessoryInfo.${id}.json`)
+    const identifierCache = join(persistPath, `IdentifierCache.${id}.json`)
+
+    // Only available for child bridges
+    if (resetPairingInfo) {
+      // An error thrown here should not interrupt the process, this is a convenience feature
+      try {
+        const configFile = await this.configEditorService.getConfigFile()
+        const username = id.match(/.{1,2}/g).join(':')
+        const pluginBlocks = configFile.accessories
+          .concat(configFile.platforms)
+          .concat([{ _bridge: configFile.bridge }])
+          .filter((block: any) => block._bridge?.username?.toUpperCase() === username.toUpperCase())
+
+        const pluginBlock = pluginBlocks.find((block: any) => block._bridge?.port)
+        const otherBlocks = pluginBlocks.filter((block: any) => !block._bridge?.port)
+
+        if (pluginBlock) {
+          // Generate new random username and pin, and save the config file
+          pluginBlock._bridge.username = this.configEditorService.generateUsername()
+          pluginBlock._bridge.pin = this.configEditorService.generatePin()
+
+          // Multiple blocks may share the same username, for accessory blocks that are part of the same bridge
+          otherBlocks.forEach((block: any) => {
+            block._bridge.username = pluginBlock._bridge.username
+          })
+
+          this.logger.warn(`Bridge ${id} reset: new username: ${pluginBlock._bridge.username} and new pin: ${pluginBlock._bridge.pin}.`)
+          await this.configEditorService.updateConfigFile(configFile)
+        } else {
+          this.logger.error(`Failed to reset username and pin for child bridge ${id} as the plugin block could not be found.`)
+        }
+      } catch (e) {
+        this.logger.error(`Failed to reset username and pin for child bridge ${id} as ${e.message}.`)
+      }
+    }
+
+    if (await pathExists(accessoryInfo)) {
+      await unlink(accessoryInfo)
+      this.logger.warn(`Bridge ${id} reset: removed ${accessoryInfo}.`)
+    }
+
+    if (await pathExists(identifierCache)) {
+      await unlink(identifierCache)
+      this.logger.warn(`Bridge ${id} reset: removed ${identifierCache}.`)
+    }
+
+    await this.deleteDeviceAccessories(id)
+  }
+
   /**
    * Restart the server
    */
   public async restartServer() {
-    this.logger.log('Homebridge restart request received')
+    this.logger.log('Homebridge restart request received.')
 
     if (this.configService.serviceMode && !(await this.configService.uiRestartRequired() || await this.nodeVersionChanged())) {
-      this.logger.log('UI / Bridge settings have not changed; only restarting Homebridge process')
-      // restart homebridge by killing child process
+      this.logger.log('UI/Bridge settings have not changed - only restarting Homebridge process.')
+      // Restart homebridge by killing child process
       this.homebridgeIpcService.restartHomebridge()
 
-      // reset the pool of discovered homebridge instances
+      // Reset the pool of discovered homebridge instances
       this.accessoriesService.resetInstancePool()
       return { ok: true, command: 'SIGTERM', restartingUI: false }
     }
 
     setTimeout(() => {
       if (this.configService.ui.restart) {
-        this.logger.log(`Executing restart command: ${this.configService.ui.restart}`)
+        this.logger.log(`Executing restart command ${this.configService.ui.restart}.`)
         exec(this.configService.ui.restart, (err) => {
           if (err) {
-            this.logger.log('Restart command exited with an error. Failed to restart Homebridge.')
+            this.logger.log('Restart command exited with an error, failed to restart Homebridge.')
           }
         })
       } else {
@@ -93,27 +158,25 @@ export class ServerService {
    * Preserves plugin config.
    */
   public async resetHomebridgeAccessory() {
-    // restart ui on next restart
+    // Restart ui on next restart
     this.configService.hbServiceUiRestartRequired = true
 
     const configFile = await this.configEditorService.getConfigFile()
 
-    // generate new random username and pin
+    // Generate new random username and pin
     configFile.bridge.pin = this.configEditorService.generatePin()
     configFile.bridge.username = this.configEditorService.generateUsername()
 
-    this.logger.warn(`Homebridge Reset: New Username: ${configFile.bridge.username}`)
-    this.logger.warn(`Homebridge Reset: New Pin: ${configFile.bridge.pin}`)
+    this.logger.warn(`Homebridge bridge reset: new username ${configFile.bridge.username} and new pin ${configFile.bridge.pin}.`)
 
-    // save the config file
+    // Save the config file
     await this.configEditorService.updateConfigFile(configFile)
 
-    // remove accessories and persist directories
+    // Remove accessories and persist directories
     await remove(resolve(this.configService.storagePath, 'accessories'))
     await remove(resolve(this.configService.storagePath, 'persist'))
 
-    this.logger.log('Homebridge Reset: "persist" directory removed.')
-    this.logger.log('Homebridge Reset: "accessories" directory removed.')
+    this.logger.log('Homebridge bridge reset: accessories and persist directories were removed.')
   }
 
   /**
@@ -156,21 +219,7 @@ export class ServerService {
     const pluginBlock = configFile.accessories
       .concat(configFile.platforms)
       .concat([{ _bridge: configFile.bridge }])
-      .find((block: any) => block._bridge?.username === username)
-
-    device._id = deviceId
-    device._username = username
-    device._main = isMain
-    device._isPaired = device.pairedClients && Object.keys(device.pairedClients).length > 0
-    device._setupCode = this.generateSetupCode(device)
-    device.name = pluginBlock?._bridge.name || pluginBlock?.name || device.displayName
-
-    // filter out some properties
-    delete device.signSk
-    delete device.signPk
-    delete device.configHash
-    delete device.pairedClients
-    delete device.pairedClientsPermission
+      .find((block: any) => block._bridge?.username?.toUpperCase() === username.toUpperCase() && block._bridge?.port)
 
     try {
       device._category = Object.entries(Categories).find(([, value]) => value === device.category)[0].toLowerCase()
@@ -178,54 +227,111 @@ export class ServerService {
       device._category = 'Other'
     }
 
+    device.name = pluginBlock?._bridge.name || pluginBlock?.name || device.displayName
+    device._id = deviceId
+    device._username = username
+    device._main = isMain
+    device._isPaired = device.pairedClients && Object.keys(device.pairedClients).length > 0
+    device._setupCode = this.generateSetupCode(device)
+    device._couldBeStale = !device._main && device._category === 'bridge' && !pluginBlock
+
+    // Filter out some properties
+    delete device.signSk
+    delete device.signPk
+    delete device.configHash
+    delete device.pairedClients
+    delete device.pairedClientsPermission
+
     return device
   }
 
   /**
    * Remove a device pairing
    */
-  public async deleteDevicePairing(id: string) {
-    if (this.configService.serviceMode) {
-      // Stop the child bridge and wait a few seconds for it to prevent a race condition of
-      // deleting the files here and the child bridge stopping and dumping/recreating the accessory cache files
-      this.childBridgesService.stopStartRestartChildBridge('stopChildBridge', id)
-      await new Promise(res => setTimeout(res, 3000))
+  public async deleteDevicePairing(id: string, resetPairingInfo: boolean) {
+    if (!this.configService.serviceMode) {
+      this.logger.error('The reset paired bridge command is only available in service mode.')
+      throw new BadRequestException('This command is only available in service mode.')
     }
 
-    const persistPath = join(this.configService.storagePath, 'persist')
-    const accessoryInfo = join(persistPath, `AccessoryInfo.${id}.json`)
-    const identifierCache = join(persistPath, `IdentifierCache.${id}.json`)
+    this.logger.warn(`Shutting down Homebridge before resetting paired bridge ${id}...`)
 
-    if (await pathExists(accessoryInfo)) {
-      await unlink(accessoryInfo)
-      this.logger.warn(`Removed ${accessoryInfo}`)
+    // Wait for homebridge to stop
+    await this.homebridgeIpcService.restartAndWaitForClose()
+
+    // Remove the bridge cache files
+    await this.deleteSingleDevicePairing(id, resetPairingInfo)
+
+    return { ok: true }
+  }
+
+  /**
+   * Remove multiple device pairings
+   */
+  public async deleteDevicesPairing(bridges: { id: string, resetPairingInfo: boolean }[]) {
+    if (!this.configService.serviceMode) {
+      this.logger.error('The reset multiple paired bridges command is only available in service mode.')
+      throw new BadRequestException('This command is only available in service mode.')
     }
 
-    if (await pathExists(identifierCache)) {
-      await unlink(identifierCache)
-      this.logger.warn(`Removed ${identifierCache}`)
+    this.logger.warn(`Shutting down Homebridge before resetting paired bridges ${bridges.map(x => x.id).join(', ')}...`)
+
+    // Wait for homebridge to stop
+    await this.homebridgeIpcService.restartAndWaitForClose()
+
+    for (const { id, resetPairingInfo } of bridges) {
+      try {
+        // Remove the bridge cache files
+        await this.deleteSingleDevicePairing(id, resetPairingInfo)
+      } catch (e) {
+        this.logger.error(`Failed to reset paired bridge ${id} as ${e.message}.`)
+      }
     }
 
-    await this.deleteDeviceAccessories(id)
+    return { ok: true }
   }
 
   /**
    * Remove a device's accessories
    */
   public async deleteDeviceAccessories(id: string) {
-    const cachedAccessoriesDir = join(this.configService.storagePath, 'accessories')
-
-    const cachedAccessories = join(cachedAccessoriesDir, `cachedAccessories.${id}`)
-    const cachedAccessoriesBackup = join(cachedAccessoriesDir, `.cachedAccessories.${id}.bak`)
-
-    if (await pathExists(cachedAccessories)) {
-      await unlink(cachedAccessories)
-      this.logger.warn(`Removed ${cachedAccessories}`)
+    if (!this.configService.serviceMode) {
+      this.logger.error('The remove bridge\'s accessories command is only available in service mode.')
+      throw new BadRequestException('This command is only available in service mode.')
     }
 
-    if (await pathExists(cachedAccessoriesBackup)) {
-      await unlink(cachedAccessoriesBackup)
-      this.logger.warn(`Removed ${cachedAccessoriesBackup}`)
+    this.logger.warn(`Shutting down Homebridge before removing accessories for paired bridge ${id}...`)
+
+    // Wait for homebridge to stop.
+    await this.homebridgeIpcService.restartAndWaitForClose()
+
+    const cachedAccessoriesDir = join(this.configService.storagePath, 'accessories')
+
+    await this.deleteSingleDeviceAccessories(id, cachedAccessoriesDir)
+  }
+
+  /**
+   * Remove multiple devices' accessories
+   */
+  public async deleteDevicesAccessories(bridges: { id: string }[]) {
+    if (!this.configService.serviceMode) {
+      this.logger.error('The remove bridges\' accessories command is only available in service mode.')
+      throw new BadRequestException('This command is only available in service mode.')
+    }
+
+    this.logger.warn(`Shutting down Homebridge before removing accessories for paired bridges ${bridges.map(x => x.id).join(', ')}...`)
+
+    // Wait for homebridge to stop.
+    await this.homebridgeIpcService.restartAndWaitForClose()
+
+    const cachedAccessoriesDir = join(this.configService.storagePath, 'accessories')
+
+    for (const { id } of bridges) {
+      try {
+        await this.deleteSingleDeviceAccessories(id, cachedAccessoriesDir)
+      } catch (e) {
+        this.logger.error(`Failed to remove accessories for bridge ${id} as ${e.message}.`)
+      }
     }
   }
 
@@ -255,18 +361,18 @@ export class ServerService {
    * Remove a single cached accessory
    */
   public async deleteCachedAccessory(uuid: string, cacheFile: string) {
-    cacheFile = cacheFile || 'cachedAccessories'
-
     if (!this.configService.serviceMode) {
-      this.logger.error('The reset accessories cache command is only available in service mode')
-      throw new BadRequestException('This command is only available in service mode')
+      this.logger.error('The remove cached accessory command is only available in service mode.')
+      throw new BadRequestException('This command is only available in service mode.')
     }
+
+    cacheFile = cacheFile || 'cachedAccessories'
 
     const cachedAccessoriesPath = resolve(this.configService.storagePath, 'accessories', cacheFile)
 
-    this.logger.warn(`Shutting down Homebridge before removing cached accessory: ${uuid}`)
+    this.logger.warn(`Shutting down Homebridge before removing cached accessory ${uuid}...`)
 
-    // wait for homebridge to stop.
+    // Wait for homebridge to stop.
     await this.homebridgeIpcService.restartAndWaitForClose()
 
     const cachedAccessories = await readJson(cachedAccessoriesPath) as Array<any>
@@ -275,10 +381,58 @@ export class ServerService {
     if (accessoryIndex > -1) {
       cachedAccessories.splice(accessoryIndex, 1)
       await writeJson(cachedAccessoriesPath, cachedAccessories)
-      this.logger.warn(`Removed cached accessory with UUID: ${uuid}`)
+      this.logger.warn(`Removed cached accessory with UUID ${uuid} from file ${cacheFile}.`)
     } else {
-      this.logger.error(`Cannot find cached accessory with UUID: ${uuid}`)
+      this.logger.error(`Cannot find cached accessory with UUID ${uuid} from file ${cacheFile}.`)
       throw new NotFoundException()
+    }
+
+    return { ok: true }
+  }
+
+  /**
+   * Remove multiple cached accessories
+   */
+  public async deleteCachedAccessories(accessories: { uuid: string, cacheFile: string }[]) {
+    if (!this.configService.serviceMode) {
+      this.logger.error('The remove cached accessories command is only available in service mode.')
+      throw new BadRequestException('This command is only available in service mode.')
+    }
+
+    this.logger.warn(`Shutting down Homebridge before removing cached accessories ${accessories.map(x => x.uuid).join(', ')}.`)
+
+    // Wait for homebridge to stop.
+    await this.homebridgeIpcService.restartAndWaitForClose()
+
+    const accessoriesByCacheFile = new Map<string, { uuid: string }[]>()
+
+    // Group accessories by cacheFile
+    for (const { cacheFile, uuid } of accessories) {
+      const accessoryCacheFile = cacheFile || 'cachedAccessories'
+      if (!accessoriesByCacheFile.has(accessoryCacheFile)) {
+        accessoriesByCacheFile.set(accessoryCacheFile, [])
+      }
+      accessoriesByCacheFile.get(accessoryCacheFile).push({ uuid })
+    }
+
+    // Process each group of accessories
+    for (const [cacheFile, accessories] of accessoriesByCacheFile.entries()) {
+      const cachedAccessoriesPath = resolve(this.configService.storagePath, 'accessories', cacheFile)
+      const cachedAccessories = await readJson(cachedAccessoriesPath) as Array<any>
+      for (const { uuid } of accessories) {
+        try {
+          const accessoryIndex = cachedAccessories.findIndex(x => x.UUID === uuid)
+          if (accessoryIndex > -1) {
+            cachedAccessories.splice(accessoryIndex, 1)
+            this.logger.warn(`Removed cached accessory with UUID ${uuid} from file ${cacheFile}.`)
+          } else {
+            this.logger.error(`Cannot find cached accessory with UUID ${uuid} from file ${cacheFile}.`)
+          }
+        } catch (e) {
+          this.logger.error(`Failed to remove cached accessory with UUID ${uuid} from file ${cacheFile} as ${e.message}.`)
+        }
+      }
+      await writeJson(cachedAccessoriesPath, cachedAccessories)
     }
 
     return { ok: true }
@@ -287,10 +441,10 @@ export class ServerService {
   /**
    * Clears the Homebridge Accessory Cache
    */
-  public async resetCachedAccessories() {
+  public async deleteAllCachedAccessories() {
     if (!this.configService.serviceMode) {
-      this.logger.error('The reset accessories cache command is only available in service mode')
-      throw new BadRequestException('This command is only available in service mode')
+      this.logger.error('The remove all cached accessories command is only available in service mode.')
+      throw new BadRequestException('This command is only available in service mode.')
     }
 
     const cachedAccessoriesDir = join(this.configService.storagePath, 'accessories')
@@ -300,21 +454,21 @@ export class ServerService {
 
     const cachedAccessoriesPath = resolve(this.configService.storagePath, 'accessories', 'cachedAccessories')
 
-    // wait for homebridge to stop.
+    // Wait for homebridge to stop.
     await this.homebridgeIpcService.restartAndWaitForClose()
 
     this.logger.warn('Shutting down Homebridge before removing cached accessories')
 
     try {
-      this.logger.log('Clearing Cached Homebridge Accessories...')
+      this.logger.log('Clearing all cached accessories...')
       for (const thisCachedAccessoriesPath of cachedAccessoryPaths) {
         if (await pathExists(thisCachedAccessoriesPath)) {
           await unlink(thisCachedAccessoriesPath)
-          this.logger.warn(`Removed ${thisCachedAccessoriesPath}`)
+          this.logger.warn(`Removed ${thisCachedAccessoriesPath}.`)
         }
       }
     } catch (e) {
-      this.logger.error(`Failed to clear Homebridge Accessories Cache at ${cachedAccessoriesPath}`)
+      this.logger.error(`Failed to clear all cached accessories at ${cachedAccessoriesPath} as ${e.message}.`)
       console.error(e)
       throw new InternalServerErrorException('Failed to clear Homebridge accessory cache - see logs.')
     }
@@ -343,7 +497,7 @@ export class ServerService {
    * Generates the setup code
    */
   private generateSetupCode(accessoryInfo: any): string {
-    // this code is from https://github.com/KhaosT/HAP-NodeJS/blob/master/lib/Accessory.js#L369
+    // This code is from https://github.com/KhaosT/HAP-NodeJS/blob/master/lib/Accessory.js#L369
     const buffer = alloc(8)
     let valueLow = Number.parseInt(accessoryInfo.pincode.replace(/-/g, ''), 10)
     const valueHigh = accessoryInfo.category >> 1

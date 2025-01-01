@@ -28,10 +28,10 @@ describe('FastifyOptions (e2e)', () => {
     authFilePath = resolve(process.env.UIX_STORAGE_PATH, 'auth.json')
     secretsFilePath = resolve(process.env.UIX_STORAGE_PATH, '.uix-secrets')
 
-    // setup test config
+    // Setup test config
     await copy(resolve(__dirname, '../mocks', 'config.json'), process.env.UIX_CONFIG_PATH)
 
-    // setup test auth file
+    // Setup test auth file
     await copy(resolve(__dirname, '../mocks', 'auth.json'), authFilePath)
     await copy(resolve(__dirname, '../mocks', '.uix-secrets'), secretsFilePath)
 
@@ -39,7 +39,7 @@ describe('FastifyOptions (e2e)', () => {
       imports: [AppModule],
     }).compile()
 
-    // setup fastify
+    // Setup fastify
     const server = fastify({
       logger: true,
     })

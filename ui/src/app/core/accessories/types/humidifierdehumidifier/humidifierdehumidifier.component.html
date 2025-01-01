@@ -1,6 +1,6 @@
 <div
   class="accessory-box"
-  [ngClass]="{'switch-on': service.values.Active === 1}"
+  [ngClass]="{ 'switch-on': service.values.Active === 1 }"
   appLongclick
   (longclick)="onLongClick()"
   (shortclick)="onClick()"
@@ -10,9 +10,9 @@
     <div
       class="humidity-drop humidity-drop-collapse"
       [ngClass]="{
-      'dehumidifying': service.values.CurrentHumidifierDehumidifierState === 3 && service.values.Active === 1,
-      'humidifying': service.values.CurrentHumidifierDehumidifierState === 2 && service.values.Active === 1,
-      'no-current-state': service.values.CurrentHumidifierDehumidifierState === 1 && service.values.Active === 1
+        'dehumidifying': service.values.CurrentHumidifierDehumidifierState === 3 && service.values.Active === 1,
+        'humidifying': service.values.CurrentHumidifierDehumidifierState === 2 && service.values.Active === 1,
+        'no-current-state': service.values.CurrentHumidifierDehumidifierState === 1 && service.values.Active === 1
       }"
     >
       <div class="humidity-drop-text" [innerText]="(service.values.CurrentRelativeHumidity) + '%'"></div>
@@ -23,15 +23,10 @@
     } @if (service.values.Active === 1 && service.getCharacteristic('RelativeHumidityDehumidifierThreshold') &&
     service.getCharacteristic('RelativeHumidityHumidifierThreshold')) {
     <div class="accessory-label grey-text">
-      @switch (service.values.TargetHumidifierDehumidifierState) { @case (1) {
-      <span> {{ service.values.RelativeHumidityHumidifierThreshold }}% </span>
-      } @case (2) {
-      <span> {{ service.values.RelativeHumidityDehumidifierThreshold }}% </span>
-      } @case (0) {
-      <span>
-        {{ service.values.RelativeHumidityHumidifierThreshold }}%-{{
-        service.values.RelativeHumidityDehumidifierThreshold }}%
-      </span>
+      @switch (service.values.TargetHumidifierDehumidifierState) { @case (1) { {{
+      service.values.RelativeHumidityHumidifierThreshold }}% } @case (2) { {{
+      service.values.RelativeHumidityDehumidifierThreshold }}% } @case (0) { {{
+      service.values.RelativeHumidityHumidifierThreshold }}%-{{ service.values.RelativeHumidityDehumidifierThreshold }}%
       } }
     </div>
     } @if (service.values.Active === 1 && (!service.getCharacteristic('RelativeHumidityDehumidifierThreshold') ||

@@ -5,6 +5,7 @@ import { GridsterComponent, GridsterConfig, GridsterItem, GridsterItemComponent 
 import { firstValueFrom, Subject } from 'rxjs'
 import { take } from 'rxjs/operators'
 
+import { SpinnerComponent } from '@/app//core/components/spinner/spinner.component'
 import { AuthService } from '@/app/core/auth/auth.service'
 import { NotificationService } from '@/app/core/notification.service'
 import { SettingsService } from '@/app/core/settings.service'
@@ -12,9 +13,7 @@ import { IoNamespace, WsService } from '@/app/core/ws.service'
 import { CreditsComponent } from '@/app/modules/status/credits/credits.component'
 import { WidgetControlComponent } from '@/app/modules/status/widget-control/widget-control.component'
 import { WidgetVisibilityComponent } from '@/app/modules/status/widget-visibility/widget-visibility.component'
-
-import { SpinnerComponent } from '../../core/components/spinner/spinner.component'
-import { WidgetsComponent } from './widgets/widgets.component'
+import { WidgetsComponent } from '@/app/modules/status/widgets/widgets.component'
 
 @Component({
   templateUrl: './status.component.html',
@@ -40,6 +39,7 @@ export class StatusComponent implements OnInit, OnDestroy {
   public options: GridsterConfig
   public dashboard: Array<GridsterItem> = []
   public consoleStatus: 'up' | 'down' = 'down'
+  public currentYear: number
   public page = {
     mobile: (window.innerWidth < 1024),
   }
@@ -49,6 +49,7 @@ export class StatusComponent implements OnInit, OnDestroy {
   constructor() {}
 
   ngOnInit() {
+    this.currentYear = new Date().getFullYear()
     this.io = this.$ws.connectToNamespace('status')
     this.options = {
       mobileBreakpoint: 1023,
@@ -81,7 +82,7 @@ export class StatusComponent implements OnInit, OnDestroy {
     } else {
       this.consoleStatus = 'down'
 
-      // get the dashboard layout when the server is up
+      // Get the dashboard layout when the server is up
       this.io.connected.pipe(take(1)).subscribe(() => {
         this.getLayout()
       })
@@ -97,21 +98,21 @@ export class StatusComponent implements OnInit, OnDestroy {
     })
 
     this.io.socket.on('homebridge-status', (data) => {
-      // check if client is up-to-date
+      // Check if client is up-to-date
       if (data.packageVersion && data.packageVersion !== this.$settings.uiVersion) {
         window.location.reload()
       }
     })
 
-    // this allows widgets to trigger a save to the grid layout
-    // e.g. when the order of the accessories in the accessories widget changes
+    // This allows widgets to trigger a save to the grid layout
+    // E.g. when the order of the accessories in the accessories widget changes
     this.saveWidgetsEvent.subscribe({
       next: () => {
         this.gridChangedEvent()
       },
     })
 
-    // if raspberry pi, do a check for throttled
+    // If raspberry pi, do a check for throttled
     if (this.$settings.env.runningOnRaspberryPi) {
       this.io.request('get-raspberry-pi-throttled-status').subscribe((throttled) => {
         this.$notification.raspberryPiThrottled.next(throttled)
@@ -189,7 +190,7 @@ export class StatusComponent implements OnInit, OnDestroy {
   }
 
   async gridChangedEvent() {
-    // sort the array to ensure mobile displays correctly
+    // Sort the array to ensure mobile displays correctly
     this.dashboard.sort((a: any, b: any) => {
       if (a.mobileOrder < b.mobileOrder) {
         return -1
@@ -202,7 +203,7 @@ export class StatusComponent implements OnInit, OnDestroy {
       return 0
     })
 
-    // remove private properties
+    // Remove private properties
     const layout = this.dashboard.map((item) => {
       const resp = {}
       for (const key of Object.keys(item)) {
@@ -213,7 +214,7 @@ export class StatusComponent implements OnInit, OnDestroy {
       return resp
     })
 
-    // save to server
+    // Save to server
     try {
       await firstValueFrom(this.io.request('set-dashboard-layout', layout))
     } catch (e) {
@@ -268,9 +269,7 @@ export class StatusComponent implements OnInit, OnDestroy {
           widgetElement.scrollIntoView()
         }, 500)
       })
-      .catch(() => {
-        // modal closed
-      })
+      .catch(() => { /* modal dismissed */ })
   }
 
   manageWidget(item) {
@@ -283,10 +282,13 @@ export class StatusComponent implements OnInit, OnDestroy {
       .then(() => {
         this.gridChangedEvent()
         item.$configureEvent.next(undefined)
+
+        // Some need a refresh after configuration to take effect
+        if (['CpuWidgetComponent', 'MemoryWidgetComponent', 'NetworkWidgetComponent'].includes(item.component)) {
+          window.location.reload()
+        }
       })
-      .catch(() => {
-        // modal closed
-      })
+      .catch(() => { /* modal dismissed */ })
   }
 
   openCreditsModal() {

@@ -1,5 +1,5 @@
 import { Component, inject, Input, OnInit } from '@angular/core'
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
+import { NgbActiveModal, NgbAlert } from '@ng-bootstrap/ng-bootstrap'
 import { TranslatePipe } from '@ngx-translate/core'
 import { minVersion, SemVer } from 'semver'
 
@@ -8,7 +8,7 @@ import { SettingsService } from '@/app/core/settings.service'
 @Component({
   templateUrl: './plugin-compatibility.component.html',
   standalone: true,
-  imports: [TranslatePipe],
+  imports: [TranslatePipe, NgbAlert],
 })
 export class PluginCompatibilityComponent implements OnInit {
   $activeModal = inject(NgbActiveModal)

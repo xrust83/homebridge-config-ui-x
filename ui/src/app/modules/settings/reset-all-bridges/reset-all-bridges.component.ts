@@ -7,14 +7,14 @@ import { ToastrService } from 'ngx-toastr'
 import { ApiService } from '@/app/core/api.service'
 
 @Component({
-  templateUrl: './unpair-all-bridges.component.html',
+  templateUrl: './reset-all-bridges.component.html',
   standalone: true,
   imports: [
     NgbAlert,
     TranslatePipe,
   ],
 })
-export class UnpairAllBridgesComponent {
+export class ResetAllBridgesComponent {
   $activeModal = inject(NgbActiveModal)
   private $api = inject(ApiService)
   private $route = inject(Router)

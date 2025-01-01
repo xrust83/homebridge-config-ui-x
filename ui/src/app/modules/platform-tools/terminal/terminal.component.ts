@@ -23,21 +23,21 @@ export class TerminalComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // set body bg color
+    // Set body bg color
     window.document.querySelector('body').classList.add('bg-black')
 
-    // start the terminal
+    // Start the terminal
     this.$terminal.startTerminal(this.termTarget(), {}, this.resizeEvent)
 
-    // set focus to the terminal
+    // Set focus to the terminal
     this.$terminal.term.focus()
   }
 
   ngOnDestroy() {
-    // unset body bg color
+    // Unset body bg color
     window.document.querySelector('body').classList.remove('bg-black')
 
-    // destroy the terminal
+    // Destroy the terminal
     this.$terminal.destroyTerminal()
   }
 }

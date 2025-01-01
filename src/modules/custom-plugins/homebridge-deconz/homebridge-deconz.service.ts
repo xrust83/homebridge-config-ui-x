@@ -19,7 +19,7 @@ export class HomebridgeDeconzService {
       throw new NotFoundException()
     }
 
-    // stream file to client
+    // Stream file to client
     return new StreamableFile(createReadStream(dumpPath))
   }
 }

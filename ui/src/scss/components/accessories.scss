@@ -129,7 +129,6 @@
 .accessory-item {
   @media (max-width: 991px) {
     .manage-accessory-button {
-      // display: none;
       opacity: 1 !important;
       filter: grayscale(100);
     }
@@ -171,9 +170,16 @@
   }
 
   .refreshing-accessory-status-icon {
-    margin-right: 20px;
-    margin-top: 20px;
     float: right;
+    position: relative;
+    top: 35px;
+    right: 25px;
+    padding: 0;
+
+    @media (max-width: 575px) {
+      top: 18px !important;
+      right: 15px !important;
+    }
   }
 }
 

@@ -36,14 +36,14 @@ export class WidgetControlComponent implements OnInit {
 
   @Input() widget: any
 
-  // weather
+  // Weather
   public searching: boolean
 
-  // terminal
+  // Terminal
   public fontSizes = [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
   public fontWeights = ['100', '200', '300', '400', '500', '600', '700', '800', '900', 'bold', 'normal']
 
-  // clock
+  // Clock
   public currentDate = new Date()
 
   public timeFormats = [

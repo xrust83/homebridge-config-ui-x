@@ -35,7 +35,7 @@ export class LightbulbManageComponent implements OnInit {
       .subscribe(() => {
         this.service.getCharacteristic('Brightness').setValue(this.targetBrightness.value)
 
-        // turn bulb on or off when brightness is adjusted
+        // Turn bulb on or off when brightness is adjusted
         if (this.targetBrightness.value && !this.service.values.On) {
           this.targetMode = true
           this.service.getCharacteristic('On').setValue(this.targetMode)

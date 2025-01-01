@@ -30,7 +30,7 @@ export class AuthService {
   ) {
     this.checkAuthFile()
 
-    // otp options
+    // OTP options
     authenticator.options = {
       window: 1,
     }
@@ -70,9 +70,9 @@ export class AuthService {
       }
     } catch (e) {
       if (e instanceof ForbiddenException) {
-        this.logger.warn('Failed login attempt')
-        this.logger.warn('If you\'ve forgotten your password you can reset to the default '
-          + `of admin/admin by deleting the "auth.json" file (${this.configService.authPath}) and then restarting Homebridge.`)
+        this.logger.warn('Failed login attempt.')
+        this.logger.warn('If you have forgotten your password, you can reset to the default '
+          + `of admin/admin by deleting the "auth.json" file at ${this.configService.authPath} and then restarting Homebridge.`)
         throw e
       }
 
@@ -121,16 +121,16 @@ export class AuthService {
    * Returns a token for use when authentication is disabled
    */
   async generateNoAuthToken() {
-    // prevent access if auth is not disabled
+    // Prevent access if auth is not disabled
     if (this.configService.ui.auth !== 'none') {
       throw new UnauthorizedException()
     }
 
-    // load the first admin we can find
+    // Load the first admin we can find
     const users = await this.getUsers()
     const user = users.find(x => x.admin === true)
 
-    // generate a token
+    // Generate a token
     const token = this.jwtService.sign({
       username: user.username,
       name: user.name,
@@ -196,7 +196,7 @@ export class AuthService {
       throw new BadRequestException('Password missing.')
     }
 
-    // first user must be admin
+    // First user must be admin
     user.admin = true
 
     await writeJson(this.configService.authPath, [])
@@ -212,12 +212,12 @@ export class AuthService {
    * Generates a token for the setup wizard
    */
   async generateSetupWizardToken() {
-    // prevent access if auth is not disabled
+    // Prevent access if auth is not disabled
     if (this.configService.setupWizardComplete !== false) {
       throw new ForbiddenException()
     }
 
-    // generate a token
+    // Generate a token
     const token = this.jwtService.sign({
       username: 'setup-wizard',
       name: 'setup-wizard',
@@ -242,7 +242,7 @@ export class AuthService {
     }
     try {
       const authfile: UserDto[] = await readJson(this.configService.authPath)
-      // there must be at least one admin user
+      // There must be at least one admin user
       if (!authfile.find(x => x.admin === true)) {
         this.configService.setupWizardComplete = false
       }
@@ -292,7 +292,7 @@ export class AuthService {
    * @param users
    */
   private async saveUserFile(users: UserDto[]) {
-    // update the auth.json
+    // Update the auth.json
     return await writeJson(this.configService.authPath, users, { spaces: 4 })
   }
 
@@ -304,7 +304,7 @@ export class AuthService {
     const authfile = await this.getUsers()
     const salt = await this.genSalt()
 
-    // user object
+    // User object
     const newUser: UserDto = {
       id: authfile.length ? Math.max(...authfile.map(x => x.id)) + 1 : 1,
       username: user.username,
@@ -314,17 +314,17 @@ export class AuthService {
       admin: user.admin,
     }
 
-    // check a user with the same username does not already exist
+    // Check a user with the same username does not already exist
     if (authfile.find(x => x.username.toLowerCase() === newUser.username.toLowerCase())) {
       throw new ConflictException(`User with username '${newUser.username}' already exists.`)
     }
 
-    // add the user to the authfile
+    // Add the user to the authfile
     authfile.push(newUser)
 
-    // update the auth.json
+    // Update the auth.json
     await this.saveUserFile(authfile)
-    this.logger.warn(`Added new user: ${user.username}`)
+    this.logger.warn(`Added new user: ${user.username}.`)
 
     return this.desensitiseUserProfile(newUser)
   }
@@ -342,16 +342,16 @@ export class AuthService {
       throw new BadRequestException('User Not Found')
     }
 
-    // prevent deleting the only admin user
+    // Prevent deleting the only admin user
     if (authfile[index].admin && authfile.filter(x => x.admin === true).length < 2) {
       throw new BadRequestException('Cannot delete only admin user')
     }
 
     authfile.splice(index, 1)
 
-    // update the auth.json
+    // Update the auth.json
     await this.saveUserFile(authfile)
-    this.logger.warn(`Deleted user with ID ${id}`)
+    this.logger.warn(`Deleted user with ID ${id}.`)
   }
 
   /**
@@ -373,7 +373,7 @@ export class AuthService {
         throw new ConflictException(`User with username '${update.username}' already exists.`)
       }
 
-      this.logger.log(`Updated user: Changed username from '${user.username}' to '${update.username}'`)
+      this.logger.log(`Updated user: changed username from ${user.username} to ${update.username}.`)
       user.username = update.username
     }
 
@@ -386,9 +386,9 @@ export class AuthService {
       user.salt = salt
     }
 
-    // update the auth.json
+    // Update the auth.json
     await this.saveUserFile(authfile)
-    this.logger.log(`Updated user: ${user.username}`)
+    this.logger.log(`Updated user: ${user.username}.`)
 
     return this.desensitiseUserProfile(user)
   }
@@ -404,10 +404,10 @@ export class AuthService {
       throw new NotFoundException('User not found.')
     }
 
-    // this will throw an error of the password is wrong
+    // This will throw an error of the password is wrong
     await this.checkPassword(user, currentPassword)
 
-    // generate a new salt
+    // Generate a new salt
     const salt = await this.genSalt()
     user.hashedPassword = await this.hashPassword(newPassword, salt)
     user.salt = salt
@@ -461,7 +461,7 @@ export class AuthService {
     if (authenticator.verify({ token: code, secret: user.otpSecret })) {
       user.otpActive = true
       await this.saveUserFile(authfile)
-      this.logger.warn(`Activated 2FA for '${user.username}'.`)
+      this.logger.warn(`Activated 2FA for ${user.username}.`)
       return this.desensitiseUserProfile(user)
     } else {
       throw new BadRequestException('2FA code is not valid.')
@@ -479,7 +479,7 @@ export class AuthService {
       throw new NotFoundException('User not found.')
     }
 
-    // this will throw an error if the password is not valid
+    // This will throw an error if the password is not valid
     await this.checkPassword(user, password)
 
     user.otpActive = false
@@ -487,7 +487,7 @@ export class AuthService {
 
     await this.saveUserFile(authfile)
 
-    this.logger.warn(`Deactivated 2FA for '${username}'.`)
+    this.logger.warn(`Deactivated 2FA for ${username}.`)
 
     return this.desensitiseUserProfile(user)
   }
@@ -499,7 +499,7 @@ export class AuthService {
     const otpCacheKey = user.username + otp
 
     if (this.otpUsageCache.get(otpCacheKey)) {
-      this.logger.warn(`[${user.username}] attempted to reuse one-time-password.`)
+      this.logger.warn(`${user.username} attempted to reuse one-time-password.`)
       return false
     }
 

@@ -1,6 +1,6 @@
 <div
   class="accessory-box"
-  [ngClass]="{'switch-on': service.values.CurrentDoorState === 0 || service.values.CurrentDoorState === 2}"
+  [ngClass]="{ 'switch-on': service.values.CurrentDoorState === 0 || service.values.CurrentDoorState === 2 }"
   appLongclick
   (shortclick)="onClick()"
   tabindex="0"
@@ -13,7 +13,7 @@
     <div
       class="accessory-label"
       [innerText]="(service.values.CurrentDoorState ? 'accessories.control.closed' : 'accessories.control.open') | translate"
-      [ngClass]="{'red-text': !service.values.CurrentDoorState, 'grey-text': service.values.CurrentDoorState}"
+      [ngClass]="{ 'red-text': !service.values.CurrentDoorState, 'grey-text': service.values.CurrentDoorState }"
     ></div>
     } @if (service.values.CurrentDoorState === 2) {
     <div class="accessory-label red-text">{{ 'accessories.control.opening' | translate }}...</div>

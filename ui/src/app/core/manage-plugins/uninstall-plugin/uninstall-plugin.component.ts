@@ -71,7 +71,7 @@ export class UninstallPluginComponent implements OnInit {
     // Remove the child bridges if exists and specified by the user
     if (this.hasChildBridges && this.removeChildBridges && this.$settings.env.serviceMode) {
       try {
-        await Promise.all(this.childBridges.map(childBridge => this.unpairChildBridge(childBridge.username.replace(/:/g, ''))))
+        await Promise.all(this.childBridges.map(childBridge => this.removeChildBridge(childBridge.username.replace(/:/g, ''))))
       } catch (error) {
         console.error(error)
       }
@@ -87,6 +87,7 @@ export class UninstallPluginComponent implements OnInit {
     })
     ref.componentInstance.action = 'Uninstall'
     ref.componentInstance.pluginName = this.plugin.name
+    ref.componentInstance.pluginDisplayName = this.plugin.displayName
   }
 
   async getAlias() {
@@ -106,7 +107,7 @@ export class UninstallPluginComponent implements OnInit {
     )
   }
 
-  async unpairChildBridge(id: string) {
+  async removeChildBridge(id: string) {
     try {
       await firstValueFrom(this.$api.delete(`/server/pairings/${id}`))
     } catch (error) {

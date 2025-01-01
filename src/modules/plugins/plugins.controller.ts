@@ -15,7 +15,7 @@ export class PluginsController {
   ) {}
 
   @UseGuards(AdminGuard)
-  @ApiOperation({ summary: 'List of currently installed Homebridge plugins.' })
+  @ApiOperation({ summary: 'Get the list of currently installed Homebridge plugins.' })
   @Get()
   pluginsGet() {
     return this.pluginsService.getInstalledPlugins()
@@ -46,7 +46,7 @@ export class PluginsController {
   }
 
   @UseGuards(AdminGuard)
-  @ApiOperation({ summary: 'Get the config.schema.json for a plugin.' })
+  @ApiOperation({ summary: 'Get the `config.schema.json` for a plugin.' })
   @ApiParam({ name: 'pluginName', type: 'string' })
   @Get('config-schema/:pluginName')
   getPluginConfigSchema(@Param('pluginName') pluginName) {
@@ -58,7 +58,7 @@ export class PluginsController {
   }
 
   @UseGuards(AdminGuard)
-  @ApiOperation({ summary: 'Get the CHANGELOG.md (post install) for a plugin.' })
+  @ApiOperation({ summary: 'Get the `CHANGELOG.md` (post install) for a plugin.' })
   @ApiParam({ name: 'pluginName', type: 'string' })
   @Get('changelog/:pluginName')
   getPluginChangeLog(@Param('pluginName') pluginName) {
@@ -76,7 +76,7 @@ export class PluginsController {
   @UseGuards(AdminGuard)
   @ApiOperation({
     summary: 'Attempt to resolve the type (platform or accessory) and alias for a plugin.',
-    description: '**Warning**: pluginAlias and pluginType will be `null` if the type or alias could not be resolved.',
+    description: 'NOTE: `pluginAlias` and `pluginType` will be `null` if the type or alias could not be resolved.',
   })
   @ApiParam({ name: 'pluginName', type: 'string' })
   @Get('alias/:pluginName')

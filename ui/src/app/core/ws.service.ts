@@ -33,19 +33,19 @@ export class WsService {
       const io: IoNamespace = this.namespaceConnectionCache[namespace]
       io.connected = new Subject()
 
-      // broadcast to subscribers that the connection is ready
+      // Broadcast to subscribers that the connection is ready
       setTimeout(() => {
         if (io.socket.connected) {
           io.connected.next(undefined)
         }
       })
 
-      // watch for re-connections, and broadcast
+      // Watch for re-connections, and broadcast
       io.socket.on('connect', () => {
         io.connected.next(undefined)
       })
 
-      // define end function
+      // Define end function
       io.end = () => {
         io.socket.emit('end')
         io.socket.removeAllListeners()
@@ -58,19 +58,19 @@ export class WsService {
       const io = this.establishConnectionToNamespace(namespace)
       io.connected = new Subject()
 
-      // wait for the connection and broadcast when ready
+      // Wait for the connection and broadcast when ready
       io.socket.on('connect', () => {
         io.connected.next(undefined)
       })
 
-      // define end function
+      // Define end function
       io.end = () => {
         io.socket.emit('end')
         io.socket.removeAllListeners()
         io.connected.complete()
       }
 
-      // cache the connection
+      // Cache the connection
       this.namespaceConnectionCache[namespace] = io
       return io
     }

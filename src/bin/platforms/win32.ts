@@ -18,10 +18,10 @@ export class Win32Installer extends BasePlatform {
     await this.hbService.storagePathCheck()
     await this.hbService.configCheck()
 
-    // download nssm.exe to help create the service
+    // Download nssm.exe to help create the service
     const nssmPath: string = await this.downloadNssm()
 
-    // commands to run
+    // Commands to run
     const installCmd = `"${nssmPath}" install ${this.hbService.serviceName} `
       + `"${process.execPath}" "\""${this.hbService.selfPath}"\"" run -I -U "\""${this.hbService.storagePath}"\""`
     const setUserDirCmd = `"${nssmPath}" set ${this.hbService.serviceName} AppEnvironmentExtra ":UIX_STORAGE_PATH=${this.hbService.storagePath}"`
@@ -44,7 +44,7 @@ export class Win32Installer extends BasePlatform {
   public async uninstall() {
     this.checkIsAdmin()
 
-    // stop existing service
+    // Stop existing service
     await this.stop()
 
     try {
@@ -159,20 +159,21 @@ export class Win32Installer extends BasePlatform {
         method: 'GET',
         url: downloadUrl,
         responseType: 'stream',
-      }).then((response) => {
-        response.data.pipe(nssmFile).on('finish', () => {
-          return res(nssmPath)
-        }).on('error', (err: any) => {
-          return rej(err)
-        })
-      }).catch(async (e) => {
-        // cleanup
-        nssmFile.close()
-        await remove(nssmPath)
-
-        this.hbService.logger(`Failed to download nssm: ${e.message}`, 'fail')
-        process.exit(0)
       })
+        .then((response) => {
+          response.data.pipe(nssmFile).on('finish', () => {
+            return res(nssmPath)
+          }).on('error', (err: any) => {
+            return rej(err)
+          })
+        })
+        .catch(async (e) => {
+          // Cleanup
+          nssmFile.close()
+          await remove(nssmPath)
+          this.hbService.logger(`Failed to download nssm: ${e.message}`, 'fail')
+          process.exit(0)
+        })
     })
   }
 
@@ -180,15 +181,15 @@ export class Win32Installer extends BasePlatform {
    * Ensures the Node.js process is allowed to accept incoming connections
    */
   private async configureFirewall() {
-    // firewall commands
+    // Firewall commands
     const cleanFirewallCmd = 'netsh advfirewall firewall Delete rule name="Homebridge"'
     const openFirewallCmd = `netsh advfirewall firewall add rule name="Homebridge" dir=in action=allow program="${process.execPath}"`
 
-    // try and remove any existing rules so there are not any duplicates
+    // Try and remove any existing rules so there are not any duplicates
     try {
       execSync(cleanFirewallCmd)
     } catch (e) {
-      // this is probably ok, the firewall rule may not exist to remove
+      // This is probably ok, the firewall rule may not exist to remove
     }
 
     // create a new firewall rule

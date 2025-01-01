@@ -50,7 +50,7 @@ export class ConfigEditorService {
     scheduleRule.minute = 10
     scheduleRule.second = Math.floor(Math.random() * 59) + 1
 
-    this.logger.debug('Next config.json backup cleanup scheduled for:', scheduleRule.nextInvocationDate(new Date()).toString())
+    this.logger.debug(`Next config.json backup cleanup scheduled for ${scheduleRule.nextInvocationDate(new Date()).toString()}.`)
 
     this.schedulerService.scheduleJob('cleanup-config-backups', scheduleRule, () => {
       this.logger.log('Running job to cleanup config.json backup files older than 60 days...')
@@ -64,17 +64,17 @@ export class ConfigEditorService {
   public async getConfigFile(): Promise<HomebridgeConfig> {
     const config = await readJson(this.configService.configPath)
 
-    // ensure bridge is an object
+    // Ensure bridge is an object
     if (!config.bridge || typeof config.bridge !== 'object') {
       config.bridge = {}
     }
 
-    // ensure accessories is an array
+    // Ensure accessories is an array
     if (!config.accessories || !Array.isArray(config.accessories)) {
       config.accessories = []
     }
 
-    // ensure platforms is an array
+    // Ensure platforms is an array
     if (!config.platforms || !Array.isArray(config.platforms)) {
       config.platforms = []
     }
@@ -96,22 +96,22 @@ export class ConfigEditorService {
       config.bridge = {} as HomebridgeConfig['bridge']
     }
 
-    // if bridge.port is a string, try and convert to a number
+    // If bridge.port is a string, try and convert to a number
     if (typeof config.bridge.port === 'string') {
       config.bridge.port = Number.parseInt(config.bridge.port, 10)
     }
 
-    // ensure the bridge.port is valid
+    // Ensure the bridge.port is valid
     if (!config.bridge.port || typeof config.bridge.port !== 'number' || config.bridge.port > 65533 || config.bridge.port < 1025) {
       config.bridge.port = Math.floor(Math.random() * (52000 - 51000 + 1) + 51000)
     }
 
-    // ensure bridge.username exists
+    // Ensure bridge.username exists
     if (!config.bridge.username) {
       config.bridge.username = this.generateUsername()
     }
 
-    // ensure the username matches the required pattern
+    // Ensure the username matches the required pattern
     const usernamePattern = /^(?:[0-9A-F]{2}:){5}[0-9A-F]{2}$/i
     if (!usernamePattern.test(config.bridge.username)) {
       if (usernamePattern.test(this.configService.homebridgeConfig.bridge.username)) {
@@ -121,12 +121,12 @@ export class ConfigEditorService {
       }
     }
 
-    // ensure bridge.pin exists
+    // Ensure bridge.pin exists
     if (!config.bridge.pin) {
       config.bridge.pin = this.generatePin()
     }
 
-    // ensure the pin matches the required pattern
+    // Ensure the pin matches the required pattern
     const pinPattern = /^\d{3}-\d{2}-\d{3}$/
     if (!pinPattern.test(config.bridge.pin)) {
       if (pinPattern.test(this.configService.homebridgeConfig.bridge.pin)) {
@@ -136,22 +136,22 @@ export class ConfigEditorService {
       }
     }
 
-    // ensure the bridge.name exists and is a string
+    // Ensure the bridge.name exists and is a string
     if (!config.bridge.name || typeof config.bridge.name !== 'string') {
       config.bridge.name = `Homebridge ${config.bridge.username.substring(config.bridge.username.length - 5).replace(/:/g, '')}`
     }
 
-    // ensure accessories is an array
+    // Ensure accessories is an array
     if (!config.accessories || !Array.isArray(config.accessories)) {
       config.accessories = []
     }
 
-    // ensure platforms is an array
+    // Ensure platforms is an array
     if (!config.platforms || !Array.isArray(config.platforms)) {
       config.platforms = []
     }
 
-    // ensure config.plugins is an array and not empty
+    // Ensure config.plugins is an array and not empty
     if (config.plugins && Array.isArray(config.plugins)) {
       if (!config.plugins.length) {
         delete config.plugins
@@ -160,33 +160,33 @@ export class ConfigEditorService {
       delete config.plugins
     }
 
-    // ensure config.mdns is valid
+    // Ensure config.mdns is valid
     if (config.mdns && typeof config.mdns !== 'object') {
       delete config.mdns
     }
 
-    // ensure config.disabledPlugins is an array
+    // Ensure config.disabledPlugins is an array
     if (config.disabledPlugins && !Array.isArray(config.disabledPlugins)) {
       delete config.disabledPlugins
     }
 
-    // create backup of existing config
+    // Create backup of existing config
     try {
       await rename(this.configService.configPath, resolve(this.configService.configBackupPath, `config.json.${now.getTime().toString()}`))
     } catch (e) {
       if (e.code === 'ENOENT') {
         await this.ensureBackupPathExists()
       } else {
-        this.logger.warn('Could not create a backup of the config.json file to', this.configService.configBackupPath, e.message)
+        this.logger.warn(`Could not create a backup of the config.json file to ${this.configService.configBackupPath} as ${e.message}.`)
       }
     }
 
-    // save config file
+    // Save config file
     writeJsonSync(this.configService.configPath, config, { spaces: 4 })
 
     this.logger.log('Changes to config.json saved.')
 
-    // parse the config for ui settings
+    // Parse the config for ui settings
     const configCopy = JSON.parse(JSON.stringify(config))
     this.configService.parseConfig(configCopy)
 
@@ -228,12 +228,12 @@ export class ConfigEditorService {
 
       const arrayKey = plugin.pluginType === 'accessory' ? 'accessories' : 'platforms'
 
-      // ensure the update contains an array
+      // Ensure the update contains an array
       if (!Array.isArray(pluginConfig)) {
         throw new BadRequestException('Plugin Config must be an array.')
       }
 
-      // validate each block in the array
+      // Validate each block in the array
       for (const block of pluginConfig) {
         if (typeof block !== 'object' || Array.isArray(block)) {
           throw new BadRequestException('Plugin config must be an array of objects.')
@@ -243,7 +243,7 @@ export class ConfigEditorService {
 
       let positionIndices: number
 
-      // remove the existing config blocks
+      // Remove the existing config blocks
       config[arrayKey] = config[arrayKey].filter((block, index) => {
         if (block[plugin.pluginType] === plugin.pluginAlias || block[plugin.pluginType] === `${pluginName}.${plugin.pluginAlias}`) {
           positionIndices = index
@@ -253,10 +253,10 @@ export class ConfigEditorService {
         }
       })
 
-      // try and keep any _bridge object 'clean'
+      // Try and keep any _bridge object 'clean'
       pluginConfig.forEach((block) => {
         if (block._bridge) {
-          // the env object is only compatible with homebridge 1.8.0 and above
+          // The env object is only compatible with homebridge 1.8.0 and above
           const isEnvObjAllowed = gte(this.configService.homebridgeVersion, '1.8.0')
 
           Object.keys(block._bridge).forEach((key) => {
@@ -267,7 +267,7 @@ export class ConfigEditorService {
                 }
               })
 
-              // if the result of env is an empty object, remove it
+              // If the result of env is an empty object, remove it
               if (Object.keys(block._bridge.env).length === 0) {
                 delete block._bridge.env
               }
@@ -280,14 +280,14 @@ export class ConfigEditorService {
         }
       })
 
-      // replace with the provided config, trying to put it back in the same location
+      // Replace with the provided config, trying to put it back in the same location
       if (positionIndices !== undefined) {
         config[arrayKey].splice(positionIndices, 0, ...pluginConfig)
       } else {
         config[arrayKey].push(...pluginConfig)
       }
 
-      // save the config file
+      // Save the config file
       await this.updateConfigFile(config)
 
       return pluginConfig
@@ -308,7 +308,7 @@ export class ConfigEditorService {
 
     // 2. update the property
     const pluginConfig = config.platforms.find(x => x.platform === 'config')
-    // if value is empty, null or undefined, delete the property
+    // If value is empty, null or undefined, delete the property
     if (value === '' || value === null || value === undefined) {
       delete pluginConfig[property]
     } else {
@@ -393,12 +393,12 @@ export class ConfigEditorService {
   public async getConfigBackup(backupId: number) {
     const requestedBackupPath = resolve(this.configService.configBackupPath, `config.json.${backupId}`)
 
-    // check backup file exists
+    // Check backup file exists
     if (!await pathExists(requestedBackupPath)) {
       throw new NotFoundException(`Backup ${backupId} Not Found`)
     }
 
-    // read source backup
+    // Read source backup
     return await readFile(requestedBackupPath)
   }
 
@@ -408,7 +408,7 @@ export class ConfigEditorService {
   public async deleteAllConfigBackups() {
     const backups = await this.listConfigBackups()
 
-    // delete each backup file
+    // Delete each backup file
     backups.forEach(async (backupFile) => {
       await unlink(resolve(this.configService.configBackupPath, backupFile.file))
     })
@@ -421,8 +421,8 @@ export class ConfigEditorService {
     try {
       await ensureDir(this.configService.configBackupPath)
     } catch (e) {
-      this.logger.error('Could not create directory for config backups:', this.configService.configBackupPath, e.message)
-      this.logger.error('Config backups will continue to use', this.configService.storagePath)
+      this.logger.error(`Could not create directory for config backups ${this.configService.configBackupPath} as ${e.message}.`)
+      this.logger.error(`Config backups will continue to use ${this.configService.storagePath}.`)
       this.configService.configBackupPath = this.configService.storagePath
     }
   }
@@ -440,7 +440,7 @@ export class ConfigEditorService {
         }
       }
     } catch (e) {
-      this.logger.warn('Failed to cleanup old config.json backup files:', e.message)
+      this.logger.warn(`Failed to cleanup old config.json backup files as ${e.message}`)
     }
   }
 
@@ -461,20 +461,20 @@ export class ConfigEditorService {
         .sort()
         .reverse()
 
-      // move the last 100 to the new location
+      // Move the last 100 to the new location
       for (const backupFileName of backups.splice(0, 100)) {
         const sourcePath = resolve(this.configService.storagePath, backupFileName)
         const targetPath = resolve(this.configService.configBackupPath, backupFileName)
         await move(sourcePath, targetPath, { overwrite: true })
       }
 
-      // delete the rest
+      // Delete the rest
       for (const backupFileName of backups) {
         const sourcePath = resolve(this.configService.storagePath, backupFileName)
         await remove(sourcePath)
       }
     } catch (e) {
-      this.logger.warn('An error occurred while migrating config.json backups to new location', e.message)
+      this.logger.warn(`Migrating config.json backups to new location failed as ${e.message}.`)
     }
   }
 

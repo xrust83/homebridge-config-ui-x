@@ -1,5 +1,5 @@
 import { NgClass, NgOptimizedImage } from '@angular/common'
-import { Component, inject, Input, OnInit, Renderer2 } from '@angular/core'
+import { Component, inject, Input, OnDestroy, OnInit, Renderer2 } from '@angular/core'
 import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { TranslatePipe, TranslateService } from '@ngx-translate/core'
@@ -7,7 +7,6 @@ import { isStandalonePWA } from 'is-standalone-pwa'
 
 import { AuthService } from '@/app/core/auth/auth.service'
 import { InformationComponent } from '@/app/core/components/information/information.component'
-import { MobileDetectService } from '@/app/core/mobile-detect.service'
 import { NotificationService } from '@/app/core/notification.service'
 import { SettingsService } from '@/app/core/settings.service'
 
@@ -24,12 +23,11 @@ import { SettingsService } from '@/app/core/settings.service'
     TranslatePipe,
   ],
 })
-export class SidebarComponent implements OnInit {
+export class SidebarComponent implements OnInit, OnDestroy {
   router = inject(Router)
   translate = inject(TranslateService)
   $auth = inject(AuthService)
   $settings = inject(SettingsService)
-  private $md = inject(MobileDetectService)
   private $modal = inject(NgbModal)
   private $notification = inject(NotificationService)
   private $translate = inject(TranslateService)
@@ -46,16 +44,23 @@ export class SidebarComponent implements OnInit {
   constructor() {
     const router = this.router
 
-    this.isMobile = this.$md.detect.mobile()
+    this.isMobile = window.innerWidth < 768
+    let resizeTimeout: any
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimeout)
+      resizeTimeout = setTimeout(() => {
+        this.updateListeners()
+      }, 500)
+    })
 
-    // ensure the menu closes when we navigate
+    // Ensure the menu closes when we navigate
     router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.closeSidebar()
         this.freezeMenu = true
         setTimeout(() => {
           this.freezeMenu = false
-        }, 500)
+        }, 750)
       }
     })
   }
@@ -70,7 +75,7 @@ export class SidebarComponent implements OnInit {
       }
     })
 
-    // declare element for event listeners
+    // Declare element for event listeners
     const sidebar = document.querySelector('.sidebar')
     const mobileHeader = document.querySelector('.m-header')
     const content = document.querySelector('.content')
@@ -89,12 +94,9 @@ export class SidebarComponent implements OnInit {
         }
       }, { passive: false })
     } else {
-      // Expand sidebar on mouseenter
-      sidebar.addEventListener('mouseenter', () => this.openSidebar(), { passive: false })
-      mobileHeader.addEventListener('mouseenter', () => this.openSidebar(), { passive: false })
+      this.updateListeners()
 
-      // Collapse sidebar on mouseleave
-      sidebar.addEventListener('mouseleave', () => this.closeSidebar(), { passive: false })
+      mobileHeader.addEventListener('mouseenter', () => this.openSidebar(), { passive: false })
       mobileHeader.addEventListener('mouseleave', () => this.closeSidebar(), { passive: false })
 
       document.addEventListener('click', (e: MouseEvent) => {
@@ -168,5 +170,21 @@ export class SidebarComponent implements OnInit {
 
   reloadPage() {
     window.location.reload()
+  }
+
+  updateListeners() {
+    this.isMobile = window.innerWidth < 768
+    const sidebar = document.querySelector('.sidebar')
+    sidebar.removeAllListeners()
+    if (this.isMobile || (!this.isMobile && this.$settings.menuMode !== 'freeze')) {
+      sidebar.addEventListener('mouseenter', () => this.openSidebar(), { passive: false })
+      sidebar.addEventListener('mouseleave', () => this.closeSidebar(), { passive: false })
+    }
+  }
+
+  ngOnDestroy() {
+    // Clean up event listeners
+    document.removeEventListener('touchstart', () => {})
+    document.removeEventListener('click', () => {})
   }
 }

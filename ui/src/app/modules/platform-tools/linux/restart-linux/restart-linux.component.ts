@@ -36,7 +36,7 @@ export class RestartLinuxComponent implements OnInit, OnDestroy {
     this.io = this.$ws.connectToNamespace('status')
     this.io.connected.subscribe(() => {
       this.io.socket.emit('monitor-server-status')
-      this.$settings.getAppSettings().catch(/* do nothing */)
+      this.$settings.getAppSettings().catch(() => { /* do nothing */ })
     })
 
     this.$api.put('/platform-tools/linux/restart-host', {}).subscribe({
@@ -54,7 +54,7 @@ export class RestartLinuxComponent implements OnInit, OnDestroy {
 
   checkIfServerUp() {
     this.checkDelay = setTimeout(() => {
-      // listen to homebridge-status events to see when it's back online
+      // Listen to homebridge-status events to see when it's back online
       this.io.socket.on('homebridge-status', (data) => {
         if (data.status === 'up' || data.status === 'pending') {
           this.$toastr.success(

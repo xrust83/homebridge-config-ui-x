@@ -32,7 +32,7 @@
         <div class="d-flex flex-column w-100">
           <!-- plugin name and right 'action' icon -->
           <div class="d-flex flex-row">
-            <h5 class="card-title mb-2 text-truncate">{{ prettyDisplayName }}</h5>
+            <h5 class="card-title mb-2 text-truncate">{{ plugin.displayName }}</h5>
             <div class="ml-auto">
               <!-- update available -->
               @if (plugin.installedVersion && plugin.updateAvailable && !childBridgeRestartInProgress) {
@@ -76,7 +76,7 @@
               <!-- installed, not configured -->
               @if (plugin.installedVersion && (!plugin.newHbScope || plugin.newHbScope.switch !==
               plugin.installedVersion) && !plugin.updateAvailable && !plugin.isConfigured &&
-              !childBridgeRestartInProgress) {
+              !childBridgeRestartInProgress && !plugin.disabled) {
               <a
                 href="javascript:void(0)"
                 class="card-link"
@@ -159,46 +159,24 @@
           <!-- // -->
           <!-- plugin npm name/info modal -->
           <p class="card-text mb-2 text-truncate">
-            <a href="javascript:void(0)" (click)="pluginInfoModal(plugin)" class="card-link grey-text">
-              <i class="fas fa-fw fa-info-circle fa-lg mr-1"></i>
+            <a href="javascript:void(0)" (click)="pluginInfoModal(plugin)" class="card-link">
+              <i
+                class="fas fa-fw fa-shield-alt fa-lg mr-1"
+                [ngClass]="{
+                  'scoped-text': plugin.isHbScoped,
+                  'green-text': !plugin.isHbScoped && (plugin.verifiedPlugin || plugin.verifiedPlusPlugin),
+                  'orange-text': !plugin.isHbScoped && !plugin.verifiedPlugin && !plugin.verifiedPlusPlugin,
+                }"
+              ></i>
               <span class="grey-text">{{ plugin.name }}</span>
             </a>
           </p>
           <!-- // -->
-          @if (plugin.verifiedPlugin || plugin.verifiedPlusPlugin) { @if (plugin.isHbScoped) {
-          <!-- plugin scoped & verified -->
-          <p class="card-text mb-2">
-            <a href="javascript:void(0)" class="card-link blue-text" (click)="pluginInfoModal(plugin)">
-              <i class="fas fa-fw fa-shield-alt fa-lg mr-1"></i>
-              <span class="grey-text">{{ 'plugins.donate.button_verified_scoped' | translate }}</span>
-            </a>
-          </p>
-          <!-- // -->
-          } @if (!plugin.isHbScoped) {
-          <!-- plugin verified -->
-          <p class="card-text mb-2">
-            <a href="javascript:void(0)" class="card-link green-text" (click)="pluginInfoModal(plugin)">
-              <i class="fas fa-fw fa-shield-alt fa-lg mr-1"></i>
-              <span class="grey-text">{{ 'plugins.donate.button_verified' | translate }}</span>
-            </a>
-          </p>
-          <!-- // -->
-          } }
-          <!-- plugin not verified -->
-          @if (!plugin.verifiedPlugin && !plugin.verifiedPlusPlugin) {
-          <p class="card-text mb-2">
-            <a href="javascript:void(0)" class="card-link orange-text" (click)="pluginInfoModal(plugin)">
-              <i class="fas fa-fw fa-shield-alt fa-lg mr-1"></i>
-              <span class="grey-text">{{ 'plugins.donate.button_not_verified' | translate }}</span>
-            </a>
-          </p>
-          }
-          <!-- // -->
           <!-- plugin author and donate modal -->
           <p class="card-text mb-2">
             @if ((plugin.verifiedPlugin || plugin.verifiedPlusPlugin) && plugin.funding) {
-            <a href="javascript:void(0)" class="card-link pink-text" (click)="openFundingModal(plugin)">
-              <i class="fas fa-fw fa-heart fa-lg mr-1"></i>
+            <a href="javascript:void(0)" class="card-link" (click)="openFundingModal(plugin)">
+              <i class="fas fa-fw fa-heart fa-lg mr-1 pink-text"></i>
               <span class="grey-text">&#64;{{ plugin.author }}</span>
             </a>
             } @if (!((plugin.verifiedPlugin || plugin.verifiedPlusPlugin) && plugin.funding)) {
@@ -225,8 +203,7 @@
               <!-- // -->
               <!-- installed -->
               @if (plugin.installedVersion) {
-              <span> <i class="far fa-fw fa-circle-check fa-lg mr-1"></i>v{{ plugin.installedVersion }} </span>
-              }
+              <i class="far fa-fw fa-circle-check fa-lg mr-1"></i>v{{ plugin.installedVersion }} }
               <!-- // -->
             </p>
             <div class="ml-auto">

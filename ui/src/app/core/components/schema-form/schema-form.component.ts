@@ -1,9 +1,8 @@
 import { Component, inject, Input, OnInit, output } from '@angular/core'
 import { JsonSchemaFormModule } from '@ng-formworks/core'
 
+import { JsonSchemaFormPatchDirective } from '@/app/core/directives/json-schema-form-patch.directive'
 import { SettingsService } from '@/app/core/settings.service'
-
-import { JsonSchemaFormPatchDirective } from '../../directives/json-schema-form-patch.directive'
 
 @Component({
   selector: 'app-schema-form',

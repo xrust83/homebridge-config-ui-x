@@ -11,11 +11,12 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <div class="modal-body w-100 text-center">
-    <img [src]="plugin.icon" (error)="handleIconError()" alt="Plugin Icon" class="mb-3 plugin-icon" />
-    <h4><code>{{ plugin.name }}</code></h4>
-    <p class="my-3">{{ plugin.description }}</p>
-    <p class="grey-text mb-4">&#64;{{ plugin.author }}</p>
+  <div class="modal-body text-center">
+    <img [src]="plugin.icon" (error)="handleIconError()" alt="Plugin Icon" class="mb-3 plugin-icon-card" />
+    <h4 class="mb-1">{{ plugin.displayName }}</h4>
+    <p class="grey-text mb-0 text-monospace">{{ plugin.name }}</p>
+    <p class="grey-text mb-1 text-monospace">&#64;{{ plugin.author }}</p>
+    <p class="mb-3">{{ plugin.description }}</p>
     <i
       class="fas fa-fw fa-shield-alt mb-3"
       style="font-size: 48px"
@@ -31,23 +32,23 @@
     <i
       class="fas fa-fw fa-shield-alt mb-3"
       style="font-size: 48px"
-      [ngClass]="{ 'blue-text': plugin.isHbScoped, 'grey-text': !plugin.isHbScoped }"
+      [ngClass]="{ 'scoped-text': plugin.isHbScoped, 'grey-text': !plugin.isHbScoped }"
       [ngStyle]="{ 'opacity': plugin.isHbScoped ? 1 : 0.25 }"
     ></i>
     @if (plugin.isHbScoped) {
-    <p class="mb-3">{{ 'plugins.manage.scoped_subtitle' | translate }}</p>
-    <p class="grey-text">{{ 'plugins.manage.scoped_message' | translate }}</p>
-    <p class="grey-text">{{ 'plugins.manage.verified_message' | translate }}</p>
+    <h6 class="mb-2">{{ 'plugins.manage.scoped_subtitle' | translate }}</h6>
+    <p class="mb-1 grey-text">{{ 'plugins.manage.scoped_message' | translate }}</p>
+    <p class="mb-1 grey-text">{{ 'plugins.manage.verified_message' | translate }}</p>
     } @if (!plugin.isHbScoped && (plugin.verifiedPlugin || plugin.verifiedPlusPlugin)) {
-    <p class="mb-3">{{ 'plugins.manage.verified_subtitle' | translate }}</p>
-    <p class="grey-text">{{ 'plugins.manage.verified_message' | translate }}</p>
+    <h6 class="mb-2">{{ 'plugins.manage.verified_subtitle' | translate }}</h6>
+    <p class="mb-1 grey-text">{{ 'plugins.manage.verified_message' | translate }}</p>
     } @if (!plugin.verifiedPlugin && !plugin.verifiedPlusPlugin) {
-    <p class="mb-3">{{ 'plugins.manage.unverified_subtitle' | translate }}</p>
-    <p class="grey-text">{{ 'plugins.manage.unverified_message' | translate }}</p>
+    <h6 class="mb-2">{{ 'plugins.manage.unverified_subtitle' | translate }}</h6>
+    <p class="mb-1 grey-text">{{ 'plugins.manage.unverified_message' | translate }}</p>
     }
     <p
-      class="grey-text"
-      [innerHTML]="'plugins.manage.more_info' | translate: { scoped: linkScoped, verified: linkVerified }"
+      class="mb-0 grey-text"
+      [innerHTML]="'plugins.manage.more_info' | translate: { scopedLink: linkScoped, verifiedLink: linkVerified }"
     ></p>
   </div>
   <div class="modal-footer justify-content-between">

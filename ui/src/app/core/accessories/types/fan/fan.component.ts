@@ -36,7 +36,7 @@ export class FanComponent implements OnInit {
   onClick() {
     this.service.getCharacteristic('On').setValue(!this.service.values.On)
 
-    // set the rotation speed to max if on 0% when turned on
+    // Set the rotation speed to max if on 0% when turned on
     if (!this.service.values.On && 'RotationSpeed' in this.service.values && !this.service.values.RotationSpeed) {
       const RotationSpeed = this.service.getCharacteristic('RotationSpeed')
       RotationSpeed.setValue(RotationSpeed.maxValue)

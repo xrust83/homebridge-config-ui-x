@@ -16,10 +16,6 @@
       border-radius: 10px;
     }
 
-    .bg-primary {
-      background-color: #242424 !important;
-    }
-
     .sidebar {
       background: #111111;
       color: #6d6e7e;
@@ -65,7 +61,6 @@
       border: 0 !important;
     }
 
-    .container-fluid .form-control,
     .setup2fa .form-control,
     .custom-input {
       background-color: #333333 !important;
@@ -81,13 +76,6 @@
     .hb-plain-text-editor {
       background-color: #333333 !important;
       color: #eeeeee !important;
-    }
-
-    .navbar-dark {
-      background-color: #0f0f0f !important;
-      border-bottom: #0f0f0f;
-      border-bottom-style: solid;
-      border-bottom-width: 1px;
     }
 
     .hb-npm-search {
@@ -121,11 +109,6 @@
       color: $darkModePrimary;
     }
 
-    .dark-mode-highlight {
-      color: $darkModePrimary !important;
-      opacity: 1 !important;
-    }
-
     .hb-uix-switch input:checked ~ .hb-uix-slider {
       background-color: $darkModePrimary;
     }
@@ -145,10 +128,6 @@
       @extend .btn-#{$baseBtn} !optional;
     }
 
-    .bg-yellow {
-      background-color: $darkModePrimary !important;
-    }
-
     .btn-link {
       color: #9e9e9e !important;
     }
@@ -162,34 +141,8 @@
       background-color: $secondaryBackground !important;
     }
 
-    .card-text-defined {
-      color: #ffffff;
-    }
-
     .login-card {
       background-color: rgba($secondaryBackground, 0.97) !important;
-    }
-
-    .nav-tabs {
-      border-bottom: 1px solid $darkModePrimary;
-
-      .nav-link {
-        &.active {
-          color: #ffffff;
-          background-color: $darkModePrimary;
-          border-color: $darkModePrimary;
-        }
-
-        @media (hover: hover) {
-          &:hover {
-            border-color: $darkModePrimary !important;
-          }
-        }
-
-        &:focus {
-          border-color: $darkModePrimary !important;
-        }
-      }
     }
 
     .alert {
@@ -205,10 +158,6 @@
 
     .alert-info {
       box-shadow: 0 0 1px $darkModePrimary;
-    }
-
-    .alert-success {
-      box-shadow: 0 0 1px #388e3c;
     }
 
     .alert-warning {
@@ -285,6 +234,33 @@
     .modal-body {
       background-color: $modalBackground;
       color: #ffffff;
+
+      input,
+      select,
+      .custom-input {
+        border-color: #242424 !important; //$backgroundColor;
+        background-color: #242424 !important;
+        color: #ffffff;
+
+        &::placeholder {
+          color: #bdbdbd;
+        }
+      }
+
+      input[readonly] {
+        color: #717171;
+        cursor: not-allowed;
+      }
+
+      .list-group-item {
+        background-color: $secondaryBackground;
+
+        .close {
+          color: $darkModePrimary;
+          opacity: 1 !important;
+          text-shadow: none;
+        }
+      }
     }
 
     .modal-footer {
@@ -365,34 +341,6 @@
       }
     }
 
-    .hb-plugin-settings-modal {
-      input,
-      select {
-        border-color: #242424 !important; //$backgroundColor;
-        background-color: #242424 !important;
-        color: #ffffff;
-
-        &::placeholder {
-          color: #bdbdbd;
-        }
-      }
-
-      input[readonly] {
-        color: #717171;
-        cursor: not-allowed;
-      }
-
-      .list-group-item {
-        background-color: $secondaryBackground;
-
-        .close {
-          color: $darkModePrimary;
-          opacity: 1 !important;
-          text-shadow: none;
-        }
-      }
-    }
-
     .accessory-box {
       background-color: $secondaryBackground;
       color: $secondaryText;
@@ -436,15 +384,6 @@
 
     .login-container {
       background-color: #000000 !important;
-    }
-
-    @keyframes uix-glow-icon-dark-mode {
-      from {
-        text-shadow:
-          0 0 5px $darkModePrimary,
-          0 0 10px $darkModePrimary,
-          0 0 15px $darkModePrimary;
-      }
     }
 
     .plugin-icon-card {

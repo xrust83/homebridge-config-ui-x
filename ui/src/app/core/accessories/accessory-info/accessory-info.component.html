@@ -1,4 +1,4 @@
-<div class="modal-content hb-accessories-info-modal">
+<div class="modal-content">
   <div class="modal-header">
     <h5 class="modal-title">{{ service.customName || service.serviceName }}</h5>
     <button
@@ -12,21 +12,23 @@
     </button>
   </div>
   <div class="modal-body">
-    <div class="md-form">
-      <input
-        [ngModel]="service.customName || service.serviceName"
-        (ngModelChange)="service.customName = $event"
-        type="text"
-        id="form-name"
-        autocomplete="off"
-        class="form-control px-0"
-      />
-      <label for="form-name" class="active">{{ 'accessories.name' | translate }}</label>
-    </div>
-    <div class="container px-1">
-      <div class="form-group row align-items-center">
-        <label class="col-6 col-form-label">{{ 'accessories.hide_this_accessory' | translate }}</label>
-        <div class="col-6 text-right">
+    <ul class="list-group list-group-box mb-3">
+      <li class="list-group-item d-flex flex-column flex-md-row align-items-center">
+        <label for="form-name" class="mb-2 mb-md-0 w-100 w-md-50">{{ 'accessories.custom_name' | translate }}</label>
+        <div class="text-left text-md-right w-100 w-md-50">
+          <input
+            [ngModel]="service.customName || service.serviceName"
+            (ngModelChange)="service.customName = $event"
+            type="text"
+            id="form-name"
+            autocomplete="off"
+            class="form-control custom-input"
+          />
+        </div>
+      </li>
+      <li class="list-group-item d-flex justify-content-between align-items-center flex-row pb-2">
+        <span class="text-left">{{ 'accessories.hide_this_accessory' | translate }}</span>
+        <div class="text-right grey-text">
           <input
             type="checkbox"
             class="rendux-input"
@@ -34,75 +36,109 @@
             id="hide-accessory"
             [attr.aria-label]="'accessories.hide_this_accessory' | translate"
           />
-          <label for="hide-accessory" class="rendux-label ml-3" style="min-width: 50px"></label>
+          <label for="hide-accessory" class="rendux-label ml-3"></label>
         </div>
-      </div>
-      <div class="form-group row align-items-center">
-        <label class="col-6 col-form-label">{{ 'accessories.show_on_dashboard' | translate }}</label>
-        <div class="col-6 text-right">
+      </li>
+      <li class="list-group-item d-flex justify-content-between align-items-center flex-row pb-2">
+        <span class="text-left">{{ 'accessories.show_on_dashboard' | translate }}</span>
+        <div class="text-right grey-text">
           <input
             type="checkbox"
-            class="rendux-input"
+            class="rendux-input mb-0"
             [(ngModel)]="service.onDashboard"
             id="show-on-dashboard"
             [attr.aria-label]="'accessories.show_on_dashboard' | translate"
           />
-          <label for="show-on-dashboard" class="rendux-label ml-3" style="min-width: 50px"></label>
+          <label for="show-on-dashboard" class="rendux-label ml-3"></label>
         </div>
-      </div>
-    </div>
-    <table
-      class="table table-borderless table-hover table-striped table-sm"
-      style="table-layout: fixed; width: 100%; word-wrap: break-word"
-    >
-      <tbody>
-        <tr>
-          <th>{{ service.humanType }}</th>
-          <td class="text-right"></td>
-        </tr>
-        @for (characteristic of service.serviceCharacteristics; track characteristic) {
-        <tr>
-          <td>{{ characteristic.description }}</td>
-          <td class="text-right">
-            <span>
-              @switch (characteristic.unit) { @case ('percentage') {
-              <span>{{ characteristic.value }}%</span>
-              } @case ('celsius') {
-              <span>{{ characteristic.value | convertTemp }}&deg;</span>
-              } @default {
-              <span>{{ characteristic.value }}</span>
-              } }
-            </span>
-          </td>
-        </tr>
-        } @for (information of accessoryInformation; track information) {
-        <tr>
-          <td>{{ information.key }}</td>
-          <td class="text-right text-break">{{ information.value }}</td>
-        </tr>
-        }
-        <tr>
-          <td>Homebridge Instance IP</td>
-          <td class="text-right">{{ service.instance.ipAddress }}</td>
-        </tr>
-        <tr>
-          <td>Homebridge Instance Port</td>
-          <td class="text-right">{{ service.instance.port }}</td>
-        </tr>
-        <tr>
-          <td>Homebridge Instance Username</td>
-          <td class="text-right">{{ service.instance.username }}</td>
-        </tr>
-        <tr>
-          <td>aid</td>
-          <td class="text-right">{{ service.aid }}</td>
-        </tr>
-        <tr>
-          <td>iid</td>
-          <td class="text-right">{{ service.iid }}</td>
-        </tr>
-      </tbody>
-    </table>
+      </li>
+    </ul>
+    <ul class="list-group list-group-box mb-3">
+      <li class="list-group-item">
+        <h6 class="mb-0 text-center">{{ 'accessories.service_info' | translate }}</h6>
+      </li>
+      <li class="list-group-item d-flex justify-content-between align-items-left flex-column flex-md-row">
+        <span class="text-left">{{ 'accessories.service' | translate }}</span>
+        <span class="text-left text-md-right grey-text text-monospace">{{ service.humanType }}</span>
+      </li>
+      <li class="list-group-item d-flex justify-content-between align-items-left flex-column flex-md-row">
+        <span class="text-left">{{ 'accessories.name' | translate }}</span>
+        <span class="text-left text-md-right grey-text text-monospace">{{ service.serviceName }}</span>
+      </li>
+      @for (characteristic of service.serviceCharacteristics; track characteristic) {
+      <li class="list-group-item d-flex justify-content-between align-items-left flex-column flex-md-row">
+        <span class="text-left">{{ characteristic.description }}</span>
+        <span class="text-left text-md-right grey-text text-monospace">
+          @switch (characteristic.unit) { @case ('percentage') { {{ characteristic.value }}% } @case ('celsius') { {{
+          characteristic.value | convertTemp }}&deg; } @default { {{ characteristic.value }} } }</span
+        >
+      </li>
+      }
+    </ul>
+    <ul class="list-group list-group-box mb-0">
+      <li class="list-group-item">
+        <h6 class="mb-0 text-center">{{ 'accessories.accessory_info' | translate }}</h6>
+      </li>
+      @if (matchedCachedAccessory) {
+      <li class="list-group-item d-flex justify-content-between align-items-left flex-column flex-md-row">
+        <span class="text-left">{{ 'accessories.plugin' | translate }}</span>
+        <span class="text-left text-md-right grey-text text-monospace">{{ matchedCachedAccessory.plugin }}</span>
+      </li>
+      @if(matchedCachedAccessory.platform) {
+      <li class="list-group-item d-flex justify-content-between align-items-left flex-column flex-md-row">
+        <span class="text-left">{{ 'child_bridge.config.platform' | translate }}</span>
+        <span class="text-left text-md-right grey-text text-monospace">{{ matchedCachedAccessory.platform }}</span>
+      </li>
+      } @if(matchedCachedAccessory.accessory) {
+      <li class="list-group-item d-flex justify-content-between align-items-left flex-column flex-md-row">
+        <span class="text-left">{{ 'child_bridge.config.accessory' | translate }}</span>
+        <span class="text-left text-md-right grey-text text-monospace">{{ matchedCachedAccessory.accessory }}</span>
+      </li>
+      } } @for (information of accessoryInformation; track information) {
+      <li class="list-group-item d-flex justify-content-between align-items-left flex-column flex-md-row">
+        <span class="text-left">{{ information.key }}</span>
+        <span class="text-left text-md-right grey-text text-monospace">{{ information.value }}</span>
+      </li>
+      }
+      <li class="list-group-item d-flex justify-content-between align-items-left flex-column flex-md-row">
+        <span class="text-left">{{ 'accessories.bridge_username' | translate }}</span>
+        <span class="text-left text-md-right grey-text text-monospace">{{ service.instance.username }}</span>
+      </li>
+      @if (matchedCachedAccessory) {
+      <li class="list-group-item d-flex justify-content-between align-items-left flex-column flex-md-row">
+        <span class="text-left">{{ 'accessories.bridge_name' | translate }}</span>
+        <span class="text-left text-md-right grey-text text-monospace">{{ matchedCachedAccessory.bridge }}</span>
+      </li>
+      }
+      <li class="list-group-item d-flex justify-content-between align-items-left flex-column flex-md-row">
+        <span class="text-left">{{ 'accessories.bridge_ip' | translate }}</span>
+        <span class="text-left text-md-right grey-text text-monospace">{{ service.instance.ipAddress }}</span>
+      </li>
+      <li class="list-group-item d-flex justify-content-between align-items-left flex-column flex-md-row">
+        <span class="text-left">{{ 'accessories.bridge_port' | translate }}</span>
+        <span class="text-left text-md-right grey-text text-monospace">{{ service.instance.port }}</span>
+      </li>
+      <li class="list-group-item d-flex justify-content-between align-items-left flex-column flex-md-row">
+        <span class="text-left text-monospace">aid</span>
+        <span class="text-left text-md-right grey-text text-monospace">{{ service.aid }}</span>
+      </li>
+      <li class="list-group-item d-flex justify-content-between align-items-left flex-column flex-md-row">
+        <span class="text-left text-monospace">iid</span>
+        <span class="text-left text-md-right grey-text text-monospace">{{ service.iid }}</span>
+      </li>
+      @if (matchedCachedAccessory) {
+      <li class="list-group-item d-flex justify-content-between align-items-left flex-column flex-md-row">
+        <span class="text-left text-monospace">UUID</span>
+        <span class="text-left text-md-right grey-text text-monospace">{{ matchedCachedAccessory.UUID }}</span>
+      </li>
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <span class="text-left">{{ 'accessories.button_remove' | translate }}</span>
+        <button (click)="removeSingleCachedAccessories()" class="btn btn-primary m-0 ml-3">
+          <i class="fas fa-fw fa-arrow-right"></i>
+        </button>
+      </li>
+      }
+    </ul>
   </div>
   <div class="modal-footer justify-content-between">
     <div class="text-left"></div>

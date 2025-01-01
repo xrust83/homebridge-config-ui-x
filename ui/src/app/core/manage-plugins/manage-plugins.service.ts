@@ -31,13 +31,14 @@ export class ManagePluginsService {
 
   constructor() {}
 
-  installPlugin(pluginName: string, targetVersion = 'latest') {
+  installPlugin(plugin: any, targetVersion = 'latest') {
     const ref = this.$modal.open(ManagePluginComponent, {
       size: 'lg',
       backdrop: 'static',
     })
     ref.componentInstance.action = 'Install'
-    ref.componentInstance.pluginName = pluginName
+    ref.componentInstance.pluginName = plugin.name
+    ref.componentInstance.pluginDisplayName = plugin.displayName
     ref.componentInstance.targetVersion = targetVersion
   }
 
@@ -66,6 +67,7 @@ export class ManagePluginsService {
     })
     ref.componentInstance.action = 'Update'
     ref.componentInstance.pluginName = plugin.name
+    ref.componentInstance.pluginDisplayName = plugin.displayName
     ref.componentInstance.targetVersion = targetVersion
     ref.componentInstance.latestVersion = plugin.latestVersion
     ref.componentInstance.installedVersion = plugin.installedVersion
@@ -83,6 +85,7 @@ export class ManagePluginsService {
     })
     ref.componentInstance.action = 'Update'
     ref.componentInstance.pluginName = homebridgePkg.name
+    ref.componentInstance.pluginDisplayName = homebridgePkg.displayName
     ref.componentInstance.targetVersion = targetVersion
     ref.componentInstance.latestVersion = homebridgePkg.latestVersion
     ref.componentInstance.installedVersion = homebridgePkg.installedVersion
@@ -114,9 +117,9 @@ export class ManagePluginsService {
 
       return plugin.installedVersion
         ? await this.updatePlugin(plugin, version)
-        : this.installPlugin(plugin.name, version)
+        : this.installPlugin(plugin, version)
     } catch (e) {
-      // do nothing
+      // Do nothing
     }
   }
 
@@ -127,7 +130,7 @@ export class ManagePluginsService {
    * @param justInstalled
    */
   async bridgeSettings(plugin: any, justInstalled = false) {
-    // load the plugins schema
+    // Load the plugins schema
     let schema: any
     if (plugin.settingsSchema) {
       try {
@@ -155,7 +158,7 @@ export class ManagePluginsService {
    * @param plugin
    */
   async settings(plugin: any) {
-    // load the plugins schema
+    // Load the plugins schema
     let schema: any
     if (plugin.settingsSchema) {
       try {
@@ -167,7 +170,7 @@ export class ManagePluginsService {
       }
     }
 
-    // open the custom ui if the plugin has one
+    // Open the custom ui if the plugin has one
     if (schema && schema.customUi) {
       return this.$customPluginsService.openCustomSettingsUi(plugin, schema)
     }
@@ -176,7 +179,7 @@ export class ManagePluginsService {
       return this.$customPluginsService.openSettings(plugin, schema)
     }
 
-    // open the standard ui
+    // Open the standard ui
     const ref = this.$modal.open(
       plugin.settingsSchema ? PluginConfigComponent : ManualConfigComponent,
       {
@@ -188,9 +191,7 @@ export class ManagePluginsService {
     ref.componentInstance.schema = schema
     ref.componentInstance.plugin = plugin
 
-    return ref.result.catch(() => {
-      // do nothing
-    })
+    return ref.result.catch(() => { /* do nothing */ })
   }
 
   /**

@@ -6,7 +6,7 @@ import { saveAs } from 'file-saver'
 import { ToastrService } from 'ngx-toastr'
 
 import { ApiService } from '@/app/core/api.service'
-import { RestoreComponent } from '@/app/modules/settings/restore/restore.component'
+import { RestoreComponent } from '@/app/modules/settings/backup/restore/restore.component'
 
 @Component({
   templateUrl: './backup.component.html',
@@ -28,7 +28,6 @@ export class BackupComponent implements OnInit {
   public clicked = false
   public scheduledBackups = []
   public backupTime: string
-  public errorMessage = ''
   public deleting = null
 
   constructor() {}
@@ -43,9 +42,7 @@ export class BackupComponent implements OnInit {
       next: (data) => {
         this.scheduledBackups = data
       },
-      error: (err) => {
-        this.errorMessage = err.error.message || err.message
-      },
+      error: err => console.error(err),
     })
   }
 
@@ -81,7 +78,7 @@ export class BackupComponent implements OnInit {
     })
   }
 
-  restore(backup: { id: any, fileName: string }) {
+  restore(backup: { id: any, fileName: string } | null) {
     // Close the backup modal and open the restore modal
     this.$activeModal.close()
     const ref = this.$modal.open(RestoreComponent, {

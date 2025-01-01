@@ -8,14 +8,15 @@ import { firstValueFrom, Subject } from 'rxjs'
 
 import { ServiceTypeX } from '@/app/core/accessories/accessories.interfaces'
 import { AccessoryInfoComponent } from '@/app/core/accessories/accessory-info/accessory-info.component'
-
-import { AuthService } from '../auth/auth.service'
-import { IoNamespace, WsService } from '../ws.service'
+import { ApiService } from '@/app/core/api.service'
+import { AuthService } from '@/app/core/auth/auth.service'
+import { IoNamespace, WsService } from '@/app/core/ws.service'
 
 @Injectable({
   providedIn: 'root',
 })
 export class AccessoriesService {
+  private $api = inject(ApiService)
   private $auth = inject(AuthService)
   private $modal = inject(NgbModal)
   private $toastr = inject(ToastrService)
@@ -47,7 +48,21 @@ export class AccessoriesService {
     'ProtocolInformation',
   ]
 
-  constructor() {}
+  private accessoryCache: any[] = []
+  private pairingCache: any[] = []
+
+  constructor() {
+    firstValueFrom(this.$api.get('/server/cached-accessories'))
+      .then((data) => {
+        this.accessoryCache = data
+      })
+      .catch(error => console.error(error))
+    firstValueFrom(this.$api.get('/server/pairings'))
+      .then((data) => {
+        this.pairingCache = data
+      })
+      .catch(error => console.error(error))
+  }
 
   /**
    *
@@ -59,6 +74,8 @@ export class AccessoriesService {
     })
 
     ref.componentInstance.service = service
+    ref.componentInstance.accessoryCache = this.accessoryCache
+    ref.componentInstance.pairingCache = this.pairingCache
 
     ref.result
       .then(() => this.saveLayout())
@@ -84,13 +101,13 @@ export class AccessoriesService {
   public async start() {
     this.readyForControl = false
 
-    // connect to the socket endpoint
+    // Connect to the socket endpoint
     this.io = this.$ws.connectToNamespace('accessories')
 
-    // load the room layout first
+    // Load the room layout first
     await this.loadLayout()
 
-    // start accessory subscription
+    // Start accessory subscription
     if (this.io.connected) {
       this.io.socket.emit('get-accessories')
       setTimeout(() => {
@@ -104,7 +121,7 @@ export class AccessoriesService {
       })
     }
 
-    // subscribe to accessory events
+    // Subscribe to accessory events
     this.io.socket.on('accessories-data', (data: ServiceType[]) => {
       this.parseServices(data)
       this.generateHelpers()
@@ -119,7 +136,7 @@ export class AccessoriesService {
       this.accessoryData.next(data)
     })
 
-    // when a new instance is available, do a self reload
+    // When a new instance is available, do a self reload
     this.io.socket.on('accessories-reload-required', async () => {
       this.stop()
       await this.start()
@@ -130,7 +147,7 @@ export class AccessoriesService {
       this.$toastr.error(message, this.$translate.instant('toast.title_error'))
     })
 
-    // when the system is ready for accessory control
+    // When the system is ready for accessory control
     this.io.socket.on('accessories-ready-for-control', () => {
       this.readyForControl = true
     })
@@ -140,7 +157,7 @@ export class AccessoriesService {
    * Save the room layout
    */
   public saveLayout() {
-    // generate layout schema to save to disk
+    // Generate layout schema to save to disk
     this.accessoryLayout = this.rooms.map(room => ({
       name: room.name,
       services: room.services.map(service => ({
@@ -154,7 +171,7 @@ export class AccessoriesService {
       })),
     })).filter(room => room.services.length)
 
-    // send update request to server
+    // Send update request to server
     this.io.request('save-layout', { user: this.$auth.user.username, layout: this.accessoryLayout }).subscribe({
       next: () => this.layoutSaved.next(undefined),
       error: (error) => {
@@ -170,7 +187,7 @@ export class AccessoriesService {
   private async loadLayout() {
     this.accessoryLayout = await firstValueFrom(this.io.request('get-layout', { user: this.$auth.user.username }))
 
-    // build empty room layout
+    // Build empty room layout
     this.rooms = this.accessoryLayout.map(room => ({
       name: room.name,
       services: [],
@@ -186,7 +203,7 @@ export class AccessoriesService {
       return
     }
 
-    // update the existing objects to avoid re-painting the dom element each refresh
+    // Update the existing objects to avoid re-painting the dom element each refresh
     services.forEach((service) => {
       const existing = this.accessories.services.find(x => x.uniqueId === service.uniqueId)
 
@@ -203,12 +220,12 @@ export class AccessoriesService {
    */
   private sortIntoRooms() {
     this.accessories.services.forEach((service) => {
-      // don't put hidden types into rooms
+      // Don't put hidden types into rooms
       if (this.hiddenTypes.includes(service.type)) {
         return
       }
 
-      // link services
+      // Link services
       if (service.linked) {
         service.linkedServices = {}
         service.linked.forEach((iid) => {
@@ -217,21 +234,21 @@ export class AccessoriesService {
         })
       }
 
-      // check if the service has already been allocated to an active room
+      // Check if the service has already been allocated to an active room
       const inRoom = this.rooms.find(r => r.services.find(s => s.uniqueId === service.uniqueId))
 
-      // not in an active room, perhaps the service is in the layout cache
+      // Not in an active room, perhaps the service is in the layout cache
       if (!inRoom) {
         const inCache = this.accessoryLayout.find(r => r.services.find(s => s.uniqueId === service.uniqueId))
 
         if (inCache) {
-          // it's in the cache, add to the correct room
+          // It's in the cache, add to the correct room
           this.rooms.find(r => r.name === inCache.name).services.push(service)
         } else {
-          // new accessory add the default room
+          // New accessory add the default room
           const defaultRoom = this.rooms.find(r => r.name === 'Default Room')
 
-          // does the default room exist?
+          // Does the default room exist?
           if (defaultRoom) {
             defaultRoom.services.push(service)
           } else {
@@ -249,7 +266,7 @@ export class AccessoriesService {
    * Order the rooms on the screen
    */
   private orderRooms() {
-    // order the services within each room
+    // Order the services within each room
     this.rooms.forEach((room) => {
       const roomCache = this.accessoryLayout.find(r => r.name === room.name)
       room.services.sort((a, b) => {
@@ -269,7 +286,7 @@ export class AccessoriesService {
    * Setup custom attributes
    */
   private applyCustomAttributes() {
-    // apply custom saved attributes to the service
+    // Apply custom saved attributes to the service
     this.rooms.forEach((room) => {
       const roomCache = this.accessoryLayout.find(r => r.name === room.name)
       room.services.forEach((service) => {

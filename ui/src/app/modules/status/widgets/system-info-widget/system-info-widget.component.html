@@ -10,7 +10,7 @@
         <tr>
           <th scope="row" class="text-nowrap">{{ 'status.widget.info.os' | translate }}</th>
           @if (!serverInfo.homebridgeRunningInSynologyPackage) {
-          <td>
+          <td class="grey-text">
             @switch (serverInfo.os.platform) { @case ('darwin') {
             <span> {{ serverInfo.os.codename }} </span>
             } @case ('win32') {
@@ -26,7 +26,7 @@
             } }
           </td>
           } @if (serverInfo.homebridgeRunningInSynologyPackage) {
-          <td>Synology DSM</td>
+          <td class="grey-text">Synology DSM</td>
           }
         </tr>
         } @if (serverInfo.network.ip4) {
@@ -34,36 +34,38 @@
           <th scope="row" class="text-nowrap">
             {{ 'status.widget.info.ipv4' | translate }} ({{ serverInfo.network.iface }})
           </th>
-          <td>{{ serverInfo.network.ip4 }}</td>
+          <td class="grey-text">{{ serverInfo.network.ip4 }}</td>
         </tr>
         } @if (serverInfo.network.ip6) {
         <tr>
           <th scope="row" class="text-nowrap">
             {{ 'status.widget.info.ipv6' | translate }} ({{ serverInfo.network.iface }})
           </th>
-          <td>{{ serverInfo.network.ip6 }}</td>
+          <td class="grey-text">{{ serverInfo.network.ip6 }}</td>
         </tr>
         } @if (serverInfo.os) {
         <tr>
           <th scope="row" class="text-nowrap">{{ 'status.widget.info.hostname' | translate }}</th>
-          <td>{{ serverInfo.os.hostname }}</td>
+          <td class="grey-text">{{ serverInfo.os.hostname }}</td>
         </tr>
         }
         <tr>
           <th scope="row" class="text-nowrap">{{ 'status.widget.info.service_user' | translate }}</th>
-          <td>{{ serverInfo.serviceUser }}</td>
+          <td class="grey-text">{{ serverInfo.serviceUser }}</td>
         </tr>
         <tr>
           <th scope="row" class="text-nowrap">{{ 'status.widget.info.nodejs_version' | translate }}</th>
-          <td>
+          <td class="grey-text">
             @if (nodejsInfo.updateAvailable && !nodejsInfo.showNodeUnsupportedWarning &&
             !serverInfo.homebridgeRunningInSynologyPackage) {
             <a href="javascript:void(0)" class="system-info-link" (click)="nodeUpdateModal()">
-              <i class="primary-text fas fa-fw fa-circle-up"></i> {{ serverInfo.nodeVersion }}
+              <i class="primary-text fas fa-fw fa-circle-up"></i>
+              <span class="grey-text"> {{ serverInfo.nodeVersion }}</span>
             </a>
             } @if (nodejsInfo.showNodeUnsupportedWarning && !nodejsInfo.updateAvailable) {
             <a href="javascript:void(0)" class="system-info-link" (click)="nodeUnsupportedModal()">
-              <i class="primary-text fas fa-fw fa-exclamation-circle"></i> {{ serverInfo.nodeVersion }}
+              <i class="primary-text fas fa-fw fa-exclamation-circle"></i>
+              <span class="grey-text"> {{ serverInfo.nodeVersion }}</span>
             </a>
             } @if (!nodejsInfo.showNodeUnsupportedWarning && !nodejsInfo.updateAvailable) {
             <span> {{ serverInfo.nodeVersion }} </span>
@@ -72,42 +74,42 @@
         </tr>
         <tr>
           <th scope="row" class="text-nowrap">{{ 'status.widget.info.nodejs_path' | translate }}</th>
-          <td>{{ nodejsInfo.installPath }}</td>
+          <td class="grey-text">{{ nodejsInfo.installPath }}</td>
         </tr>
         <tr>
           <th scope="row" class="text-nowrap">{{ 'status.widget.info.storage_path' | translate }}</th>
-          <td>{{ serverInfo.homebridgeStoragePath }}</td>
+          <td class="grey-text">{{ serverInfo.homebridgeStoragePath }}</td>
         </tr>
         <tr>
           <th scope="row" class="text-nowrap">{{ 'status.widget.info.config_path' | translate }}</th>
-          <td>{{ serverInfo.homebridgeConfigJsonPath }}</td>
+          <td class="grey-text">{{ serverInfo.homebridgeConfigJsonPath }}</td>
         </tr>
         <tr>
           <th scope="row" class="text-nowrap">{{ 'status.widget.info.plugin_path' | translate }}</th>
-          <td>{{ serverInfo.homebridgeCustomPluginPath || serverInfo.homebridgePluginPath }}</td>
+          <td class="grey-text">{{ serverInfo.homebridgeCustomPluginPath || serverInfo.homebridgePluginPath }}</td>
         </tr>
         <tr>
           <th scope="row" class="text-nowrap">{{ 'status.widget.info.timezone' | translate }}</th>
-          <td>{{ serverInfo.time.timezone }}</td>
+          <td class="grey-text">{{ serverInfo.time.timezone }}</td>
         </tr>
         @if (serverInfo.homebridgeRunningInDocker) {
         <tr>
           <th scope="row" class="text-nowrap">{{ 'status.widget.info.docker' | translate }}</th>
-          <td class="text-nowrap">{{ 'status.widget.info.yes' | translate }}</td>
+          <td class="text-nowrap grey-text">{{ 'status.widget.info.yes' | translate }}</td>
         </tr>
         } @if (serverInfo.homebridgeRunningInSynologyPackage) {
         <tr>
           <th scope="row" class="text-nowrap">{{ 'status.widget.info.synology_package' | translate }}</th>
-          <td class="text-nowrap">{{ 'status.widget.info.yes' | translate }}</td>
+          <td class="text-nowrap grey-text">{{ 'status.widget.info.yes' | translate }}</td>
         </tr>
         } @if (!serverInfo.homebridgeServiceMode) {
         <tr>
           <th scope="row" class="text-nowrap">{{ 'status.widget.info.service_mode' | translate }}</th>
-          <td class="text-nowrap">
+          <td class="text-nowrap grey-text">
             <a class="system-info-link" href="javascript:void(0)" (click)="serviceModeModal()">
               <i class="primary-text fas fa-fw fa-exclamation-circle"></i>
             </a>
-            {{ 'status.widget.info.disabled' | translate }}
+            <span class="grey-text"> {{ 'status.widget.info.disabled' | translate }}</span>
           </td>
         </tr>
         }

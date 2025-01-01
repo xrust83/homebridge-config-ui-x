@@ -11,7 +11,7 @@ import { firstValueFrom } from 'rxjs'
 import { ApiService } from '@/app/core/api.service'
 import { AuthService } from '@/app/core/auth/auth.service'
 import { SettingsService } from '@/app/core/settings.service'
-import { RestoreComponent } from '@/app/modules/settings/restore/restore.component'
+import { RestoreComponent } from '@/app/modules/settings/backup/restore/restore.component'
 import { environment } from '@/environments/environment'
 
 @Component({
@@ -121,17 +121,17 @@ export class SetupWizardComponent implements OnInit, OnDestroy {
 
   async uploadHomebridgeArchive() {
     try {
-      // get and set a temporary access token
+      // Get and set a temporary access token
       const authorization = await firstValueFrom(this.$api.get('/setup-wizard/get-setup-wizard-token'))
       window.localStorage.setItem(environment.jwt.tokenKey, authorization.access_token)
       this.$auth.token = authorization.access_token
 
-      // upload archive
+      // Upload archive
       const formData: FormData = new FormData()
       formData.append('restoreArchive', this.selectedFile, this.selectedFile.name)
       await firstValueFrom(this.$api.post('/backup/restore', formData))
 
-      // open restore modal
+      // Open restore modal
       this.openRestoreModal()
       this.restoreUploading = false
     } catch (error) {
@@ -158,11 +158,11 @@ export class SetupWizardComponent implements OnInit, OnDestroy {
   async waitForHomebridgeToRestart() {
     this.step = 'restarting'
 
-    // remove tokens
+    // Remove tokens
     window.localStorage.removeItem(environment.jwt.tokenKey)
     this.$auth.token = null
 
-    // wait at least 15 seconds
+    // Wait at least 15 seconds
     await new Promise(resolve => setTimeout(resolve, 15000))
 
     const checkHomebridgeInterval = setInterval(async () => {
@@ -171,7 +171,7 @@ export class SetupWizardComponent implements OnInit, OnDestroy {
         clearInterval(checkHomebridgeInterval)
         location.reload()
       } catch (e) {
-        // not up yet
+        // Not up yet
       }
     }, 1000)
   }

@@ -8,7 +8,7 @@
       (click)="openAddNewUser()"
       [attr.aria-label]="'users.button_add_user' | translate"
     >
-      <i class="fas fa-fw fa-plus"></i>
+      <i class="fas fa-fw fa-user-plus"></i>
     </button>
   </div>
 </div>
@@ -23,19 +23,31 @@
             <h5 class="small text-truncate primary-text" [innerText]="user.username"></h5>
           </span>
         </div>
-        <div class="d-flex flex-row justify-content-between" style="gap: 10px">
-          @if ($auth.user.username !== user.username) {
-          <button class="btn btn-elegant btn-sml m-0" (click)="deleteUser(user.id)">
-            {{ 'form.button_delete' | translate }}
-          </button>
-          } @if ($auth.user.username === user.username && !user.otpActive) {
-          <button class="btn btn-primary mt-0 m-0" (click)="setup2fa(user)">{{ 'users.setup_2fa' | translate }}</button>
+        <div class="d-flex flex-row justify-content-between">
+          @if ($auth.user.username === user.username && !user.otpActive) {
+          <button class="btn btn-primary m-0" (click)="setup2fa(user)">{{ 'users.setup_2fa' | translate }}</button>
           } @if ($auth.user.username === user.username && user.otpActive) {
-          <button class="btn btn-primary m-0" (click)="disable2fa(user)">
+          <button class="btn btn-elegant m-0" (click)="disable2fa(user)">
             {{ 'users.setup_2fa_disable' | translate }}
           </button>
           }
-          <button class="btn btn-primary m-0" (click)="openEditUser(user)">{{ 'form.button_edit' | translate }}</button>
+          <div>
+            <button
+              class="btn btn-elegant m-0 ml-3"
+              (click)="openEditUser(user)"
+              [attr.aria-label]="'form.button_edit' | translate"
+            >
+              <i class="fas fa-fw fa-user-pen"></i>
+            </button>
+            <button
+              class="btn btn-danger m-0 ml-3"
+              (click)="deleteUser(user.id)"
+              [attr.aria-label]="'form.button_delete' | translate"
+              [disabled]="$auth.user.username === user.username"
+            >
+              <i class="fas fa-fw fa-trash"></i>
+            </button>
+          </div>
         </div>
       </div>
     </div>

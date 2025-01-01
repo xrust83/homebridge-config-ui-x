@@ -46,7 +46,7 @@ export class FreeBSDInstaller extends BasePlatform {
     this.checkForRoot()
     await this.stop()
 
-    // try and disable the service
+    // Try and disable the service
     await this.disableService()
 
     try {
@@ -124,7 +124,7 @@ export class FreeBSDInstaller extends BasePlatform {
       })
 
       if (all === true) {
-        // rebuild all modules
+        // Rebuild all modules
         try {
           execSync('npm rebuild --unsafe-perm', {
             cwd: npmGlobalPath,
@@ -215,10 +215,10 @@ export class FreeBSDInstaller extends BasePlatform {
    */
   private async checkUser() {
     try {
-      // check if user exists
+      // Check if user exists
       execSync(`id ${this.hbService.asUser} 2> /dev/null`)
     } catch (e) {
-      // if not create the user
+      // If not create the user
       execSync(`pw useradd -q -n ${this.hbService.asUser} -s /usr/sbin/nologin 2> /dev/null`)
       this.hbService.logger(`Created service user: ${this.hbService.asUser}`, 'info')
     }
@@ -233,13 +233,13 @@ export class FreeBSDInstaller extends BasePlatform {
       const npmPath = execSync('which npm').toString('utf8').trim()
       const sudoersEntry = `${this.hbService.asUser}    ALL=(ALL) NOPASSWD:SETENV: ${npmPath}, /usr/local/bin/npm`
 
-      // check if the sudoers file already contains the entry
+      // Check if the sudoers file already contains the entry
       const sudoers = readFileSync('/usr/local/etc/sudoers', 'utf-8')
       if (sudoers.includes(sudoersEntry)) {
         return
       }
 
-      // grant the user restricted sudo privileges to /sbin/shutdown
+      // Grant the user restricted sudo privileges to /sbin/shutdown
       execSync(`echo '${sudoersEntry}' | sudo EDITOR='tee -a' visudo`)
     } catch (e) {
       this.hbService.logger('WARNING: Failed to setup /etc/sudoers, you may not be able to shutdown/restart your server from the Homebridge UI.', 'warn')

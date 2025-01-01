@@ -11,7 +11,44 @@ All notable changes to `homebridge-config-ui-x` will be documented in this file.
 - further improvements to plugin search
 - implement and allow switching to scoped plugins
 - merge plugin info and verified modals
+  - condensing plugin card into title + three lines of description
 - consistent formatting of child bridge names across the ui
+- general improvements across the ui
+  - status page:
+    - individual widget setting form design made consistent with other forms
+    - added pairing status to qr code widget
+  - plugins page:
+    - visual improvements to plugin child bridge settings modal
+    - allow plugins to disable/enable the save button in custom uis (see below section)
+    - allow configuring [multiple accessories on the same child bridge](https://github.com/homebridge/homebridge/wiki/Child-Bridges#multiple-accessories-on-the-same-child-bridge) via the ui
+  - accessories page:
+    - changed accessory spanner icon to info icon (more descriptive)
+    - accessory info modal redesigned and provides more info where possible like the accessory UUID (including a link to remove from the cache)
+    - added support modal with some info about rooms and accessories (visible on desktop)
+  - json config page:
+    - redesigned restore modal to be more consistent with other modals
+  - settings page:
+    - chevron icons replaced with arrow-right icons
+    - removed restore modal from settings page and is accessible from the backup modal
+    - backup modal redesigned to be more consistent with other modals
+    - added new display -> menu mode setting which allows keeping the side menu from expanding out on desktop
+    - redesigned and improved accessories and bridges sections and modals
+  - users page:
+    - add user and edit user modals redesigned to be more consistent with other modals
+    - user card updated with icon buttons for edit/delete rather than text buttons
+
+### Plugin Custom UI Changes
+
+The UI has recently been updated with `@homebridge/plugin-ui-utils` @ `v2.0.0`, which includes a new feature to allow plugin developers to dynamically enable and disable the `Save` button in the custom UI modal.
+Two new methods have been added for this purpose:
+
+- `homebridge.disableSaveButton()`
+- `homebridge.enableSaveButton()`
+
+Developers: to maintain compatibility with older versions of the Homebridge UI, it is recommended to check if the methods exist before calling them in your custom UIs:
+
+- `homebridge.disableSaveButton?.()`
+- `homebridge.enableSaveButton?.()`
 
 ### Other Changes
 

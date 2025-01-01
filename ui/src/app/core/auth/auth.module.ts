@@ -36,5 +36,5 @@ const tokenGetter = () => localStorage.getItem(environment.jwt.tokenKey)
 })
 class AuthModule {}
 
-// token getter
+// Token getter
 export { AuthModule, tokenGetter }

@@ -50,11 +50,11 @@ export class HumidifierDehumidifierManageComponent implements OnInit {
             this.service.getCharacteristic('RelativeHumidityDehumidifierThreshold').setValue(this.autoHumidity[1])
             break
           case 1:
-            // humidifier
+            // Humidifier
             this.service.getCharacteristic('RelativeHumidityHumidifierThreshold').setValue(this.targetHumidifierHumidity)
             break
           case 2:
-            // dehumidifier
+            // Dehumidifier
             this.service.getCharacteristic('RelativeHumidityDehumidifierThreshold').setValue(this.targetDehumidifierHumidity)
             break
         }

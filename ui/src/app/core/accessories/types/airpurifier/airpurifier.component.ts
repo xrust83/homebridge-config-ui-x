@@ -30,7 +30,7 @@ export class AirpurifierComponent {
   onClick() {
     this.service.getCharacteristic('Active').setValue(this.service.values.Active ? 0 : 1)
 
-    // set the brightness to 100% if on 0% when turned on
+    // Set the brightness to 100% if on 0% when turned on
     if (!this.service.values.On && 'RotationSpeed' in this.service.values && !this.service.values.RotationSpeed) {
       this.service.getCharacteristic('RotationSpeed').setValue(100)
     }

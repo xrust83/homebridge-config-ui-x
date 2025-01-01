@@ -11,7 +11,18 @@
     </div>
     <div #pincode class="text-center w-100 mt-auto gridster-item-content">
       <p class="mb-1">{{ pin }}</p>
-      <p class="grey-text mb-1">{{ 'status.code_scan' | translate }}</p>
+      <p class="grey-text mb-1 small">
+        <i
+          class="fas fa-fw fa-link"
+          [ngClass]="{
+            'green-text': paired,
+            'grey-text': !paired
+          }"
+        ></i>
+        {{ (paired ? 'status.widget.qr_paired' : 'status.widget.qr_unpaired') | translate }} @if (!paired) {
+        <span> &middot; {{ 'status.code_scan' | translate }} </span>
+        }
+      </p>
     </div>
   </div>
 </div>

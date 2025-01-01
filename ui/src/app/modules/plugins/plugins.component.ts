@@ -6,12 +6,11 @@ import { ToastrService } from 'ngx-toastr'
 import { firstValueFrom, Subscription } from 'rxjs'
 
 import { ApiService } from '@/app/core/api.service'
+import { SpinnerComponent } from '@/app/core/components/spinner/spinner.component'
 import { ManagePluginsService } from '@/app/core/manage-plugins/manage-plugins.service'
 import { SettingsService } from '@/app/core/settings.service'
 import { IoNamespace, WsService } from '@/app/core/ws.service'
-
-import { SpinnerComponent } from '../../core/components/spinner/spinner.component'
-import { PluginCardComponent } from './plugin-card/plugin-card.component'
+import { PluginCardComponent } from '@/app/modules/plugins/plugin-card/plugin-card.component'
 
 @Component({
   templateUrl: './plugins.component.html',
@@ -53,10 +52,10 @@ export class PluginsComponent implements OnInit, OnDestroy {
       this.getChildBridgeMetadata()
       this.io.socket.emit('monitor-child-bridge-status')
 
-      // load list of installed plugins
+      // Load list of installed plugins
       await this.loadInstalledPlugins()
 
-      // get query parameters
+      // Get query parameters
       const justInstalled = this.$router.parseUrl(this.$router.url).queryParams.installed
       if (justInstalled) {
         const plugin = this.installedPlugins.find(x => x.name === justInstalled)
@@ -162,7 +161,7 @@ export class PluginsComponent implements OnInit, OnDestroy {
           const pluginChildBridges = this.getPluginChildBridges(plugin)
           plugin.hasChildBridgesUnpaired = pluginChildBridges.some(x => !x.paired)
         } catch (err) {
-          // may not be technically correct, but if we can't load the config, assume it is configured
+          // May not be technically correct, but if we can't load the config, assume it is configured
           plugin.isConfigured = true
           plugin.hasChildBridges = true
         }

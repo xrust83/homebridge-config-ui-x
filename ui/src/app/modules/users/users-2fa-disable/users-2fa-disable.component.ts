@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core'
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms'
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
+import { NgbActiveModal, NgbAlert } from '@ng-bootstrap/ng-bootstrap'
 import { TranslatePipe, TranslateService } from '@ngx-translate/core'
 import { ToastrService } from 'ngx-toastr'
 
@@ -13,6 +13,7 @@ import { ApiService } from '@/app/core/api.service'
     FormsModule,
     ReactiveFormsModule,
     TranslatePipe,
+    NgbAlert,
   ],
 })
 export class Users2faDisableComponent {

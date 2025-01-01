@@ -56,10 +56,10 @@ export class HbServiceService {
    * Sets the Homebridge startup settings
    */
   async setHomebridgeStartupSettings(data: HbServiceStartupSettings) {
-    // restart ui on next restart
+    // Restart ui on next restart
     this.configService.hbServiceUiRestartRequired = true
 
-    // format the settings payload
+    // Format the settings payload
     const settings = {
       debugMode: data.HOMEBRIDGE_DEBUG,
       keepOrphans: data.HOMEBRIDGE_KEEP_ORPHANS,
@@ -77,7 +77,7 @@ export class HbServiceService {
    * Set the flag to trigger a full restart on next boot
    */
   async setFullServiceRestartFlag() {
-    // restart ui on next restart
+    // Restart ui on next restart
     this.configService.hbServiceUiRestartRequired = true
 
     return { status: 0 }
@@ -88,14 +88,14 @@ export class HbServiceService {
    */
   async downloadLogFile(shouldRemoveColour: boolean) {
     if (!await pathExists(this.configService.ui.log.path)) {
-      this.logger.error(`Cannot download log file: "${this.configService.ui.log.path}" does not exist.`)
+      this.logger.error(`Cannot download log file ${this.configService.ui.log.path} as it does not exist.`)
       throw new BadRequestException('Log file not found on disk.')
     }
     try {
       await access(this.configService.ui.log.path, constants.R_OK)
     } catch (e) {
-      this.logger.error(`Cannot download log file: Missing read permissions on "${this.configService.ui.log.path}".`)
-      throw new BadRequestException('Cannot read log file. Check the log file permissions')
+      this.logger.error(`Cannot download log file as missing read permissions on ${this.configService.ui.log.path}.`)
+      throw new BadRequestException('Cannot read log file. Check the log file permissions.')
     }
 
     if (shouldRemoveColour) {
@@ -118,14 +118,14 @@ export class HbServiceService {
    */
   async truncateLogFile(username?: string) {
     if (!await pathExists(this.configService.ui.log.path)) {
-      this.logger.error(`Cannot truncate log file: "${this.configService.ui.log.path}" does not exist.`)
+      this.logger.error(`Cannot truncate log file ${this.configService.ui.log.path} as it does not exist.`)
       throw new BadRequestException('Log file not found on disk.')
     }
     try {
       await access(this.configService.ui.log.path, constants.R_OK | constants.W_OK)
     } catch (e) {
-      this.logger.error(`Cannot truncate log file: Missing write permissions on "${this.configService.ui.log.path}".`)
-      throw new BadRequestException('Cannot access file. Check the log file permissions')
+      this.logger.error(`Cannot truncate log file as missing write permissions on ${this.configService.ui.log.path}.`)
+      throw new BadRequestException('Cannot access file. Check the log file permissions.')
     }
 
     await truncate(this.configService.ui.log.path)

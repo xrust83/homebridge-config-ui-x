@@ -113,7 +113,7 @@ export class DarwinInstaller extends BasePlatform {
       const targetNodeVersion = execSync('node -v').toString('utf8').trim()
 
       if (this.isPackage() && process.env.UIX_USE_PNPM === '1' && process.env.UIX_CUSTOM_PLUGIN_PATH) {
-        // pnpm+package mode
+        // PNPM+package mode
         const cwd = dirname(process.env.UIX_CUSTOM_PLUGIN_PATH)
 
         if (!await pathExists(cwd)) {
@@ -127,7 +127,7 @@ export class DarwinInstaller extends BasePlatform {
         })
         this.hbService.logger(`Rebuilt plugins in ${process.env.UIX_CUSTOM_PLUGIN_PATH} for Node.js ${targetNodeVersion}.`, 'succeed')
       } else {
-        // normal global npm setups
+        // Normal global npm setups
         const npmGlobalPath = execSync('/bin/echo -n "$(npm -g prefix)/lib/node_modules"', {
           env: Object.assign({
             npm_config_loglevel: 'silent',
@@ -142,7 +142,7 @@ export class DarwinInstaller extends BasePlatform {
         this.hbService.logger(`Rebuilt homebridge-config-ui-x for Node.js ${targetNodeVersion}.`, 'succeed')
 
         if (all === true) {
-          // rebuild all modules
+          // Rebuild all modules
           try {
             execSync('npm rebuild --unsafe-perm', {
               cwd: npmGlobalPath,
@@ -258,7 +258,7 @@ export class DarwinInstaller extends BasePlatform {
     const downloadUrl = `https://nodejs.org/dist/${job.target}/node-${job.target}-darwin-${process.arch}.tar.gz`
     const targetPath = dirname(dirname(process.execPath))
 
-    // only allow updates when installed using the official Node.js installer / Homebridge package
+    // Only allow updates when installed using the official Node.js installer / Homebridge package
     if (targetPath !== '/usr/local' && !targetPath.startsWith('/Library/Application Support/Homebridge/node-')) {
       this.hbService.logger(`Cannot update Node.js on your system. Non-standard installation path detected: ${targetPath}`, 'fail')
       process.exit(1)
@@ -277,19 +277,19 @@ export class DarwinInstaller extends BasePlatform {
         unlink: true,
       }
 
-      // remove npm package as this can cause issues when overwritten by the node tarball
+      // Remove npm package as this can cause issues when overwritten by the node tarball
       await this.hbService.removeNpmPackage(resolve(targetPath, 'lib', 'node_modules', 'npm'))
 
-      // extract
+      // Extract
       await this.hbService.extractNodejs(job.target, extractConfig)
 
-      // clean up
+      // Clean up
       await remove(archivePath)
 
-      // rebuild / fix perms
+      // Rebuild / fix perms
       await this.rebuild(true)
 
-      // restart
+      // Restart
       if (await pathExists(this.plistPath)) {
         await this.restart()
       } else {

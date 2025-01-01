@@ -6,13 +6,13 @@ import { DragulaModule, DragulaService } from 'ng2-dragula'
 import { Subscription } from 'rxjs'
 
 import { AccessoriesService } from '@/app/core/accessories/accessories.service'
+import { AccessoryTileComponent } from '@/app/core/accessories/accessory-tile/accessory-tile.component'
 import { AuthService } from '@/app/core/auth/auth.service'
 import { MobileDetectService } from '@/app/core/mobile-detect.service'
 import { SettingsService } from '@/app/core/settings.service'
+import { AccessorySupportComponent } from '@/app/modules/accessories/accessory-support/accessory-support.component'
 import { AddRoomComponent } from '@/app/modules/accessories/add-room/add-room.component'
-
-import { AccessoryTileComponent } from '../../core/accessories/accessory-tile/accessory-tile.component'
-import { DragHerePlaceholderComponent } from './drag-here-placeholder/drag-here-placeholder.component'
+import { DragHerePlaceholderComponent } from '@/app/modules/accessories/drag-here-placeholder/drag-here-placeholder.component'
 
 @Component({
   selector: 'app-accessories',
@@ -40,29 +40,31 @@ export class AccessoriesComponent implements OnInit, OnDestroy {
   public hideHidden = true
   private orderSubscription: Subscription
 
+  public readonly linkInsecure = '<a href="https://github.com/homebridge/homebridge-config-ui-x/wiki/Enabling-Accessory-Control" target="_blank"><i class="fa fa-fw fa-external-link-alt"></i></a>'
+
   constructor() {
     const dragulaService = this.dragulaService
 
     this.isMobile = this.$md.detect.mobile()
 
-    // disable drag and drop for everything except the room title
+    // Disable drag and drop for everything except the room title
     dragulaService.createGroup('rooms-bag', {
       moves: (_el, _container, handle) => !this.isMobile && handle.classList.contains('drag-handle'),
     })
 
-    // disable drag and drop for the .no-drag class
+    // Disable drag and drop for the .no-drag class
     dragulaService.createGroup('services-bag', {
       moves: el => !this.isMobile && !el.classList.contains('no-drag'),
     })
 
-    // save the room and service layout
+    // Save the room and service layout
     this.orderSubscription = dragulaService.drop().subscribe(() => {
       setTimeout(() => {
         this.$accessories.saveLayout()
       })
     })
 
-    // check to see if the layout should be locked
+    // Check to see if the layout should be locked
     if (window.localStorage.getItem('accessories-layout-locked')) {
       this.isMobile = true
     }
@@ -73,47 +75,58 @@ export class AccessoriesComponent implements OnInit, OnDestroy {
   }
 
   addRoom() {
-    this.$modal.open(AddRoomComponent, {
-      size: 'lg',
-      backdrop: 'static',
-    }).result.then((roomName) => {
-      // no room name provided
-      if (!roomName || !roomName.length) {
-        return
-      }
-
-      // duplicate room name
-      if (this.$accessories.rooms.find(r => r.name === roomName)) {
-        return
-      }
-
-      this.$accessories.rooms.push({
-        name: roomName,
-        services: [],
+    this.$modal
+      .open(AddRoomComponent, {
+        size: 'lg',
+        backdrop: 'static',
       })
+      .result
+      .then((roomName) => {
+      // No room name provided
+        if (!roomName || !roomName.length) {
+          return
+        }
 
-      if (this.isMobile) {
-        this.toggleLayoutLock()
-      }
-    }).catch(() => { /* modal dismissed */ })
+        // Duplicate room name
+        if (this.$accessories.rooms.find(r => r.name === roomName)) {
+          return
+        }
+
+        this.$accessories.rooms.push({
+          name: roomName,
+          services: [],
+        })
+
+        if (this.isMobile) {
+          this.toggleLayoutLock()
+        }
+      })
+      .catch(() => { /* modal dismissed */ })
   }
 
   toggleLayoutLock() {
     this.isMobile = !this.isMobile
 
     if (this.isMobile) {
-      // layout locked
+      // Layout locked
       window.localStorage.setItem('accessories-layout-locked', 'yes')
     } else {
-      // layout unlocked
+      // Layout unlocked
       window.localStorage.removeItem('accessories-layout-locked')
     }
+  }
+
+  openSupport() {
+    this.$modal.open(AccessorySupportComponent, {
+      size: 'lg',
+      backdrop: 'static',
+    })
   }
 
   ngOnDestroy() {
     this.$accessories.stop()
 
-    // destroy drag and drop bags
+    // Destroy drag and drop bags
     this.orderSubscription.unsubscribe()
     this.dragulaService.destroy('rooms-bag')
     this.dragulaService.destroy('services-bag')

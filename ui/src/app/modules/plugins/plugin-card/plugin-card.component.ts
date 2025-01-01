@@ -54,7 +54,6 @@ export class PluginCardComponent implements OnInit {
   public defaultIcon = 'assets/hb-icon.png'
   public isMobile: string
   public setChildBridges = []
-  public prettyDisplayName = ''
   public hb2Status = 'unknown' // 'hide' | 'supported' | 'unknown'
 
   private io: IoNamespace
@@ -68,7 +67,7 @@ export class PluginCardComponent implements OnInit {
     this.allChildBridgesStopped = childBridges.filter(x => x.manuallyStopped === true).length === childBridges.length
 
     if (this.hasChildBridges) {
-      // get the "worse" status of all child bridges and use that for colour icon
+      // Get the "worse" status of all child bridges and use that for colour icon
       if (childBridges.some(x => x.status === 'down')) {
         this.childBridgeStatus = 'down'
       } else if (childBridges.some(x => x.status === 'pending')) {
@@ -87,8 +86,11 @@ export class PluginCardComponent implements OnInit {
 
   ngOnInit(): void {
     this.isMobile = this.$md.detect.mobile()
-    this.prettyDisplayName = this.prettifyName()
     this.io = this.$ws.getExistingNamespace('child-bridges')
+
+    if (this.isMobile && this.plugin.displayName.toLowerCase().startsWith('homebridge ')) {
+      this.plugin.displayName = this.plugin.displayName.replace(/^homebridge /i, '')
+    }
 
     if (!this.plugin.icon) {
       this.plugin.icon = this.defaultIcon
@@ -117,7 +119,7 @@ export class PluginCardComponent implements OnInit {
       backdrop: 'static',
     })
 
-    ref.componentInstance.pluginName = plugin.name
+    ref.componentInstance.pluginName = plugin.displayName
     ref.componentInstance.isConfigured = plugin.isConfigured
     ref.componentInstance.isConfiguredDynamicPlatform = plugin.isConfiguredDynamicPlatform
 
@@ -148,17 +150,19 @@ export class PluginCardComponent implements OnInit {
       backdrop: 'static',
     })
 
-    ref.componentInstance.title = `${this.$translate.instant('plugins.manage.enable')}: ${plugin.name}`
-    ref.componentInstance.message = this.$translate.instant('plugins.manage.confirm_enable', { pluginName: plugin.name })
+    ref.componentInstance.title = plugin.name
+    ref.componentInstance.message = this.$translate.instant('plugins.manage.confirm_enable', { pluginName: plugin.displayName })
     ref.componentInstance.confirmButtonLabel = this.$translate.instant('plugins.manage.enable')
     ref.componentInstance.faIconClass = 'fa-circle-play primary-text'
 
     ref.result.then(async () => {
       try {
         await firstValueFrom(this.$api.put(`/config-editor/plugin/${encodeURIComponent(plugin.name)}/enable`, {}))
-        // mark as enabled
+
+        // Mark as enabled
         plugin.disabled = false
-        // start all child bridges
+
+        // Start all child bridges
         if (this.hasChildBridges) {
           await this.doChildBridgeAction('start')
         }
@@ -203,21 +207,6 @@ export class PluginCardComponent implements OnInit {
     this.plugin.icon = this.defaultIcon
   }
 
-  prettifyName() {
-    let pluginName = this.plugin.displayName || (this.plugin.name.charAt(0) === '@' ? this.plugin.name.split('/')[1] : this.plugin.name)
-    pluginName = pluginName.replace(/-/g, ' ')
-    if (this.isMobile && pluginName.toLowerCase().startsWith('homebridge ')) {
-      pluginName = pluginName.replace(/^homebridge /i, '')
-    }
-
-    if (!this.plugin.displayName) {
-      // Do not overwrite capitalisation if displayName is set (for example Homebridge eWeLink)
-      // This changes the plugin name into title case
-      pluginName = pluginName.replace(/\w\S*/g, (txt: string) => txt.charAt(0).toUpperCase() + txt.substring(1).toLowerCase())
-    }
-    return pluginName
-  }
-
   openHb2InfoModal() {
     const ref = this.$modal.open(InformationComponent, {
       size: 'lg',
@@ -226,11 +215,11 @@ export class PluginCardComponent implements OnInit {
     ref.componentInstance.title = 'Plugin Readiness'
 
     if (this.hb2Status === 'supported') {
-      ref.componentInstance.subtitle = `${this.plugin.displayName || this.plugin.name} is ready for Homebridge v2.0`
+      ref.componentInstance.subtitle = `${this.plugin.displayName} is ready for Homebridge v2.0`
       ref.componentInstance.message = 'The developer has specifically marked your installed version of the plugin as compatible with Homebridge v2.0.'
       ref.componentInstance.faIconClass = 'fa-check-circle green-text'
     } else {
-      ref.componentInstance.subtitle = `${this.plugin.displayName || this.plugin.name} might not be ready for Homebridge v2.0`
+      ref.componentInstance.subtitle = `${this.plugin.displayName} might not be ready for Homebridge v2.0`
       ref.componentInstance.message = 'The developer has not specifically marked your installed version of the plugin as compatible with Homebridge v2.0, but it may still work.'
       ref.componentInstance.faIconClass = 'fa-question-circle orange-text'
     }

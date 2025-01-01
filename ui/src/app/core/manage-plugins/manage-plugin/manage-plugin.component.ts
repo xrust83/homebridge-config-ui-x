@@ -1,3 +1,4 @@
+import { NgClass } from '@angular/common'
 import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core'
 import { Router } from '@angular/router'
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap'
@@ -11,12 +12,11 @@ import { FitAddon } from 'xterm-addon-fit'
 
 import { ApiService } from '@/app/core/api.service'
 import { RestartHomebridgeComponent } from '@/app/core/components/restart-homebridge/restart-homebridge.component'
+import { PluginsMarkdownDirective } from '@/app/core/directives/plugins.markdown.directive'
 import { HbUpdateConfirmComponent } from '@/app/core/manage-plugins/hb-update-confirm/hb-update-confirm.component'
 import { PluginLogsComponent } from '@/app/core/manage-plugins/plugin-logs/plugin-logs.component'
 import { SettingsService } from '@/app/core/settings.service'
 import { IoNamespace, WsService } from '@/app/core/ws.service'
-
-import { PluginsMarkdownDirective } from '../../directives/plugins.markdown.directive'
 
 @Component({
   templateUrl: './manage-plugin.component.html',
@@ -26,6 +26,7 @@ import { PluginsMarkdownDirective } from '../../directives/plugins.markdown.dire
     NgxMdModule,
     PluginsMarkdownDirective,
     TranslatePipe,
+    NgClass,
   ],
 })
 
@@ -40,6 +41,7 @@ export class ManagePluginComponent implements OnInit, OnDestroy {
   private $ws = inject(WsService)
 
   @Input() pluginName: string
+  @Input() pluginDisplayName: string
   @Input() targetVersion = 'latest'
   @Input() latestVersion: string
   @Input() installedVersion: string
@@ -57,6 +59,8 @@ export class ManagePluginComponent implements OnInit, OnDestroy {
   public presentTenseVerb: string
   public pastTenseVerb: string
   public onlineUpdateOk: boolean
+  public readonly iconStar = '<i class="fas fa-fw fa-star primary-text"></i>'
+  public readonly iconThumbsUp = '<i class="fas fa-fw fa-thumbs-up primary-text"></i>'
 
   private io: IoNamespace
   private toastSuccess: string
@@ -174,14 +178,14 @@ export class ManagePluginComponent implements OnInit, OnDestroy {
   }
 
   update() {
-    // hide the release notes
+    // Hide the release notes
     this.showReleaseNotes = false
 
     if (!this.onlineUpdateOk) {
       return
     }
 
-    // if this is updating homebridge, use an alternative workflow
+    // If this is updating homebridge, use an alternative workflow
     if (this.pluginName === 'homebridge') {
       return this.upgradeHomebridge()
     }

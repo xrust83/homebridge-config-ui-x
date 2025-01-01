@@ -2,10 +2,9 @@ import { inject, Injectable } from '@angular/core'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { firstValueFrom } from 'rxjs'
 
+import { ApiService } from '@/app/core/api.service'
 import { CustomPluginsComponent } from '@/app/core/manage-plugins/custom-plugins/custom-plugins.component'
 import { HomebridgeGoogleSmarthomeComponent } from '@/app/core/manage-plugins/custom-plugins/homebridge-google-smarthome/homebridge-google-smarthome.component'
-
-import { ApiService } from '../../api.service'
 
 @Injectable({
   providedIn: 'root',
@@ -30,9 +29,7 @@ export class CustomPluginsService {
     ref.componentInstance.schema = schema
     ref.componentInstance.pluginConfig = pluginConfig
 
-    return ref.result.catch(() => {
-      // do nothing
-    })
+    return ref.result.catch(() => { /* do nothing */ })
   }
 
   async openCustomSettingsUi(plugin: any, schema: any) {
@@ -46,9 +43,7 @@ export class CustomPluginsService {
     ref.componentInstance.schema = schema
     ref.componentInstance.pluginConfig = pluginConfig
 
-    return ref.result.catch(() => {
-      // do nothing
-    })
+    return ref.result.catch(() => { /* do nothing */ })
   }
 
   private async loadPluginConfig(pluginName: string) {

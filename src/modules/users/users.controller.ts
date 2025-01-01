@@ -35,7 +35,7 @@ export class UsersController {
 
   @UseGuards(AdminGuard)
   @ApiResponse({ type: UserDto, isArray: true, status: 200 })
-  @ApiOperation({ summary: 'List of existing users.' })
+  @ApiOperation({ summary: 'Get a list of existing users.' })
   @Get()
   getUsers() {
     return this.authService.getUsers(true)

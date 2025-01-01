@@ -30,10 +30,10 @@ describe('UsersController (e2e)', () => {
     authFilePath = resolve(process.env.UIX_STORAGE_PATH, 'auth.json')
     secretsFilePath = resolve(process.env.UIX_STORAGE_PATH, '.uix-secrets')
 
-    // setup test config
+    // Setup test config
     await copy(resolve(__dirname, '../mocks', 'config.json'), process.env.UIX_CONFIG_PATH)
 
-    // setup test auth file
+    // Setup test auth file
     await copy(resolve(__dirname, '../mocks', 'auth.json'), authFilePath)
     await copy(resolve(__dirname, '../mocks', '.uix-secrets'), secretsFilePath)
 
@@ -53,7 +53,7 @@ describe('UsersController (e2e)', () => {
   })
 
   beforeEach(async () => {
-    // get auth token before each test
+    // Get auth token before each test
     authorization = `bearer ${(await app.inject({
       method: 'POST',
       path: '/auth/login',
@@ -65,7 +65,7 @@ describe('UsersController (e2e)', () => {
   })
 
   afterEach(async () => {
-    // restore auth.json after each test
+    // Restore auth.json after each test
     await copy(resolve(__dirname, '../mocks', 'auth.json'), authFilePath)
   })
 
@@ -236,7 +236,7 @@ describe('UsersController (e2e)', () => {
     // check the user was saved to the auth.json file as a sanity check
     expect(await readJson(authFilePath)).toHaveLength(2)
 
-    // delete the user
+    // Delete the user
     const res = await app.inject({
       method: 'DELETE',
       path: `/users/${newUser.id}`,
@@ -273,7 +273,7 @@ describe('UsersController (e2e)', () => {
     // check the user was saved to the auth.json file as a sanity check
     expect(await readJson(authFilePath)).toHaveLength(2)
 
-    // delete user #1 (admin)
+    // Delete user #1 (admin)
     const res = await app.inject({
       method: 'DELETE',
       path: '/users/1',
@@ -347,7 +347,7 @@ describe('UsersController (e2e)', () => {
   })
 
   it('POST /users/otp/activate', async () => {
-    // prepare the user for activation
+    // Prepare the user for activation
     await app.inject({
       method: 'POST',
       path: '/users/otp/setup',
@@ -391,7 +391,7 @@ describe('UsersController (e2e)', () => {
     expect(testLoginWithoutOtp.statusCode).toBe(412)
     expect(testLoginWithoutOtp.json().message).toBe('2FA Code Required')
 
-    // generate a otp to test a login with
+    // Generate a otp to test a login with
     const otp = authenticator.generate(otpSecret)
 
     // check logins pass with valid otp

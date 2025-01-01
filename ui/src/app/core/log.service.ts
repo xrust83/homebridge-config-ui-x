@@ -32,16 +32,16 @@ export class LogService {
   ) {
     this.pluginName = pluginName
 
-    // handle element resize events
+    // Handle element resize events
     this.elementResize = elementResize
 
-    // connect to the websocket endpoint
+    // Connect to the websocket endpoint
     this.io = this.$ws.connectToNamespace('log')
 
-    // create a terminal instance
+    // Create a terminal instance
     this.term = new Terminal(termOpts)
 
-    // load addons
+    // Load addons
     setTimeout(() => {
       this.term.loadAddon(this.fitAddon)
       this.term.loadAddon(this.webLinksAddon)
@@ -50,35 +50,35 @@ export class LogService {
     this.fitAddon = new FitAddon()
     this.webLinksAddon = new WebLinksAddon()
 
-    // create a subject to listen for resize events
+    // Create a subject to listen for resize events
     this.resize = new Subject()
 
-    // open the terminal in the target element
+    // Open the terminal in the target element
     this.term.open(targetElement.nativeElement)
 
-    // fit to the element
+    // Fit to the element
     setTimeout(() => {
       this.fitAddon.activate(this.term)
       this.fitAddon.fit()
     })
 
-    // start the terminal session when the socket is connected
+    // Start the terminal session when the socket is connected
     this.io.connected.subscribe(() => {
       this.term.reset()
       this.io.socket.emit('tail-log', { cols: this.term.cols, rows: this.term.rows })
     })
 
-    // handle disconnect events
+    // Handle disconnect events
     this.io.socket.on('disconnect', () => {
       this.term.write('\n\r\n\rWebsocket failed to connect. Is the server running?\n\r\n\r')
     })
 
-    // send resize events to server
+    // Send resize events to server
     this.resize.pipe(debounceTime(500)).subscribe((size) => {
       this.io.socket.emit('resize', size)
     })
 
-    // subscribe to incoming data events from server to client
+    // Subscribe to incoming data events from server to client
     this.io.socket.on('stdout', (data: string) => {
       if (this.pluginName) {
         const lines = data.split('\n\r')
@@ -108,13 +108,13 @@ export class LogService {
       }
     })
 
-    // handle resize events from the client
+    // Handle resize events from the client
     this.term.onResize((size) => {
       this.resize.next(size)
     })
 
     if (this.elementResize) {
-      // subscribe to grid resize event
+      // Subscribe to grid resize event
       this.elementResize.pipe(debounceTime(100)).subscribe({
         next: () => {
           this.fitAddon.fit()

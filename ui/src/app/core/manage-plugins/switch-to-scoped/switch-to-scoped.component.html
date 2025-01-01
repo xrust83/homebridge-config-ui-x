@@ -13,88 +13,88 @@
     </button>
   </div>
   <div class="modal-body">
-    <div class="w-100 text-center">
-      <i class="fas fa-fw fa-arrow-right-arrow-left primary-text mb-4" style="font-size: 75px"></i>
-      <p [innerHTML]="'plugins.manage.scoped.info' | translate: { link: moreInfo }"></p>
-      @if (!onlineUpdateOk) {
-      <div>
-        <p>{{ 'plugins.manage.scoped.windows' | translate }}</p>
-        <p [innerHTML]="'plugins.manage.scoped.windows_service' | translate"></p>
-        @if ($settings.env.serviceMode) {
-        <div>
-          <p>{{ 'plugins.manage.manual_update_command' | translate }}</p>
-          <pre>
+    <div class="mb-3 text-center">
+      <i class="fas fa-fw fa-arrow-right-arrow-left primary-text" style="font-size: 75px"></i>
+    </div>
+    <ul class="mb-0">
+      <li [innerHTML]="'plugins.manage.scoped.info_1' | translate: { prefix }"></li>
+      <li>{{ 'plugins.manage.scoped_message' | translate }}</li>
+      <li [innerHTML]="'plugins.manage.scoped.info_2' | translate: { link: moreInfo }"></li>
+      @if (onlineUpdateOk) {
+      <li>{{ 'plugins.manage.scoped.process' | translate }}</li>
+      } @if (!onlineUpdateOk) {
+      <li [innerHTML]="'plugins.manage.scoped.windows' | translate"></li>
+      @if ($settings.env.serviceMode) {
+      <li>{{ 'plugins.manage.manual_update_command' | translate }}</li>
+      } }
+    </ul>
+    @if (!onlineUpdateOk) { @if ($settings.env.serviceMode) {
+    <pre class="mt-3 mb-0">
 hb-service stop
 npm install -g {{ plugin.newHbScope.to }}&#64;{{ plugin.newHbScope.switch }}
 npm uninstall -g {{ plugin.newHbScope.from }}
 hb-service start</pre
-          >
-        </div>
-        } @if (!$settings.env.serviceMode) {
-        <div>
-          <ul class="d-inline-block text-left">
-            <li>{{ 'plugins.manage.install' | translate }} <code>{{ plugin.newHbScope.to }}</code></li>
-            <li>{{ 'plugins.manage.uninstall' | translate }} <code>{{ plugin.newHbScope.from }}</code></li>
-            <li>{{ 'menu.hbrestart.title' | translate }}</li>
-          </ul>
-        </div>
-        }
-      </div>
-      } @if (onlineUpdateOk) {
-      <div class="text-center">
-        <p>{{ 'plugins.manage.scoped.process' | translate }}</p>
-        <ul class="d-inline-block text-left" style="list-style-type: none">
-          <li>
-            <i
-              class="fa fa-fw"
-              [ngClass]="{
+    >
+    } @if (!$settings.env.serviceMode) {
+    <ul class="mt-3 mb-0">
+      <li>{{ 'plugins.manage.install' | translate }} <span class="text-monospace">{{ plugin.newHbScope.to }}</span></li>
+      <li>
+        {{ 'plugins.manage.uninstall' | translate }} <span class="text-monospace">{{ plugin.newHbScope.from }}</span>
+      </li>
+      <li>{{ 'menu.hbrestart.title' | translate }}</li>
+    </ul>
+    } } @if (onlineUpdateOk) {
+    <div class="text-center">
+      <ul class="d-inline-block text-left mt-3 mb-3" style="list-style-type: none">
+        <li>
+          <i
+            class="fa fa-fw"
+            [ngClass]="{
               'fa-circle-o': !installing && !installed && !failure,
               'fa-spinner fa-pulse': installing,
               'fa-check-circle green-text': installed && !failure,
               'fa-times-circle red-text': !installed && failure,
             }"
-            ></i>
-            {{ 'plugins.manage.install' | translate }} <code>{{ plugin.newHbScope.to }}</code>
-          </li>
-          <li>
-            <i
-              class="fa fa-fw"
-              [ngClass]="{
+          ></i>
+          {{ 'plugins.manage.install' | translate }} <span class="text-monospace">{{ plugin.newHbScope.to }}</span>
+        </li>
+        <li>
+          <i
+            class="fa fa-fw"
+            [ngClass]="{
               'fa-circle-o': !uninstalling && !uninstalled && !failure,
               'fa-spinner fa-pulse': uninstalling,
               'fa-check-circle green-text': uninstalled && !failure,
               'fa-times-circle red-text': !uninstalled && failure,
             }"
-            ></i>
-            {{ 'plugins.manage.uninstall' | translate }} <code>{{ plugin.newHbScope.from }}</code>
-          </li>
-          <li>
-            <i
-              class="fa fa-fw"
-              [ngClass]="{
+          ></i>
+          {{ 'plugins.manage.uninstall' | translate }} <span class="text-monospace">{{ plugin.newHbScope.from }}</span>
+        </li>
+        <li>
+          <i
+            class="fa fa-fw"
+            [ngClass]="{
               'fa-circle-o': !restarting && !failure,
               'fa-spinner fa-pulse': restarting,
               'fa-times-circle red-text': failure,
             }"
-            ></i>
-            {{ 'menu.hbrestart.title' | translate }}
-          </li>
-        </ul>
-      </div>
-      } @if (failure) {
-      <div class="alert alert-error">
-        <p>{{ 'plugins.manage.scoped.error' | translate }}</p>
-        <p class="text-monospace">{{ failure }}</p>
-        <button class="btn btn-primary mb-0" (click)="downloadLogFile()">
-          {{ 'form.button_download' | translate }}
-        </button>
-      </div>
-      }
+          ></i>
+          {{ 'menu.hbrestart.title' | translate }}
+        </li>
+      </ul>
     </div>
-    <div [hidden]="!onlineUpdateOk || failure" id="plugin-output"></div>
+    } @if (failure) {
+    <div class="alert alert-error mb-0">
+      <p>{{ 'plugins.manage.scoped.error' | translate }}</p>
+      <p class="text-monospace">{{ failure }}</p>
+      <button class="btn btn-primary mb-0" (click)="downloadLogFile()">{{ 'form.button_download' | translate }}</button>
+    </div>
+    }
+    <div class="mb-0" [hidden]="!onlineUpdateOk || failure" id="plugin-output"></div>
   </div>
   <div class="modal-footer justify-content-between">
     <div class="text-left">
+      @if (onlineUpdateOk) {
       <button
         type="button"
         class="btn btn-elegant"
@@ -105,9 +105,24 @@ hb-service start</pre
       >
         {{ 'form.button_close' | translate }}
       </button>
+      }
     </div>
-    <div class="text-center"></div>
+    <div class="text-center">
+      @if (!onlineUpdateOk) {
+      <button
+        type="button"
+        class="btn btn-elegant"
+        data-dismiss="modal"
+        (click)="$activeModal.dismiss('Dismiss')"
+        [attr.aria-label]="'form.button_close' | translate"
+        [disabled]="installing || uninstalling || restarting"
+      >
+        {{ 'form.button_close' | translate }}
+      </button>
+      }
+    </div>
     <div class="text-right">
+      @if (onlineUpdateOk) {
       <button
         type="button"
         class="btn btn-primary"
@@ -121,6 +136,7 @@ hb-service start</pre
         <i class="fas fa-fw fa-spinner fa-pulse"></i>
         }
       </button>
+      }
     </div>
   </div>
 </div>

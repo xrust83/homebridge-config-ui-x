@@ -1,4 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core'
+import { Router } from '@angular/router'
 import { NgbActiveModal, NgbAlert } from '@ng-bootstrap/ng-bootstrap'
 import { TranslatePipe, TranslateService } from '@ngx-translate/core'
 import { ToastrService } from 'ngx-toastr'
@@ -17,10 +18,11 @@ import { ApiService } from '@/app/core/api.service'
 export class RemoveAllAccessoriesComponent implements OnInit {
   $activeModal = inject(NgbActiveModal)
   private $api = inject(ApiService)
+  private $router = inject(Router)
   private $toastr = inject(ToastrService)
   private $translate = inject(TranslateService)
 
-  public clicked: boolean
+  public clicked: boolean = false
   public cachedAccessories: any[] = []
 
   constructor() {}
@@ -48,6 +50,7 @@ export class RemoveAllAccessoriesComponent implements OnInit {
           this.$translate.instant('toast.title_success'),
         )
         this.$activeModal.close()
+        this.$router.navigate(['/restart'], { queryParams: { restarting: true } })
       },
       error: (error) => {
         this.clicked = false

@@ -32,10 +32,10 @@ describe('CustomPluginsController (e2e)', () => {
     authFilePath = resolve(process.env.UIX_STORAGE_PATH, 'auth.json')
     secretsFilePath = resolve(process.env.UIX_STORAGE_PATH, '.uix-secrets')
 
-    // setup test config
+    // Setup test config
     await copy(resolve(__dirname, '../mocks', 'config.json'), process.env.UIX_CONFIG_PATH)
 
-    // setup test auth file
+    // Setup test auth file
     await copy(resolve(__dirname, '../mocks', 'auth.json'), authFilePath)
     await copy(resolve(__dirname, '../mocks', '.uix-secrets'), secretsFilePath)
 
@@ -61,7 +61,7 @@ describe('CustomPluginsController (e2e)', () => {
   beforeEach(async () => {
     vi.resetAllMocks()
 
-    // get auth token before each test
+    // Get auth token before each test
     authorization = `bearer ${(await app.inject({
       method: 'POST',
       path: '/auth/login',

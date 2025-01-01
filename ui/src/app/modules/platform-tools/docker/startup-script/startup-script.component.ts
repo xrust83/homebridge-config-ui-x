@@ -50,7 +50,7 @@ export class StartupScriptComponent implements OnInit, OnDestroy {
       automaticLayout: true,
     }
 
-    // capture viewport events
+    // Capture viewport events
     this.visualViewPortEventCallback = () => this.visualViewPortChanged()
     this.lastHeight = window.innerHeight
 
@@ -63,7 +63,7 @@ export class StartupScriptComponent implements OnInit, OnDestroy {
       this.startupScript = data.startupScript.script
     })
 
-    // setup the base monaco editor model
+    // Setup the base monaco editor model
     this.monacoEditorModel = {
       value: '',
       language: 'shell',
@@ -85,13 +85,13 @@ export class StartupScriptComponent implements OnInit, OnDestroy {
 
     this.saveInProgress = true
 
-    // get the value from the editor
+    // Get the value from the editor
     if (!this.isMobile) {
       await this.monacoEditor.getAction('editor.action.formatDocument').run()
       this.startupScript = this.monacoEditor.getModel().getValue()
     }
 
-    // check startup script is using the correct hashbang
+    // Check startup script is using the correct hashbang
     if (!['#!/bin/sh', '#!/bin/bash'].includes(this.startupScript.split('\n')[0].trim())) {
       this.$toastr.error(this.$translate.instant('platform.docker.must_use_hashbang'), this.$translate.instant('toast.title_error'))
       this.startupScript = `#!/bin/sh\n\n${this.startupScript}`
@@ -123,11 +123,11 @@ export class StartupScriptComponent implements OnInit, OnDestroy {
     }
 
     if (window.visualViewport.height < window.innerHeight) {
-      // keyboard may have opened
+      // Keyboard may have opened
       this.$md.enableTouchMove()
       this.lastHeight = window.visualViewport.height
     } else if (window.visualViewport.height === window.innerHeight) {
-      // keyboard is closed
+      // Keyboard is closed
       this.$md.disableTouchMove()
       this.lastHeight = window.visualViewport.height
     }

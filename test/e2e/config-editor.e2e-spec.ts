@@ -53,10 +53,10 @@ describe('ConfigEditorController (e2e)', () => {
     backupFilePath = resolve(process.env.UIX_STORAGE_PATH, 'backups', 'config-backups')
     pluginsPath = process.env.UIX_CUSTOM_PLUGIN_PATH
 
-    // setup test config
+    // Setup test config
     await copy(resolve(__dirname, '../mocks', 'config.json'), process.env.UIX_CONFIG_PATH)
 
-    // setup test auth file
+    // Setup test auth file
     await copy(resolve(__dirname, '../mocks', 'auth.json'), authFilePath)
     await copy(resolve(__dirname, '../mocks', '.uix-secrets'), secretsFilePath)
 
@@ -81,12 +81,12 @@ describe('ConfigEditorController (e2e)', () => {
     schedulerService = app.get(SchedulerService)
     configEditorService = app.get(ConfigEditorService)
 
-    // wait for initial paths to be setup
+    // Wait for initial paths to be setup
     await new Promise(res => setTimeout(res, 1000))
   })
 
   beforeEach(async () => {
-    // get auth token before each test
+    // Get auth token before each test
     authorization = `bearer ${(await app.inject({
       method: 'POST',
       path: '/auth/login',
@@ -96,7 +96,7 @@ describe('ConfigEditorController (e2e)', () => {
       },
     })).json().access_token}`
 
-    // restore the default config before each test
+    // Restore the default config before each test
     await copy(resolve(__dirname, '../mocks', 'config.json'), configFilePath)
   })
 
@@ -109,7 +109,7 @@ describe('ConfigEditorController (e2e)', () => {
   })
 
   it('should remove config.json backups older than 60 days', async () => {
-    // empty the instance backup path
+    // Empty the instance backup path
     await ensureDir(backupFilePath)
     await emptyDir(backupFilePath)
 
@@ -133,18 +133,18 @@ describe('ConfigEditorController (e2e)', () => {
       await writeFile(resolve(backupFilePath, backupFileName), 'xyz')
     }
 
-    // do a sanity check beforehand
+    // Do a sanity check beforehand
     const backupsBeforeCleanup = await readdir(backupFilePath)
     expect(backupsBeforeCleanup).toHaveLength(11)
 
-    // run cleanup job
+    // Run cleanup job
     await configEditorService.cleanupConfigBackups()
 
-    // there should only be 5 backups on disk now
+    // There should only be 5 backups on disk now
     const backupsAfterJob = await readdir(backupFilePath)
     expect(backupsAfterJob).toHaveLength(5)
 
-    // empty the directory again
+    // Empty the directory again
     await emptyDir(backupFilePath)
   })
 
@@ -565,7 +565,7 @@ describe('ConfigEditorController (e2e)', () => {
 
     expect(res.statusCode).toBe(200)
 
-    // it should only return the ExampleHomebridgePlugin config
+    // It should only return the ExampleHomebridgePlugin config
     expect(res.json()).toHaveLength(1)
     expect(res.json()[0].platform).toBe('ExampleHomebridgePlugin')
   })
@@ -603,7 +603,7 @@ describe('ConfigEditorController (e2e)', () => {
   })
 
   it('POST /config-editor/plugin/:pluginName', async () => {
-    // empty platforms
+    // Empty platforms
     const currentConfig: HomebridgeConfig = await readJson(configFilePath)
     currentConfig.platforms = []
     await writeJson(configFilePath, currentConfig)
@@ -631,7 +631,7 @@ describe('ConfigEditorController (e2e)', () => {
   })
 
   it('POST /config-editor/plugin/:pluginName (retain index position)', async () => {
-    // empty platforms
+    // Empty platforms
     const currentConfig: HomebridgeConfig = await readJson(configFilePath)
     currentConfig.platforms = [
       {
@@ -672,7 +672,7 @@ describe('ConfigEditorController (e2e)', () => {
   })
 
   it('POST /config-editor/plugin/:pluginName (remove config)', async () => {
-    // empty platforms
+    // Empty platforms
     const currentConfig: HomebridgeConfig = await readJson(configFilePath)
     currentConfig.platforms = [
       {
@@ -708,7 +708,7 @@ describe('ConfigEditorController (e2e)', () => {
   })
 
   it('POST /config-editor/plugin/:pluginName (set alias)', async () => {
-    // empty platforms
+    // Empty platforms
     const currentConfig: HomebridgeConfig = await readJson(configFilePath)
     currentConfig.platforms = []
     await writeJson(configFilePath, currentConfig)
@@ -883,9 +883,9 @@ describe('ConfigEditorController (e2e)', () => {
       },
     })
 
-    // there is a race condition here whereby we might read the backup file
-    // path before the deletion has actually happened, causing the test to fail,
-    // so I have added a 1-second delay.
+    // There is a race condition here whereby we might read the backup file
+    // Path before the deletion has actually happened, causing the test to fail,
+    // So I have added a 1-second delay.
     await new Promise(r => setTimeout(r, 1000))
 
     const backups = await readdir(backupFilePath)

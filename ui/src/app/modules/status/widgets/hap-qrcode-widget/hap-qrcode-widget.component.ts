@@ -1,4 +1,4 @@
-import { NgStyle } from '@angular/common'
+import { NgClass, NgStyle } from '@angular/common'
 import { Component, ElementRef, inject, Input, OnInit, viewChild } from '@angular/core'
 import { TranslatePipe } from '@ngx-translate/core'
 import { Subject } from 'rxjs'
@@ -13,6 +13,7 @@ import { IoNamespace, WsService } from '@/app/core/ws.service'
     NgStyle,
     QrcodeComponent,
     TranslatePipe,
+    NgClass,
   ],
 })
 export class HapQrcodeWidgetComponent implements OnInit {
@@ -23,6 +24,7 @@ export class HapQrcodeWidgetComponent implements OnInit {
 
   @Input() resizeEvent: Subject<any>
 
+  public paired: boolean = false
   public pin = 'Loading...'
   public setupUri: string | null = null
   public qrCodeHeight: number
@@ -39,6 +41,7 @@ export class HapQrcodeWidgetComponent implements OnInit {
 
     this.io.socket.on('homebridge-status', (data) => {
       this.pin = data.pin
+      this.paired = data.paired
 
       if (data.setupUri) {
         this.setupUri = data.setupUri
@@ -49,7 +52,7 @@ export class HapQrcodeWidgetComponent implements OnInit {
       this.getPairingPin()
     }
 
-    // subscribe to grid resize events
+    // Subscribe to grid resize events
     this.resizeEvent.subscribe({
       next: () => {
         this.resizeQrCode()
@@ -70,6 +73,7 @@ export class HapQrcodeWidgetComponent implements OnInit {
     this.io.request('get-homebridge-pairing-pin').subscribe((data) => {
       this.pin = data.pin
       this.setupUri = data.setupUri
+      this.paired = data.paired
     })
   }
 }

@@ -27,7 +27,7 @@ export class AppComponent {
     setLightingMode(colorSchemeQueryList)
     colorSchemeQueryList.addEventListener('change', setLightingMode)
 
-    // this array needs to be updated each time a new translation is added
+    // This array needs to be updated each time a new translation is added
     const languages = [
       'en',
       'de',
@@ -59,12 +59,12 @@ export class AppComponent {
       'he',
     ]
 
-    // which languages should use RTL
+    // Which languages should use RTL
     const rtlLanguages = [
       'he',
     ]
 
-    // watch for lang changes
+    // Watch for lang changes
     $translate.onLangChange.subscribe(() => {
       $settings.rtl = rtlLanguages.includes($translate.currentLang)
     })

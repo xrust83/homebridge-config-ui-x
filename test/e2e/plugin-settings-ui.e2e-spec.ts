@@ -32,10 +32,10 @@ describe('PluginsSettingsUiController (e2e)', () => {
     secretsFilePath = resolve(process.env.UIX_STORAGE_PATH, '.uix-secrets')
     pluginsPath = process.env.UIX_CUSTOM_PLUGIN_PATH
 
-    // setup test config
+    // Setup test config
     await copy(resolve(__dirname, '../mocks', 'config.json'), process.env.UIX_CONFIG_PATH)
 
-    // setup test auth file
+    // Setup test auth file
     await copy(resolve(__dirname, '../mocks', 'auth.json'), authFilePath)
     await copy(resolve(__dirname, '../mocks', '.uix-secrets'), secretsFilePath)
 

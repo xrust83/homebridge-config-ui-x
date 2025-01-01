@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, Input, OnInit, viewChild } from '@angular/core'
+import { Component, inject, Input, OnInit } from '@angular/core'
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms'
 import { NgbActiveModal, NgbAlert } from '@ng-bootstrap/ng-bootstrap'
 import { TranslatePipe, TranslateService } from '@ngx-translate/core'
@@ -26,8 +26,6 @@ export class Users2faEnableComponent implements OnInit {
   private $translate = inject(TranslateService)
 
   @Input() public user: any
-
-  readonly qrcodeElement = viewChild<ElementRef>('qrcode')
 
   public timeDiffError: number | null = null
   public otpString: string
@@ -58,9 +56,9 @@ export class Users2faEnableComponent implements OnInit {
     const diffMs = dayjs(timestamp).diff(new Date(), 'millisecond')
     if (diffMs < -5000 || diffMs > 5000) {
       this.timeDiffError = diffMs
-      return
+    } else {
+      this.timeDiffError = null
     }
-    this.timeDiffError = null
   }
 
   enable2fa() {

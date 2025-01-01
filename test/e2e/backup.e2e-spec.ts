@@ -43,7 +43,7 @@ import '../../src/globalDefaults'
 
 vi.spyOn(globalThis.console, 'error')
 
-// function code taken from http://blog.tompawlak.org/how-to-generate-random-values-nodejs-javascript
+// Function code taken from http://blog.tompawlak.org/how-to-generate-random-values-nodejs-javascript
 function randomValueHex(len: number) {
   return crypto.randomBytes(Math.ceil(len / 2))
     .toString('hex') // convert to hexadecimal format
@@ -82,10 +82,10 @@ describe('BackupController (e2e)', () => {
     customInstanceBackupPath = resolve(process.env.UIX_STORAGE_PATH, 'backups/instance-backups-custom')
     largeFilePath = resolve(process.env.UIX_STORAGE_PATH, 'largefile/largefile.txt')
 
-    // setup test config
+    // Setup test config
     await copy(resolve(__dirname, '../mocks', 'config.json'), process.env.UIX_CONFIG_PATH)
 
-    // setup test auth file
+    // Setup test auth file
     await copy(resolve(__dirname, '../mocks', 'auth.json'), authFilePath)
     await copy(resolve(__dirname, '../mocks', '.uix-secrets'), secretsFilePath)
 
@@ -122,16 +122,16 @@ describe('BackupController (e2e)', () => {
   })
 
   beforeEach(async () => {
-    // mock functions
+    // Mock functions
     postBackupRestoreRestartFn = vi.fn()
     backupService.postBackupRestoreRestart = postBackupRestoreRestartFn as any
 
-    // restore default settings
+    // Restore default settings
     delete configService.ui.scheduledBackupPath
     delete configService.ui.scheduledBackupDisable
     configService.instanceBackupPath = instanceBackupPath
 
-    // get auth token before each test
+    // Get auth token before each test
     authorization = `bearer ${(await app.inject({
       method: 'POST',
       path: '/auth/login',
@@ -147,24 +147,24 @@ describe('BackupController (e2e)', () => {
   })
 
   it('should not schedule a job to backup instance if scheduled backups are disabled', async () => {
-    // disable scheduled backups
+    // Disable scheduled backups
     configService.ui.scheduledBackupDisable = true
 
-    // remove the job create on app creation
+    // Remove the job create on app creation
     schedulerService.cancelJob('instance-backup')
 
-    // sanity check
+    // Sanity check
     expect(schedulerService.scheduledJobs).not.toHaveProperty('instance-backup')
 
-    // run the scheduler creation function
+    // Run the scheduler creation function
     backupService.scheduleInstanceBackups()
 
-    // still should not have a job
+    // Still should not have a job
     expect(schedulerService.scheduledJobs).not.toHaveProperty('instance-backup')
   })
 
   it('should remove scheduled instance backups older than 7 days', async () => {
-    // empty the instance backup path
+    // Empty the instance backup path
     await remove(configService.instanceBackupPath)
     await ensureDir(configService.instanceBackupPath)
 
@@ -189,14 +189,14 @@ describe('BackupController (e2e)', () => {
       await writeFile(resolve(configService.instanceBackupPath, backupFileName), 'xyz')
     }
 
-    // do a sanity check beforehand
+    // Do a sanity check beforehand
     const backupsBeforeCleanup = await readdir(configService.instanceBackupPath)
     expect(backupsBeforeCleanup).toHaveLength(10)
 
-    // run backup job
+    // Run backup job
     await backupService.runScheduledBackupJob()
 
-    // there should only be 7 backups on disk
+    // There should only be 7 backups on disk
     const backupsAfterJob = await readdir(configService.instanceBackupPath)
     expect(backupsAfterJob).toHaveLength(7)
   })
@@ -208,10 +208,10 @@ describe('BackupController (e2e)', () => {
     configService.ui.scheduledBackupPath = customInstanceBackupPath
     configService.instanceBackupPath = customInstanceBackupPath
 
-    // ensure the directory exists, custom backup paths are not automatically created
+    // Ensure the directory exists, custom backup paths are not automatically created
     await ensureDir(customInstanceBackupPath)
 
-    // run backup job
+    // Run backup job
     await backupService.runScheduledBackupJob()
 
     const backups = await readdir(customInstanceBackupPath)
@@ -252,7 +252,7 @@ describe('BackupController (e2e)', () => {
   })
 
   it('POST /backup/restore small backup', async () => {
-    // get a new backup
+    // Get a new backup
     const downloadBackup = await app.inject({
       method: 'GET',
       path: '/backup/download',
@@ -261,7 +261,7 @@ describe('BackupController (e2e)', () => {
       },
     })
 
-    // save the backup to disk
+    // Save the backup to disk
     await writeFile(tempBackupPath, downloadBackup.rawPayload)
 
     // create multipart form
@@ -290,7 +290,7 @@ describe('BackupController (e2e)', () => {
     expect(await pathExists(pluginsJson)).toBe(true)
     expect(await pathExists(infoJson)).toBe(true)
 
-    // mark the "homebridge-mock-plugin" dummy plugin as public, so we can test the mock install
+    // Mark the "homebridge-mock-plugin" dummy plugin as public, so we can test the mock install
     const installedPlugins = (await readJson(pluginsJson)).map((x) => {
       x.publicPackage = true
       return x
@@ -307,14 +307,14 @@ describe('BackupController (e2e)', () => {
         return true
       })
 
-    // start restore
+    // Start restore
     await backupGateway.doRestore(client)
 
     expect(client.emit).toHaveBeenCalledWith('stdout', expect.stringContaining('Restoring backup'))
     expect(client.emit).toHaveBeenCalledWith('stdout', expect.stringContaining('Restore Complete'))
     expect(pluginsService.managePlugin).toHaveBeenCalledWith('install', expect.objectContaining({ name: 'homebridge-mock-plugin', version: expect.anything() }), client)
 
-    // ensure the temp restore directory was removed
+    // Ensure the temp restore directory was removed
     expect(await pathExists(restoreDirectory)).toBe(false)
   })
 
@@ -339,7 +339,7 @@ describe('BackupController (e2e)', () => {
       await createEmptyFileOfSize(largeFilePath + i, 9000000)
     }
 
-    // get a new backup
+    // Get a new backup
     const downloadBackup = await app.inject({
       method: 'GET',
       path: '/backup/download',
@@ -348,7 +348,7 @@ describe('BackupController (e2e)', () => {
       },
     })
 
-    // save the backup to disk
+    // Save the backup to disk
     await writeFile(tempBackupPath, downloadBackup.rawPayload)
 
     expect(globalThis.console.error).toHaveBeenCalledWith(expect.stringContaining('Homebridge UI'), expect.stringContaining('Backup file exceeds maximum restore file size'))
@@ -367,7 +367,7 @@ describe('BackupController (e2e)', () => {
       payload,
     })
 
-    expect(globalThis.console.error).toHaveBeenCalledWith(expect.stringContaining('Homebridge UI'), expect.stringContaining('Restore backup failed:'), expect.stringContaining('Restore file exceeds maximum size'))
+    expect(globalThis.console.error).toHaveBeenCalledWith(expect.stringContaining('Homebridge UI'), expect.stringContaining('Restore backup failed as Restore file exceeds maximum size'))
 
     expect(res.statusCode).toBe(500)
 
@@ -376,7 +376,7 @@ describe('BackupController (e2e)', () => {
     // check the backup contains the required files
     const restoreDirectory = (backupService as any).restoreDirectory
 
-    // ensure the temp restore directory was removed
+    // Ensure the temp restore directory was removed
     expect(await pathExists(restoreDirectory)).toBe(false)
   })
 
@@ -394,7 +394,7 @@ describe('BackupController (e2e)', () => {
   })
 
   it('GET /backup/scheduled-backups (path missing)', async () => {
-    // empty the instance backup path
+    // Empty the instance backup path
     await remove(configService.instanceBackupPath)
 
     const res = await app.inject({
@@ -408,15 +408,15 @@ describe('BackupController (e2e)', () => {
     expect(res.statusCode).toBe(200)
     expect(res.json()).toHaveLength(0)
 
-    // the path should have been re-created
+    // The path should have been re-created
     expect(await pathExists(configService.instanceBackupPath)).toBe(true)
   })
 
   it('GET /backup/scheduled-backups', async () => {
-    // empty the instance backup path
+    // Empty the instance backup path
     await emptyDir(configService.instanceBackupPath)
 
-    // run the scheduled backup job
+    // Run the scheduled backup job
     await backupService.runScheduledBackupJob()
 
     const res = await app.inject({
@@ -469,7 +469,7 @@ describe('BackupController (e2e)', () => {
   })
 
   it('GET /backup/scheduled-backups/next', async () => {
-    // run the scheduler creation function (to make sure it's enabled after previous tests)
+    // Run the scheduler creation function (to make sure it's enabled after previous tests)
     backupService.scheduleInstanceBackups()
 
     const res = await app.inject({
@@ -487,7 +487,7 @@ describe('BackupController (e2e)', () => {
   })
 
   it('GET /backup/scheduled-backups/next (backups disabled)', async () => {
-    // disable scheduled backups
+    // Disable scheduled backups
     configService.ui.scheduledBackupDisable = true
 
     const res = await app.inject({

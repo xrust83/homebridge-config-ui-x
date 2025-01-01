@@ -64,7 +64,7 @@ export class ConfigEditorComponent implements OnInit, OnDestroy {
     const content = document.querySelector('.content')
     this.$renderer.setStyle(content, 'height', '100%')
 
-    // capture viewport events
+    // Capture viewport events
     this.visualViewPortEventCallback = () => this.visualViewPortChanged()
     this.lastHeight = window.innerHeight
 
@@ -73,7 +73,7 @@ export class ConfigEditorComponent implements OnInit, OnDestroy {
       this.$md.disableTouchMove()
     }
 
-    // capture viewport events
+    // Capture viewport events
     this.visualViewPortEventCallback = () => this.visualViewPortChanged()
     this.lastHeight = window.innerHeight
 
@@ -86,7 +86,7 @@ export class ConfigEditorComponent implements OnInit, OnDestroy {
       this.homebridgeConfig = data.config
     })
 
-    // setup the base monaco editor model
+    // Setup the base monaco editor model
     this.monacoEditorModel = {
       value: '{}',
       language: 'json',
@@ -130,20 +130,20 @@ export class ConfigEditorComponent implements OnInit, OnDestroy {
       return
     }
 
-    // hide decorations
+    // Hide decorations
     if (this.monacoEditor) {
       this.editorDecorations = this.monacoEditor.deltaDecorations(this.editorDecorations, [])
     }
 
     this.saveInProgress = true
-    // verify homebridgeConfig contains valid json
+    // Verify homebridgeConfig contains valid json
     try {
-      // get the value from the editor
+      // Get the value from the editor
       if (!this.isMobile) {
-        // format the document
+        // Format the document
         await this.monacoEditor.getAction('editor.action.formatDocument').run()
 
-        // check for issues, specifically block saving if there are any duplicate keys
+        // Check for issues, specifically block saving if there are any duplicate keys
         const issues = (window as any).monaco.editor.getModelMarkers({ owner: 'json' })
 
         for (const issue of issues) {
@@ -154,17 +154,17 @@ export class ConfigEditorComponent implements OnInit, OnDestroy {
           }
         }
 
-        // set the value
+        // Set the value
         this.homebridgeConfig = this.monacoEditor.getModel().getValue()
       }
 
-      // get the config from the editor
+      // Get the config from the editor
       const config = this.parseConfigFromEditor()
 
-      // ensure it's formatted so errors can be easily spotted
+      // Ensure it's formatted so errors can be easily spotted
       this.homebridgeConfig = JSON.stringify(config, null, 4)
 
-      // basic validation of homebridge config spec
+      // Basic validation of homebridge config spec
       if (typeof (config.bridge) !== 'object') {
         this.$toastr.error(this.$translate.instant('config.config_bridge_missing'), this.$translate.instant('toast.title_error'))
       } else if (!/^(?:[0-9A-F]{2}:){5}[0-9A-F]{2}$/i.test(config.bridge.username)) {
@@ -174,17 +174,17 @@ export class ConfigEditorComponent implements OnInit, OnDestroy {
       } else if (config.platforms && !Array.isArray(config.platforms)) {
         this.$toastr.error(this.$translate.instant('config.config_platform_must_be_array'), this.$translate.instant('toast.title_error'))
       } else if (config.platforms && Array.isArray(config.platforms) && !this.validateSection(config.platforms, 'platform')) {
-        // handled in validator function
+        // Handled in validator function
       } else if (config.accessories && Array.isArray(config.accessories) && !this.validateSection(config.accessories, 'accessory')) {
-        // handled in validator function
+        // Handled in validator function
       } else if (config.plugins && Array.isArray(config.plugins) && !this.validatePlugins(config.plugins, 'plugins')) {
-        // handled in validator function
+        // Handled in validator function
       } else if (
         config.disabledPlugins
         && Array.isArray(config.disabledPlugins)
         && !this.validatePlugins(config.disabledPlugins, 'disabledPlugins')
       ) {
-        // handled in validator function
+        // Handled in validator function
       } else {
         await this.saveConfig(config)
         this.originalConfig = ''
@@ -244,13 +244,13 @@ export class ConfigEditorComponent implements OnInit, OnDestroy {
 
             this.homebridgeConfig = JSON.stringify(json, null, 4)
 
-            // update the editor
+            // Update the editor
             // @ts-expect-error - TS2339: Property editor does not exist on type Window & typeof globalThis
             if (this.monacoEditor && window.editor.modifiedEditor) {
-            // remove all decorations
+            // Remove all decorations
               this.editorDecorations = this.monacoEditor.deltaDecorations(this.editorDecorations, [])
 
-              // remove existing config
+              // Remove existing config
               this.monacoEditor.executeEdits('beautifier', [
                 {
                   identifier: 'delete' as any,
@@ -262,7 +262,7 @@ export class ConfigEditorComponent implements OnInit, OnDestroy {
                 },
               ])
 
-              // inject the restored content
+              // Inject the restored content
               this.monacoEditor.executeEdits('beautifier', [
                 {
                   identifier: 'insert' as any,
@@ -301,21 +301,21 @@ export class ConfigEditorComponent implements OnInit, OnDestroy {
 
   validateSection(sections: any[], type: 'accessory' | 'platform') {
     for (const section of sections) {
-      // check section is an object
+      // Check section is an object
       if (typeof section !== 'object' || Array.isArray(section)) {
         this.$toastr.error(this.$translate.instant('config.error_blocks_objects', { type }), this.$translate.instant('toast.title_error'))
         this.highlightOffendingArrayItem(section)
         return false
       }
 
-      // check section contains platform/accessory key
+      // Check section contains platform/accessory key
       if (!section[type]) {
         this.$toastr.error(this.$translate.instant('config.error_blocks_type', { type }), this.$translate.instant('toast.title_error'))
         this.highlightOffendingArrayItem(section)
         return false
       }
 
-      // check section platform/accessory key is a string
+      // Check section platform/accessory key is a string
       if (typeof section[type] !== 'string') {
         this.$toastr.error(this.$translate.instant('config.error_string_type', { type }), this.$translate.instant('toast.title_error'))
         this.highlightOffendingArrayItem(section)
@@ -323,7 +323,7 @@ export class ConfigEditorComponent implements OnInit, OnDestroy {
       }
     }
 
-    // validation passed
+    // Validation passed
     return true
   }
 
@@ -345,7 +345,7 @@ export class ConfigEditorComponent implements OnInit, OnDestroy {
       return
     }
 
-    // figure out which lines the offending block spans, add leading space as per formatting rules
+    // Figure out which lines the offending block spans, add leading space as per formatting rules
     block = JSON.stringify(block, null, 4).split('\n').map(x => `        ${x}`).join('\n')
 
     setTimeout(() => {
@@ -507,7 +507,7 @@ export class ConfigEditorComponent implements OnInit, OnDestroy {
               },
               platforms: {
                 type: 'array',
-                description: 'Any plugin that exposes a platform should have it\'s config entered in this array.'
+                description: 'Any plugin that exposes a platform should have its config entered in this array.'
                   + '\nSeparate each plugin config block using a comma.',
                 items: {
                   type: 'object',
@@ -549,7 +549,7 @@ export class ConfigEditorComponent implements OnInit, OnDestroy {
               },
               accessories: {
                 type: 'array',
-                description: 'Any plugin that exposes an accessory should have it\'s config entered in this array.'
+                description: 'Any plugin that exposes an accessory should have its config entered in this array.'
                   + '\nSeparate each plugin config block using a comma.',
                 items: {
                   type: 'object',
@@ -583,11 +583,11 @@ export class ConfigEditorComponent implements OnInit, OnDestroy {
     }
 
     if (window.visualViewport.height < window.innerHeight) {
-      // keyboard may have opened
+      // Keyboard may have opened
       this.$md.enableTouchMove()
       this.lastHeight = window.visualViewport.height
     } else if (window.visualViewport.height === window.innerHeight) {
-      // keyboard is closed
+      // Keyboard is closed
       this.$md.disableTouchMove()
       this.lastHeight = window.visualViewport.height
     }

@@ -38,7 +38,7 @@ export class BackupController {
   ) {}
 
   @UseGuards(AdminGuard)
-  @ApiOperation({ summary: 'Download a .tar.gz of the Homebridge instance.' })
+  @ApiOperation({ summary: 'Download a `.tar.gz` of the Homebridge instance.' })
   @Get('/download')
   async downloadBackup(@Res({ passthrough: true }) res): Promise<StreamableFile> {
     try {
@@ -94,7 +94,7 @@ export class BackupController {
   @UseGuards(AdminGuard)
   @Post('/restore')
   @ApiOperation({
-    summary: 'Upload a .tar.gz of the Homebridge instance.',
+    summary: 'Upload a `.tar.gz` of the Homebridge instance.',
     description: 'NOTE: This endpoint does not trigger the restore process.',
   })
   @ApiConsumes('multipart/form-data')
@@ -113,12 +113,12 @@ export class BackupController {
     try {
       const data = await req.file()
       if (data.file.truncated) {
-        throw new InternalServerErrorException(`Restore file exceeds maximum size ${globalThis.backup.maxBackupSizeText}`)
+        throw new InternalServerErrorException(`Restore file exceeds maximum size ${globalThis.backup.maxBackupSizeText}.`)
       } else {
         await this.backupService.uploadBackupRestore(data)
       }
     } catch (err) {
-      this.logger.error('Restore backup failed:', err.message)
+      this.logger.error(`Restore backup failed as ${err.message}`)
       throw new InternalServerErrorException(err.message)
     }
   }
@@ -127,7 +127,7 @@ export class BackupController {
   @Put('/restore/trigger')
   @ApiOperation({
     summary: 'Triggers a headless restore process from the last uploaded backup file.',
-    description: 'Logs to stdout / stderr.',
+    description: 'Logs to `stdout`/`stderr`.',
   })
   async restoreBackupTrigger() {
     return await this.backupService.triggerHeadlessRestore()
@@ -135,7 +135,7 @@ export class BackupController {
 
   @UseGuards(AdminGuard)
   @ApiOperation({
-    summary: 'Upload a .hbfx backup file created by third party apps.',
+    summary: 'Upload a `.hbfx` backup file created by third party apps.',
     description: 'NOTE: This endpoint does not trigger the restore process.',
   })
   @ApiConsumes('multipart/form-data')
@@ -156,7 +156,7 @@ export class BackupController {
       const data = await req.file()
       await this.backupService.uploadHbfxRestore(data)
     } catch (err) {
-      this.logger.error('Restore backup failed:', err.message)
+      this.logger.error(`Restore backup failed as ${err.message}`)
       throw new InternalServerErrorException(err.message)
     }
   }

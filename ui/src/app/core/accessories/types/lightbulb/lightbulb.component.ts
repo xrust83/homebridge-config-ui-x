@@ -29,7 +29,7 @@ export class LightbulbComponent {
   onClick() {
     this.service.getCharacteristic('On').setValue(!this.service.values.On)
 
-    // set the brightness to 100% if on 0% when turned on
+    // Set the brightness to 100% if on 0% when turned on
     if (!this.service.values.On && 'Brightness' in this.service.values && !this.service.values.Brightness) {
       this.service.getCharacteristic('Brightness').setValue(100)
     }

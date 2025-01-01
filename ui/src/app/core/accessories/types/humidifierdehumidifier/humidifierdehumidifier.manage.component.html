@@ -15,9 +15,9 @@
     <div
       class="humidity-drop mb-3"
       [ngClass]="{
-      'dehumidifying': service.values.CurrentHumidifierDehumidifierState === 3 && service.values.Active === 1,
-      'humidifying': service.values.CurrentHumidifierDehumidifierState === 2 && service.values.Active === 1,
-      'no-current-state': service.values.CurrentHumidifierDehumidifierState === 1 && service.values.Active === 1
+        'dehumidifying': service.values.CurrentHumidifierDehumidifierState === 3 && service.values.Active === 1,
+        'humidifying': service.values.CurrentHumidifierDehumidifierState === 2 && service.values.Active === 1,
+        'no-current-state': service.values.CurrentHumidifierDehumidifierState === 1 && service.values.Active === 1
       }"
     >
       <div class="humidity-drop-text" [innerText]="(service.values.CurrentRelativeHumidity) + '%'"></div>
@@ -63,49 +63,38 @@
     </div>
 
     @if (service.values.Active === 1 && RelativeHumidityHumidifierThreshold && RelativeHumidityDehumidifierThreshold) {
-    <div>
-      <h5>{{ 'accessories.control.target_humidity' | translate }}</h5>
-      <div>
-        @switch (targetMode) { @case (0) {
-        <div>
-          <p>{{ autoHumidity[0] }}% - {{ autoHumidity[1] }}%</p>
-          <nouislider
-            [min]="RelativeHumidityHumidifierThreshold.minValue"
-            [max]="RelativeHumidityDehumidifierThreshold.maxValue"
-            [step]="RelativeHumidityDehumidifierThreshold.minStep"
-            [(ngModel)]="autoHumidity"
-            (ngModelChange)="onHumidityStateChange()"
-          >
-          </nouislider>
-        </div>
-        } @case (1) {
-        <div>
-          <p>{{ targetHumidifierHumidity }}%</p>
-          <nouislider
-            [min]="RelativeHumidityHumidifierThreshold.minValue"
-            [max]="RelativeHumidityHumidifierThreshold.maxValue"
-            [step]="RelativeHumidityHumidifierThreshold.minStep"
-            [(ngModel)]="targetHumidifierHumidity"
-            (ngModelChange)="onHumidityStateChange()"
-          >
-          </nouislider>
-        </div>
-        } @case (2) {
-        <div>
-          <p>{{ targetDehumidifierHumidity }}%</p>
-          <nouislider
-            [min]="RelativeHumidityDehumidifierThreshold.minValue"
-            [max]="RelativeHumidityDehumidifierThreshold.maxValue"
-            [step]="RelativeHumidityDehumidifierThreshold.minStep"
-            [(ngModel)]="targetDehumidifierHumidity"
-            (ngModelChange)="onHumidityStateChange()"
-          >
-          </nouislider>
-        </div>
-        } }
-      </div>
-    </div>
-    }
+    <h5>{{ 'accessories.control.target_humidity' | translate }}</h5>
+    @switch (targetMode) { @case (0) {
+    <p>{{ autoHumidity[0] }}% - {{ autoHumidity[1] }}%</p>
+    <nouislider
+      [min]="RelativeHumidityHumidifierThreshold.minValue"
+      [max]="RelativeHumidityDehumidifierThreshold.maxValue"
+      [step]="RelativeHumidityDehumidifierThreshold.minStep"
+      [(ngModel)]="autoHumidity"
+      (ngModelChange)="onHumidityStateChange()"
+    >
+    </nouislider>
+    } @case (1) {
+    <p>{{ targetHumidifierHumidity }}%</p>
+    <nouislider
+      [min]="RelativeHumidityHumidifierThreshold.minValue"
+      [max]="RelativeHumidityHumidifierThreshold.maxValue"
+      [step]="RelativeHumidityHumidifierThreshold.minStep"
+      [(ngModel)]="targetHumidifierHumidity"
+      (ngModelChange)="onHumidityStateChange()"
+    >
+    </nouislider>
+    } @case (2) {
+    <p>{{ targetDehumidifierHumidity }}%</p>
+    <nouislider
+      [min]="RelativeHumidityDehumidifierThreshold.minValue"
+      [max]="RelativeHumidityDehumidifierThreshold.maxValue"
+      [step]="RelativeHumidityDehumidifierThreshold.minStep"
+      [(ngModel)]="targetDehumidifierHumidity"
+      (ngModelChange)="onHumidityStateChange()"
+    >
+    </nouislider>
+    } } }
   </div>
   <div class="modal-footer"></div>
 </div>

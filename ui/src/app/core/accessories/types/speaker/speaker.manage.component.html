@@ -42,18 +42,16 @@
     </div>
 
     @if (targetVolume) {
-    <div>
-      <h5 class="mb-0">{{ 'accessories.control.speaker_volume' | translate }}</h5>
-      <p>{{ targetVolume.value }}%</p>
-      <nouislider
-        [min]="targetVolume.min"
-        [max]="targetVolume.max"
-        [step]="targetVolume.step"
-        [(ngModel)]="targetVolume.value"
-        (ngModelChange)="onVolumeStateChange()"
-      >
-      </nouislider>
-    </div>
+    <h5 class="mb-0">{{ 'accessories.control.speaker_volume' | translate }}</h5>
+    <p>{{ targetVolume.value }}%</p>
+    <nouislider
+      [min]="targetVolume.min"
+      [max]="targetVolume.max"
+      [step]="targetVolume.step"
+      [(ngModel)]="targetVolume.value"
+      (ngModelChange)="onVolumeStateChange()"
+    >
+    </nouislider>
     }
   </div>
   <div class="modal-footer"></div>

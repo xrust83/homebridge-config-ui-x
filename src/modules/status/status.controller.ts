@@ -27,7 +27,7 @@ export class StatusController {
     return this.statusService.getServerMemoryInfo()
   }
 
-  @ApiOperation({ summary: 'Returns the current transmitted & received bytes per second.' })
+  @ApiOperation({ summary: 'Returns the current transmitted and received bytes per second.' })
   @Get('/network')
   getServerNetworkInfo() {
     return this.statusService.getCurrentNetworkUsage()
@@ -59,7 +59,7 @@ export class StatusController {
     return this.childBridgesService.getChildBridges()
   }
 
-  @ApiOperation({ summary: 'Return the current Homebridge version / package information.' })
+  @ApiOperation({ summary: 'Return the current Homebridge version and package information.' })
   @Get('/homebridge-version')
   async getHomebridgeVersion() {
     return this.statusService.getHomebridgeVersion()
@@ -77,7 +77,7 @@ export class StatusController {
     return this.statusService.getNodeJsVersionInfo()
   }
 
-  @ApiOperation({ summary: 'Returns throttled status for Raspberry Pi' })
+  @ApiOperation({ summary: 'Returns throttled status for Raspberry Pi.' })
   @Get('/rpi/throttled')
   async getRaspberryPiThrottledStatus() {
     return this.statusService.getRaspberryPiThrottledStatus()

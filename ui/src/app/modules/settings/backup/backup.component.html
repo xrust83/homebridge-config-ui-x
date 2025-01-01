@@ -1,4 +1,4 @@
-<div class="modal-content hb-backup-modal">
+<div class="modal-content">
   <div class="modal-header">
     <h5 class="modal-title">{{ 'backup.title_backup' | translate }}</h5>
     <button
@@ -13,47 +13,54 @@
     </button>
   </div>
   <div class="modal-body">
-    <div class="text-center mt-2 mb-3">
+    <div class="text-center mb-3">
       <i class="fas fa-fw fa-hard-drive primary-text" style="font-size: 75px"></i>
     </div>
-    <ul>
+    <ul class="mb-3">
       <li>{{ 'backup.backup_help_one' | translate }}</li>
       <li>{{ 'backup.backup_help_two' | translate }}</li>
       <li>{{ 'backup.backup_warning' | translate }}</li>
-      @if (backupTime) {
-      <li>
-        {{ 'backup.scheduled_backup_time' | translate:{ backupTime: backupTime | date:'shortTime', dayCount: 7 } }}
-      </li>
-      }
     </ul>
-    <ul class="list-group list-group-box mt-2">
+    <ul class="list-group list-group-box mb-0">
       <li class="list-group-item d-flex justify-content-between align-items-center">
-        <span>
-          <span> {{ Date.now() | date:'mediumDate' }} </span>
+        <div>
+          <span>{{ 'backup.backup_now' | translate }}</span>
           <br />
-          <small class="grey-text">{{ Date.now() | date:'shortTime' }} &middot; {{ 'backup.now' | translate }}</small>
-        </span>
-        <span style="display: flex; flex-wrap: nowrap">
-          <button class="btn btn-primary ml-3" disabled [attr.aria-label]="'form.button_restore' | translate">
-            <i class="fas fa-fw fa-history"></i>
-          </button>
-          <button
-            class="btn btn-primary ml-1"
-            (click)="onDownloadBackupClick()"
-            [disabled]="clicked"
-            [ngbTooltip]="'form.button_download' | translate"
-            placement="bottom"
-            container="modal"
-            openDelay="150"
-            triggers="hover"
-            [attr.aria-label]="'form.button_download' | translate"
-          >
-            <i class="fas fa-fw" [ngClass]="{'fa-download': !clicked, 'fa-cog fa-spin': clicked}"></i>
-          </button>
-          <button class="btn btn-danger ml-1" disabled [attr.aria-label]="'form.button_delete' | translate">
-            <i class="fas fa-fw fa-trash"></i>
-          </button>
-        </span>
+          <small class="grey-text">{{ 'backup.backup_now_desc' | translate }}</small>
+        </div>
+        <button
+          class="btn btn-primary m-0 ml-3"
+          (click)="onDownloadBackupClick()"
+          [disabled]="clicked"
+          [attr.aria-label]="'backup.backup_now' | translate"
+        >
+          <i class="fas fa-fw" [ngClass]="{ 'fa-arrow-right': !clicked, 'fa-cog fa-spin': clicked }"></i>
+        </button>
+      </li>
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <div>
+          <span>{{ 'backup.restore_now' | translate }}</span>
+          <br />
+          <small class="grey-text">{{ 'backup.restore_now_desc' | translate }}</small>
+        </div>
+        <button
+          class="btn btn-primary m-0 ml-3"
+          (click)="restore(null)"
+          [attr.aria-label]="'backup.restore_now' | translate"
+          [disabled]="clicked"
+        >
+          <i class="fas fa-fw fa-arrow-right"></i>
+        </button>
+      </li>
+    </ul>
+    @if (scheduledBackups.length) {
+    <ul class="list-group list-group-box mt-3 mb-0">
+      <li class="list-group-item">
+        <h6 class="mb-1 text-center">{{ 'backup.files_auto' | translate }}</h6>
+        <p class="small grey-text mb-0 text-center">
+          @if (backupTime) { {{ 'backup.scheduled_backup_time' | translate:{ backupTime: backupTime | date:'shortTime',
+          dayCount: 7 } }} } @if (!backupTime) { {{ 'backup.scheduled_backup_disabled' | translate }} }
+        </p>
       </li>
       @for (backup of scheduledBackups; track backup) {
       <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -81,7 +88,7 @@
         </span>
         <span style="display: flex; flex-wrap: nowrap">
           <button
-            class="btn btn-primary ml-3"
+            class="btn btn-primary m-0 ml-3"
             (click)="restore(backup)"
             [disabled]="clicked || deleting || backup.size > backup.maxBackupSize"
             [ngbTooltip]="'form.button_restore' | translate"
@@ -94,7 +101,7 @@
             <i class="fas fa-fw fa-history"></i>
           </button>
           <button
-            class="btn btn-primary ml-1"
+            class="btn btn-primary m-0 ml-2"
             (click)="download(backup)"
             [disabled]="clicked || deleting"
             [ngbTooltip]="'form.button_download' | translate"
@@ -107,7 +114,7 @@
             <i class="fas fa-fw fa-download"></i>
           </button>
           <button
-            class="btn btn-danger ml-1"
+            class="btn btn-danger m-0 ml-2"
             (click)="delete(backup)"
             [disabled]="clicked || deleting"
             [ngbTooltip]="'form.button_delete' | translate"
@@ -119,21 +126,13 @@
           >
             <i
               class="fas fa-fw"
-              [ngClass]="{'fa-trash': backup.id !== deleting, 'fa-cog fa-spin': backup.id === deleting}"
+              [ngClass]="{ 'fa-trash': backup.id !== deleting, 'fa-cog fa-spin': backup.id === deleting }"
             ></i>
           </button>
         </span>
       </li>
       }
     </ul>
-
-    @if (errorMessage) {
-    <div>
-      <div class="alert alert-error" role="alert">
-        <h4 class="alert-heading">{{ 'toast.title_error' | translate }}</h4>
-        <p>{{ errorMessage }}</p>
-      </div>
-    </div>
     }
   </div>
 

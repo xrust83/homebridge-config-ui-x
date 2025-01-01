@@ -10,6 +10,7 @@ import { MonacoEditorModule } from 'ngx-monaco-editor-v2'
 import { ToastrModule } from 'ngx-toastr'
 
 import { AppRoutingModule } from '@/app/app-routing.module'
+import { AppComponent } from '@/app/app.component'
 import { AuthModule } from '@/app/core/auth/auth.module'
 import { supportedLocales } from '@/app/core/locales'
 import { onMonacoLoad } from '@/app/core/monaco-editor.service'
@@ -17,8 +18,6 @@ import { LoginModule } from '@/app/modules/login/login.module'
 import { RestartModule } from '@/app/modules/restart/restart.module'
 import { StatusModule } from '@/app/modules/status/status.module'
 import { environment } from '@/environments/environment'
-
-import { AppComponent } from './app/app.component'
 
 import '../../src/globalDefaults'
 
@@ -62,4 +61,4 @@ bootstrapApplication(AppComponent, {
     provideAnimations(),
     provideHttpClient(withInterceptorsFromDi()),
   ],
-}).catch(err => console.log(err)) // eslint-disable-line no-console
+}).catch(err => console.error(err))

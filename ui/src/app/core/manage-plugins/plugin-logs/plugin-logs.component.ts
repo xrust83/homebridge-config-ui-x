@@ -64,53 +64,53 @@ export class PluginLogsComponent implements OnInit, OnDestroy {
     ref.componentInstance.confirmButtonLabel = this.$translate.instant('form.button_download')
     ref.componentInstance.faIconClass = 'fas fa-fw fa-user-secret primary-text'
 
-    ref.result.then(() => {
-      this.$api.get('/platform-tools/hb-service/log/download?colour=yes', { observe: 'response', responseType: 'text' }).subscribe({
-        next: (res: HttpResponse<any>) => {
-          if (!res.body) {
-            return
-          }
-          const lines = res.body.split('\n')
-          let finalOutput = ''
-          let includeNextLine = false
-
-          lines.forEach((line: string) => {
-            if (!line) {
+    ref.result
+      .then(() => {
+        this.$api.get('/platform-tools/hb-service/log/download?colour=yes', { observe: 'response', responseType: 'text' }).subscribe({
+          next: (res: HttpResponse<any>) => {
+            if (!res.body) {
               return
             }
+            const lines = res.body.split('\n')
+            let finalOutput = ''
+            let includeNextLine = false
 
-            if (includeNextLine) {
-              if (line.match(/36m\[.*?\]/)) {
-                includeNextLine = false
-              } else {
-                // eslint-disable-next-line no-control-regex
-                finalOutput += `${line.replace(/\x1B\[(\d{1,3}(;\d{1,2})?)?[mGK]/g, '')}\r\n`
+            lines.forEach((line: string) => {
+              if (!line) {
                 return
               }
-            }
 
-            if (line.includes(`36m[${this.pluginAlias}]`)) {
+              if (includeNextLine) {
+                if (line.match(/36m\[.*?\]/)) {
+                  includeNextLine = false
+                } else {
+                // eslint-disable-next-line no-control-regex
+                  finalOutput += `${line.replace(/\x1B\[(\d{1,3}(;\d{1,2})?)?[mGK]/g, '')}\r\n`
+                  return
+                }
+              }
+
+              if (line.includes(`36m[${this.pluginAlias}]`)) {
               // eslint-disable-next-line no-control-regex
-              finalOutput += `${line.replace(/\x1B\[(\d{1,3}(;\d{1,2})?)?[mGK]/g, '')}\r\n`
-              includeNextLine = true
-            }
-          })
+                finalOutput += `${line.replace(/\x1B\[(\d{1,3}(;\d{1,2})?)?[mGK]/g, '')}\r\n`
+                includeNextLine = true
+              }
+            })
 
-          saveAs(new Blob([finalOutput], { type: 'text/plain;charset=utf-8' }), `${this.plugin.name}.log.txt`)
-        },
-        error: async (err: HttpErrorResponse) => {
-          let message: string
-          try {
-            message = JSON.parse(await err.error.text()).message
-          } catch (error) {
-            console.error(error)
-          }
-          this.$toastr.error(message || this.$translate.instant('logs.download.error'), this.$translate.instant('toast.title_error'))
-        },
+            saveAs(new Blob([finalOutput], { type: 'text/plain;charset=utf-8' }), `${this.plugin.name}.log.txt`)
+          },
+          error: async (err: HttpErrorResponse) => {
+            let message: string
+            try {
+              message = JSON.parse(await err.error.text()).message
+            } catch (error) {
+              console.error(error)
+            }
+            this.$toastr.error(message || this.$translate.instant('logs.download.error'), this.$translate.instant('toast.title_error'))
+          },
+        })
       })
-    }).catch(() => {
-      // do nothing
-    })
+      .catch(() => { /* do nothing */ })
   }
 
   ngOnDestroy() {

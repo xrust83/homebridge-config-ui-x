@@ -56,7 +56,7 @@ export class HbServiceController {
   }
 
   @UseGuards(AdminGuard)
-  @ApiOperation({ summary: 'Truncate / empty the log file.' })
+  @ApiOperation({ summary: 'Truncate/empty the log file.' })
   @Put('log/truncate')
   truncateLogFile(@Req() req) {
     return this.hbServiceService.truncateLogFile(req.user.username)

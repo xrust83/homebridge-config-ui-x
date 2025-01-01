@@ -38,10 +38,10 @@ describe('ServerController (e2e)', () => {
     accessoriesPath = resolve(process.env.UIX_STORAGE_PATH, 'accessories')
     persistPath = resolve(process.env.UIX_STORAGE_PATH, 'persist')
 
-    // setup test config
+    // Setup test config
     await copy(resolve(__dirname, '../mocks', 'config.json'), process.env.UIX_CONFIG_PATH)
 
-    // setup test auth file
+    // Setup test auth file
     await copy(resolve(__dirname, '../mocks', 'auth.json'), authFilePath)
     await copy(resolve(__dirname, '../mocks', '.uix-secrets'), secretsFilePath)
 
@@ -66,7 +66,7 @@ describe('ServerController (e2e)', () => {
   beforeEach(async () => {
     configService.serviceMode = false
 
-    // get auth token before each test
+    // Get auth token before each test
     authorization = `bearer ${(await app.inject({
       method: 'POST',
       path: '/auth/login',
@@ -76,7 +76,7 @@ describe('ServerController (e2e)', () => {
       },
     })).json().access_token}`
 
-    // ensure it's clean
+    // Ensure it's clean
     await remove(persistPath)
     await remove(accessoriesPath)
 
@@ -120,7 +120,7 @@ describe('ServerController (e2e)', () => {
   })
 
   it('GET /server/pairing (not ready)', async () => {
-    // remove the persist folder
+    // Remove the persist folder
     await remove(persistPath)
 
     const res = await app.inject({
@@ -131,7 +131,7 @@ describe('ServerController (e2e)', () => {
       },
     })
 
-    // should return 503 - Service Unavailable
+    // Should return 503 - Service Unavailable
     expect(res.statusCode).toBe(503)
   })
 
@@ -152,7 +152,7 @@ describe('ServerController (e2e)', () => {
   })
 
   it('PUT /server/reset-cached-accessories (service mode enabled)', async () => {
-    // enable service mode
+    // Enable service mode
     configService.serviceMode = true
 
     const res = await app.inject({
@@ -167,7 +167,7 @@ describe('ServerController (e2e)', () => {
   })
 
   it('PUT /server/reset-cached-accessories (service mode disabled)', async () => {
-    // enable service mode
+    // Enable service mode
     configService.serviceMode = false
 
     const res = await app.inject({
@@ -182,7 +182,7 @@ describe('ServerController (e2e)', () => {
   })
 
   it('GET /server/cached-accessories', async () => {
-    // enable service mode
+    // Enable service mode
     configService.serviceMode = true
 
     const res = await app.inject({
@@ -198,10 +198,10 @@ describe('ServerController (e2e)', () => {
   })
 
   it('DELETE /server/cached-accessories/:uuid (valid uuid)', async () => {
-    // enable service mode
+    // Enable service mode
     configService.serviceMode = true
 
-    // sanity check to ensure one cached accessory is preset
+    // Sanity check to ensure one cached accessory is preset
     let cachedAccessories = await readJson(resolve(accessoriesPath, 'cachedAccessories'))
     expect(cachedAccessories).toHaveLength(1)
 
@@ -221,10 +221,10 @@ describe('ServerController (e2e)', () => {
   })
 
   it('DELETE /server/cached-accessories/:uuid (invalid uuid)', async () => {
-    // enable service mode
+    // Enable service mode
     configService.serviceMode = true
 
-    // sanity check to ensure one cached accessory is preset
+    // Sanity check to ensure one cached accessory is preset
     let cachedAccessories = await readJson(resolve(accessoriesPath, 'cachedAccessories'))
     expect(cachedAccessories).toHaveLength(1)
 
@@ -272,6 +272,9 @@ describe('ServerController (e2e)', () => {
   })
 
   it('DELETE /server/pairings/:deviceId', async () => {
+    // Enable service mode
+    configService.serviceMode = true
+
     const res = await app.inject({
       method: 'DELETE',
       path: '/server/pairings/67E41F0EA05D',

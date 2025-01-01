@@ -35,7 +35,7 @@ export class Fanv2ManageComponent implements OnInit {
       .subscribe(() => {
         this.service.getCharacteristic('RotationSpeed').setValue(this.targetRotationSpeed.value)
 
-        // turn bulb on or off when brightness is adjusted
+        // Turn bulb on or off when brightness is adjusted
         if (this.targetRotationSpeed.value && !this.service.values.Active) {
           this.targetMode = 1
           this.service.getCharacteristic('Active').setValue(this.targetMode)

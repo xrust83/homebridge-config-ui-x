@@ -39,12 +39,12 @@ export class AccessoriesWidgetComponent implements OnInit, OnDestroy {
 
     this.isMobile = this.$md.detect.mobile()
 
-    // disable drag and drop for the .no-drag class
+    // Disable drag and drop for the .no-drag class
     $dragula.createGroup('widget-accessories-bag', {
       moves: el => !this.isMobile && !el.classList.contains('no-drag'),
     })
 
-    // save the room and service layout
+    // Save the room and service layout
     this.orderSubscription = $dragula.drop().subscribe(() => {
       setTimeout(() => {
         this.widget.accessoryOrder = this.dashboardAccessories.map(x => x.uniqueId)
@@ -54,15 +54,15 @@ export class AccessoriesWidgetComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-    // subscribe to accessory data events
+    // Subscribe to accessory data events
     this.accessoryDataSubscription = this.$accessories.accessoryData.subscribe(() => {
       this.getDashboardAccessories()
     })
 
-    // start the accessory service
+    // Start the accessory service
     await this.$accessories.start()
 
-    // subscribe to layout events
+    // Subscribe to layout events
     this.layoutSubscription = this.$accessories.layoutSaved.subscribe({
       next: () => {
         this.getDashboardAccessories()

@@ -11,13 +11,13 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <div class="modal-body w-100 text-center">
-    <i class="fas fa-fw fa-power-off primary-text mb-4" style="font-size: 75px"></i>
+  <div class="modal-body text-center">
+    <i class="fas fa-fw fa-power-off primary-text mb-3" style="font-size: 75px"></i>
     <p class="w-100">{{ 'restart.child_bridge_list' | translate }}</p>
     <div class="text-center">
       <ul class="d-inline-block text-left">
         @for (bridge of bridges; track bridge) {
-        <li>{{ bridge.name }} (<code>{{ bridge.username }}</code>)</li>
+        <li>{{ bridge.name }} (<span class="text-monospace">{{ bridge.username }}</span>)</li>
         }
       </ul>
     </div>

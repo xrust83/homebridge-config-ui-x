@@ -12,21 +12,30 @@
     </button>
   </div>
   <div class="modal-body">
-    <p>{{ 'users.setup_2fa_disable_current_password' | translate }}</p>
-
-    <div class="form-group">
-      <input
-        class="form-control"
-        type="password"
-        autocomplete="current-password"
-        [formControl]="formGroup.controls['password']"
-        [placeholder]="'users.label_password' | translate"
-      />
+    <div class="text-center mb-3">
+      <i class="fas fa-fw fa-key primary-text" style="font-size: 75px"></i>
     </div>
-    @if (invalidCredentials) {
-    <p class="red-text">
-      <small>{{ 'login.invalid_credentials' | translate }}</small>
-    </p>
+    <ul class="mb-3">
+      <li>{{ 'users.setup_2fa_disable_current_password' | translate }}</li>
+    </ul>
+    <ul class="list-group list-group-box mb-0">
+      <li class="list-group-item d-flex flex-column flex-md-row align-items-center">
+        <label class="mb-2 mb-md-0 w-100 w-md-50">{{ 'login.label_password' | translate }}</label>
+        <div class="text-left text-md-right w-100 w-md-50">
+          <input
+            class="form-control custom-input"
+            type="password"
+            autocomplete="current-password"
+            [formControl]="formGroup.controls['password']"
+            [placeholder]="'users.label_password' | translate"
+          />
+        </div>
+      </li>
+    </ul>
+    @if (invalidCredentials && !formGroup.controls.password.value) {
+    <ngb-alert type="error" [dismissible]="false" class="mt-3 mb-0">
+      <p class="mb-0">{{ 'login.invalid_password' | translate }}</p>
+    </ngb-alert>
     }
   </div>
   <div class="modal-footer justify-content-between">

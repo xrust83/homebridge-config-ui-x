@@ -11,49 +11,51 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <div class="modal-body w-100">
-    <div class="container px-1">
-      <div class="form-group my-2 row align-items-center">
-        <label class="col-6 col-form-label">{{ 'status.widget.hide_on_mobile' | translate }}</label>
-        <div class="col-6 text-right">
+  <div class="modal-body">
+    <ul class="list-group list-group-box mb-0">
+      <li class="list-group-item d-flex justify-content-between align-items-center flex-row pb-2">
+        <span class="text-left">{{ 'status.widget.hide_on_mobile' | translate }}</span>
+        <div class="text-right grey-text">
           <input
             type="checkbox"
             class="rendux-input"
             id="hideOnMobile"
             [(ngModel)]="widget.hideOnMobile"
-            [attr.aria-label]="'settings.startup.insecure' | translate"
+            [attr.aria-label]="'status.widget.hide_on_mobile' | translate"
           />
-          <label for="hideOnMobile" class="rendux-label ml-3" style="min-width: 50px"></label>
+          <label for="hideOnMobile" class="rendux-label ml-3"></label>
         </div>
-      </div>
+      </li>
       @switch (widget.component) { @case ('WeatherWidgetComponent') {
-      <label for="city-search-input">{{ 'status.widget.weather.label_search_for_your_city' | translate }}</label>
-      <div class="input-group mb-3">
-        <div class="input-group-prepend">
-          <span class="input-group-text custom-input" id="">
-            <i class="fas fa-fw" [ngClass]="{'fa-sync fa-spin': searching, 'fa-city': !searching}"></i>
-          </span>
+      <li class="list-group-item d-flex flex-column flex-md-row align-items-center">
+        <label for="city-search-input" class="mb-2 mb-md-0 w-100 w-md-50">
+          {{ 'status.widget.weather.label_search_for_your_city' | translate }}
+        </label>
+        <div class="text-left text-md-right w-100 w-md-50">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text custom-input" id="">
+                <i class="fas fa-fw" [ngClass]="{ 'fa-sync fa-spin': searching, 'fa-city': !searching }"></i>
+              </span>
+            </div>
+            <input
+              id="city-search-input"
+              type="text"
+              class="form-control custom-input"
+              [ngbTypeahead]="searchCountryCodes"
+              [resultFormatter]="searchCountryCodeFormatter"
+              [inputFormatter]="searchCountryCodeFormatter"
+              [editable]="false"
+              [(ngModel)]="widget.location"
+            />
+          </div>
         </div>
-        <input
-          id="city-search-input"
-          type="text"
-          class="form-control custom-input"
-          [ngbTypeahead]="searchCountryCodes"
-          [resultFormatter]="searchCountryCodeFormatter"
-          [inputFormatter]="searchCountryCodeFormatter"
-          [editable]="false"
-          [(ngModel)]="widget.location"
-        />
-      </div>
-      <p class="muted grey-text text-center mt-3 mb-2">Weather data is provided by OpenWeather.</p>
-      } @case ('AccessoriesWidgetComponent') {
-      <p class="muted grey-text text-center mt-3 mb-2">
-        {{ 'status.widget.accessories.choose_accessories' | translate }}
-      </p>
+      </li>
+      <li class="list-group-item muted grey-text text-center">Weather data is provided by OpenWeather.</li>
       } @case ('HomebridgeStatusWidgetComponent') {
-      <div class="form-group my-2 row align-items-center">
-        <label class="col-6 col-form-label">{{ 'status.widget.homebridge_port' | translate }}</label>
-        <div class="col-6 text-right">
+      <li class="list-group-item d-flex justify-content-between align-items-center flex-row pb-2">
+        <span class="text-left">{{ 'status.widget.homebridge_port' | translate }}</span>
+        <div class="text-right grey-text">
           <input
             type="checkbox"
             class="rendux-input"
@@ -61,76 +63,76 @@
             [(ngModel)]="widget.hidePort"
             [attr.aria-label]="'status.widget.homebridge_port' | translate"
           />
-          <label for="hidePort" class="rendux-label ml-3" style="min-width: 50px"></label>
+          <label for="hidePort" class="rendux-label ml-3"></label>
         </div>
-      </div>
+      </li>
       } @case ('HomebridgeLogsWidgetComponent') {
-      <div class="form-group my-2 row align-items-center">
-        <label class="col-6 col-form-label">{{ 'status.widget.font_size' | translate }}</label>
-        <div class="col-6">
+      <li class="list-group-item d-flex flex-column flex-md-row align-items-center">
+        <label class="mb-2 mb-md-0 w-100 w-md-50">{{ 'status.widget.font_size' | translate }}</label>
+        <div class="text-left text-md-right w-100 w-md-50">
           <select class="custom-select" [(ngModel)]="widget.fontSize">
             @for (size of fontSizes; track size) {
             <option [value]="size">{{ size }}</option>
             }
           </select>
         </div>
-      </div>
-      <div class="form-group my-2 row align-items-center">
-        <label class="col-6 col-form-label">{{ 'status.widget.font_weight' | translate }}</label>
-        <div class="col-6">
+      </li>
+      <li class="list-group-item d-flex flex-column flex-md-row align-items-center">
+        <label class="mb-2 mb-md-0 w-100 w-md-50">{{ 'status.widget.font_weight' | translate }}</label>
+        <div class="text-left text-md-right w-100 w-md-50">
           <select class="custom-select" [(ngModel)]="widget.fontWeight">
             @for (weight of fontWeights; track weight) {
             <option [value]="weight">{{ weight }}</option>
             }
           </select>
         </div>
-      </div>
+      </li>
       } @case ('TerminalWidgetComponent') {
-      <div class="form-group my-2 row align-items-center">
-        <label class="col-6 col-form-label">{{ 'status.widget.font_size' | translate }}</label>
-        <div class="col-6">
+      <li class="list-group-item d-flex flex-column flex-md-row align-items-center">
+        <label class="mb-2 mb-md-0 w-100 w-md-50">{{ 'status.widget.font_size' | translate }}</label>
+        <div class="text-left text-md-right w-100 w-md-50">
           <select class="custom-select" [(ngModel)]="widget.fontSize">
             @for (size of fontSizes; track size) {
             <option [value]="size">{{ size }}</option>
             }
           </select>
         </div>
-      </div>
-      <div class="form-group my-2 row align-items-center">
-        <label class="col-6 col-form-label">{{ 'status.widget.font_weight' | translate }}</label>
-        <div class="col-6">
+      </li>
+      <li class="list-group-item d-flex flex-column flex-md-row align-items-center">
+        <label class="mb-2 mb-md-0 w-100 w-md-50">{{ 'status.widget.font_weight' | translate }}</label>
+        <div class="text-left text-md-right w-100 w-md-50">
           <select class="custom-select" [(ngModel)]="widget.fontWeight">
             @for (weight of fontWeights; track weight) {
             <option [value]="weight">{{ weight }}</option>
             }
           </select>
         </div>
-      </div>
+      </li>
       } @case ('ClockWidgetComponent') {
-      <div class="form-group my-2 row align-items-center">
-        <label class="col-6 col-form-label">{{ 'status.widget.clock_timeformat' | translate }}</label>
-        <div class="col-6">
+      <li class="list-group-item d-flex flex-column flex-md-row align-items-center">
+        <label class="mb-2 mb-md-0 w-100 w-md-50">{{ 'status.widget.clock_timeformat' | translate }}</label>
+        <div class="text-left text-md-right w-100 w-md-50">
           <select class="custom-select" [(ngModel)]="widget.timeFormat">
             @for (timeFormat of timeFormats; track timeFormat) {
             <option [value]="timeFormat">{{ currentDate | date:timeFormat }}</option>
             }
           </select>
         </div>
-      </div>
-      <div class="form-group my-2 row align-items-center">
-        <label class="col-6 col-form-label">{{ 'status.widget.clock_dateformat' | translate }}</label>
-        <div class="col-6">
+      </li>
+      <li class="list-group-item d-flex flex-column flex-md-row align-items-center">
+        <label class="mb-2 mb-md-0 w-100 w-md-50">{{ 'status.widget.clock_dateformat' | translate }}</label>
+        <div class="text-left text-md-right w-100 w-md-50">
           <select class="custom-select" [(ngModel)]="widget.dateFormat">
             @for (dateFormat of dateFormats; track dateFormat) {
             <option [value]="dateFormat">{{ currentDate | date:dateFormat }}</option>
             }
           </select>
         </div>
-      </div>
+      </li>
       } @case ('CpuWidgetComponent') {
-      <div class="form-group my-2 row align-items-center">
-        <label class="col-6 col-form-label"> {{ 'status.widget.network.refresh_interval' | translate }} </label>
-        <div class="col-6">
+      <li class="list-group-item d-flex flex-column flex-md-row align-items-center">
+        <label class="mb-2 mb-md-0 w-100 w-md-50">{{ 'status.widget.network.refresh_interval' | translate }}</label>
+        <div class="text-left text-md-right w-100 w-md-50">
           <div class="input-group">
             <input
               type="number"
@@ -144,10 +146,10 @@
             </div>
           </div>
         </div>
-      </div>
-      <div class="form-group my-2 row align-items-center">
-        <label class="col-6 col-form-label"> {{ 'status.widget.network.history_items' | translate }} </label>
-        <div class="col-6">
+      </li>
+      <li class="list-group-item d-flex flex-column flex-md-row align-items-center">
+        <label class="mb-2 mb-md-0 w-100 w-md-50">{{ 'status.widget.network.history_items' | translate }}</label>
+        <div class="text-left text-md-right w-100 w-md-50">
           <div class="input-group">
             <input type="number" class="form-control custom-input" [(ngModel)]="widget.historyItems" min="1" max="60" />
             <div class="input-group-append">
@@ -155,12 +157,11 @@
             </div>
           </div>
         </div>
-      </div>
-      <p class="muted grey-text text-center mt-3 mb-2">{{ 'status.widget.network.refresh_note' | translate }}</p>
+      </li>
       } @case ('MemoryWidgetComponent') {
-      <div class="form-group my-2 row align-items-center">
-        <label class="col-6 col-form-label"> {{ 'status.widget.network.refresh_interval' | translate }} </label>
-        <div class="col-6">
+      <li class="list-group-item d-flex flex-column flex-md-row align-items-center">
+        <label class="mb-2 mb-md-0 w-100 w-md-50">{{ 'status.widget.network.refresh_interval' | translate }}</label>
+        <div class="text-left text-md-right w-100 w-md-50">
           <div class="input-group">
             <input
               type="number"
@@ -174,10 +175,10 @@
             </div>
           </div>
         </div>
-      </div>
-      <div class="form-group my-2 row align-items-center">
-        <label class="col-6 col-form-label"> {{ 'status.widget.network.history_items' | translate }} </label>
-        <div class="col-6">
+      </li>
+      <li class="list-group-item d-flex flex-column flex-md-row align-items-center">
+        <label class="mb-2 mb-md-0 w-100 w-md-50">{{ 'status.widget.network.history_items' | translate }}</label>
+        <div class="text-left text-md-right w-100 w-md-50">
           <div class="input-group">
             <input type="number" class="form-control custom-input" [(ngModel)]="widget.historyItems" min="1" max="60" />
             <div class="input-group-append">
@@ -185,12 +186,11 @@
             </div>
           </div>
         </div>
-      </div>
-      <p class="muted grey-text text-center mt-3 mb-2">{{ 'status.widget.network.refresh_note' | translate }}</p>
+      </li>
       } @case ('NetworkWidgetComponent') {
-      <div class="form-group my-2 row align-items-center">
-        <label class="col-6 col-form-label"> {{ 'status.widget.network.network_interface' | translate }} </label>
-        <div class="col-6">
+      <li class="list-group-item d-flex flex-column flex-md-row align-items-center">
+        <label class="mb-2 mb-md-0 w-100 w-md-50">{{ 'status.widget.network.network_interface' | translate }}</label>
+        <div class="text-left text-md-right w-100 w-md-50">
           @if (networkInterfaces.length) {
           <select class="custom-select" [(ngModel)]="widget.networkInterface">
             @for (networkInterface of networkInterfaces; track networkInterface) {
@@ -198,13 +198,12 @@
             }
           </select>
           } @if (!networkInterfaces.length) {
-          <span>{{ 'status.widget.network.none_selected' | translate }}</span>
-          }
+          <span class="grey-text">{{ 'status.widget.network.none_selected' | translate }}</span> }
         </div>
-      </div>
-      <div class="form-group my-2 row align-items-center">
-        <label class="col-6 col-form-label"> {{ 'status.widget.network.refresh_interval' | translate }} </label>
-        <div class="col-6">
+      </li>
+      <li class="list-group-item d-flex flex-column flex-md-row align-items-center">
+        <label class="mb-2 mb-md-0 w-100 w-md-50">{{ 'status.widget.network.refresh_interval' | translate }}</label>
+        <div class="text-left text-md-right w-100 w-md-50">
           <div class="input-group">
             <input
               type="number"
@@ -218,10 +217,10 @@
             </div>
           </div>
         </div>
-      </div>
-      <div class="form-group my-2 row align-items-center">
-        <label class="col-6 col-form-label"> {{ 'status.widget.network.history_items' | translate }} </label>
-        <div class="col-6">
+      </li>
+      <li class="list-group-item d-flex flex-column flex-md-row align-items-center">
+        <label class="mb-2 mb-md-0 w-100 w-md-50"> {{ 'status.widget.network.history_items' | translate }} </label>
+        <div class="text-left text-md-right w-100 w-md-50">
           <div class="input-group">
             <input type="number" class="form-control custom-input" [(ngModel)]="widget.historyItems" min="1" max="60" />
             <div class="input-group-append">
@@ -229,10 +228,9 @@
             </div>
           </div>
         </div>
-      </div>
-      <p class="muted grey-text text-center mt-3 mb-2">{{ 'status.widget.network.refresh_note' | translate }}</p>
+      </li>
       } }
-    </div>
+    </ul>
   </div>
   <div class="modal-footer justify-content-between">
     <div class="text-left">

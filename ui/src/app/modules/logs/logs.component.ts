@@ -33,18 +33,18 @@ export class LogsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // set body bg color
+    // Set body bg color
     window.document.querySelector('body').classList.add('bg-black')
 
-    // start the terminal
+    // Start the terminal
     this.$log.startTerminal(this.termTarget(), {}, this.resizeEvent)
   }
 
   ngOnDestroy() {
-    // unset body bg color
+    // Unset body bg color
     window.document.querySelector('body').classList.remove('bg-black')
 
-    // destroy the terminal
+    // Destroy the terminal
     this.$log.destroyTerminal()
   }
 
@@ -58,24 +58,24 @@ export class LogsComponent implements OnInit, OnDestroy {
     ref.componentInstance.confirmButtonLabel = this.$translate.instant('form.button_download')
     ref.componentInstance.faIconClass = 'fas fa-fw fa-user-secret primary-text'
 
-    ref.result.then(() => {
-      this.$api.get('/platform-tools/hb-service/log/download', { observe: 'response', responseType: 'blob' }).subscribe({
-        next: (res: HttpResponse<any>) => {
-          saveAs(res.body, 'homebridge.log.txt')
-        },
-        error: async (err: HttpErrorResponse) => {
-          let message: string
-          try {
-            message = JSON.parse(await err.error.text()).message
-          } catch (error) {
-            console.error(error)
-          }
-          this.$toastr.error(message || this.$translate.instant('logs.download.error'), this.$translate.instant('toast.title_error'))
-        },
+    ref.result
+      .then(() => {
+        this.$api.get('/platform-tools/hb-service/log/download', { observe: 'response', responseType: 'blob' }).subscribe({
+          next: (res: HttpResponse<any>) => {
+            saveAs(res.body, 'homebridge.log.txt')
+          },
+          error: async (err: HttpErrorResponse) => {
+            let message: string
+            try {
+              message = JSON.parse(await err.error.text()).message
+            } catch (error) {
+              console.error(error)
+            }
+            this.$toastr.error(message || this.$translate.instant('logs.download.error'), this.$translate.instant('toast.title_error'))
+          },
+        })
       })
-    }).catch(() => {
-      // do nothing
-    })
+      .catch(() => { /* do nothing */ })
   }
 
   truncateLogFile() {
@@ -105,8 +105,6 @@ export class LogsComponent implements OnInit, OnDestroy {
           },
         })
       })
-      .catch(() => {
-        // do nothing
-      })
+      .catch(() => { /* do nothing */ })
   }
 }
