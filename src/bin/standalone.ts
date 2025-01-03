@@ -9,6 +9,7 @@ process.title = 'homebridge-config-ui-x'
 
 program
   .allowUnknownOption()
+  .allowExcessArguments()
   .option('-U, --user-storage-path [path]', '', p => process.env.UIX_STORAGE_PATH = p)
   .option('-P, --plugin-path [path]', '', p => process.env.UIX_CUSTOM_PLUGIN_PATH = p)
   .option('-I, --insecure', '', () => process.env.UIX_INSECURE_MODE = '1')

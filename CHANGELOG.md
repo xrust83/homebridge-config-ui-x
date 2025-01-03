@@ -2,6 +2,22 @@
 
 All notable changes to `homebridge-config-ui-x` will be documented in this file. This project tries to adhere to [Semantic Versioning](http://semver.org/).
 
+## BETA
+
+### UI Changes
+
+- updates to the `cs.json` language file (#2311) (@DavidHuljak)
+
+### Other Changes
+
+- auto-fix ui theme setting property if existing value is not valid
+
+### Homebridge Dependencies
+
+- `@homebridge/hap-client` @ `v2.0.5`
+- `@homebridge/node-pty-prebuilt-multiarch` @ `v0.11.14`
+- `@homebridge/plugin-ui-utils` @ `v2.0.0`
+
 ## v4.67.0 (2024-12-28)
 
 ### ⚠️ Upcoming Deprecations:
@@ -12,7 +28,7 @@ All notable changes to `homebridge-config-ui-x` will be documented in this file.
   - Instances using `pnpm` as the package manager - consider updating your Homebridge instance to use npm instead - [more info on updating](https://github.com/homebridge/homebridge-apt-pkg/blob/latest/README.md#using-apt)
 - Note that these are not requirements for UI `v4.67.0`
 
-## UI Changes
+### UI Changes
 
 - add explanation of deleting child bridges when un-toggling
 - add filtering to search to improve results (#2286) (@justjam2013) (fixes [#2266](https://github.com/homebridge/homebridge-config-ui-x/issues/2266))
@@ -26,7 +42,7 @@ All notable changes to `homebridge-config-ui-x` will be documented in this file.
 - improve and finish up previous angular migration
 - update `hap-client` + `plugin-ui-utils` hb dependencies
 - update dependencies
-- import lint sorting of imports
+- improve lint sorting of imports
 
 ### Homebridge Dependencies
 
@@ -226,7 +242,7 @@ All notable changes to `homebridge-config-ui-x` will be documented in this file.
 
 - ⚠️ After updating to this release, you may find that your UI theme resets to the default. This reset will only occur once. You can visit the settings section to change it back to your preferred theme.
 - ⚠️ If you use the `/api/auth/settings` endpoint (e.g. in a custom application), please note that this endpoint now returns less information for an unauthenticated user.
-It will return a full payload when a valid access token is provided.
+  It will return a full payload when a valid access token is provided.
 
 ### UI Changes
 

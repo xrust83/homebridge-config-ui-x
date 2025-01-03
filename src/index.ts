@@ -24,6 +24,7 @@ class HomebridgeConfigUi {
     const program = new Command()
     program
       .allowUnknownOption()
+      .allowExcessArguments()
       .option('-P, --plugin-path [path]', '', p => process.env.UIX_CUSTOM_PLUGIN_PATH = p)
       .option('-I, --insecure', '', () => process.env.UIX_INSECURE_MODE = '1')
       .option('-T, --no-timestamp', '', () => process.env.UIX_LOG_NO_TIMESTAMPS = '1')

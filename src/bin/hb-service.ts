@@ -119,6 +119,7 @@ export class HomebridgeServiceHelper {
 
     program
       .allowUnknownOption()
+      .allowExcessArguments()
       .storeOptionsAsProperties(true)
       .arguments('[install|uninstall|start|stop|restart|rebuild|run|logs|view|add|remove]')
       .option('-P, --plugin-path <path>', '', (p) => {

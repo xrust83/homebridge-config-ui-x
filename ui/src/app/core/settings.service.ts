@@ -65,7 +65,8 @@ export class SettingsService {
   public browserLightingMode: 'light' | 'dark'
   public loginWallpaper: string
   public serverTimeOffset = 0
-  public themeList = [
+  private readonly defaultTheme = 'orange'
+  public readonly themeList = [
     'orange',
     'red',
     'pink',
@@ -130,7 +131,13 @@ export class SettingsService {
   setTheme(theme: string) {
     // Default theme is orange
     if (!theme || !this.themeList.includes(theme)) {
-      theme = 'orange'
+      theme = this.defaultTheme
+
+      // save the new property to the config file
+      firstValueFrom(this.$api.put('/config-editor/ui', { key: 'theme', value: theme }))
+        .catch((error) => {
+          console.error(error)
+        })
     }
 
     // Grab the body element
