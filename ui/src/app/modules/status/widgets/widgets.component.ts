@@ -1,16 +1,16 @@
 import { ApplicationRef, Component, ComponentFactoryResolver, ElementRef, EmbeddedViewRef, inject, Injector, Input, OnDestroy, OnInit } from '@angular/core'
 
 import { AccessoriesWidgetComponent } from '@/app/modules/status/widgets/accessories-widget/accessories-widget.component'
-import { ChildBridgeWidgetComponent } from '@/app/modules/status/widgets/child-bridge-widget/child-bridge-widget.component'
+import { BridgesWidgetComponent } from '@/app/modules/status/widgets/bridges-widget/bridges-widget.component'
 import { ClockWidgetComponent } from '@/app/modules/status/widgets/clock-widget/clock-widget.component'
 import { CpuWidgetComponent } from '@/app/modules/status/widgets/cpu-widget/cpu-widget.component'
 import { HapQrcodeWidgetComponent } from '@/app/modules/status/widgets/hap-qrcode-widget/hap-qrcode-widget.component'
 import { HomebridgeLogsWidgetComponent } from '@/app/modules/status/widgets/homebridge-logs-widget/homebridge-logs-widget.component'
-import { HomebridgeStatusWidgetComponent } from '@/app/modules/status/widgets/homebridge-status-widget/homebridge-status-widget.component'
 import { MemoryWidgetComponent } from '@/app/modules/status/widgets/memory-widget/memory-widget.component'
 import { NetworkWidgetComponent } from '@/app/modules/status/widgets/network-widget/network-widget.component'
 import { SystemInfoWidgetComponent } from '@/app/modules/status/widgets/system-info-widget/system-info-widget.component'
 import { TerminalWidgetComponent } from '@/app/modules/status/widgets/terminal-widget/terminal-widget.component'
+import { UpdateInfoWidgetComponent } from '@/app/modules/status/widgets/update-info-widget/update-info-widget.component'
 import { UptimeWidgetComponent } from '@/app/modules/status/widgets/uptime-widget/uptime-widget.component'
 import { WeatherWidgetComponent } from '@/app/modules/status/widgets/weather-widget/weather-widget.component'
 
@@ -35,15 +35,15 @@ export class WidgetsComponent implements OnInit, OnDestroy {
     NetworkWidgetComponent,
     MemoryWidgetComponent,
     UptimeWidgetComponent,
-    HomebridgeStatusWidgetComponent,
+    UpdateInfoWidgetComponent,
     SystemInfoWidgetComponent,
     WeatherWidgetComponent,
     AccessoriesWidgetComponent,
     ClockWidgetComponent,
-    ChildBridgeWidgetComponent,
+    BridgesWidgetComponent,
   }
 
-  private componentRef
+  private componentRef: any
 
   constructor() {}
 
@@ -61,7 +61,7 @@ export class WidgetsComponent implements OnInit, OnDestroy {
     }
   }
 
-  load(component) {
+  load(component: any) {
     // 1. Create a component reference from the component
     this.componentRef = this.componentFactoryResolver
       .resolveComponentFactory(component)

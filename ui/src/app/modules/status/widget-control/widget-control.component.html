@@ -26,7 +26,21 @@
           <label for="hideOnMobile" class="rendux-label ml-3"></label>
         </div>
       </li>
-      @switch (widget.component) { @case ('WeatherWidgetComponent') {
+      @switch (widget.component) { @case ('UpdateInfoWidgetComponent') {
+      <li class="list-group-item d-flex justify-content-between align-items-center flex-row pb-2">
+        <span class="text-left">{{ 'status.widget.hide_node_info' | translate }}</span>
+        <div class="text-right grey-text">
+          <input
+            type="checkbox"
+            class="rendux-input"
+            id="hideNodeInfo"
+            [(ngModel)]="widget.hideNodeInfo"
+            [attr.aria-label]="'status.widget.hide_node_info' | translate"
+          />
+          <label for="hideNodeInfo" class="rendux-label ml-3"></label>
+        </div>
+      </li>
+      } @case ('WeatherWidgetComponent') {
       <li class="list-group-item d-flex flex-column flex-md-row align-items-center">
         <label for="city-search-input" class="mb-2 mb-md-0 w-100 w-md-50">
           {{ 'status.widget.weather.label_search_for_your_city' | translate }}
@@ -52,20 +66,6 @@
         </div>
       </li>
       <li class="list-group-item muted grey-text text-center">Weather data is provided by OpenWeather.</li>
-      } @case ('HomebridgeStatusWidgetComponent') {
-      <li class="list-group-item d-flex justify-content-between align-items-center flex-row pb-2">
-        <span class="text-left">{{ 'status.widget.homebridge_port' | translate }}</span>
-        <div class="text-right grey-text">
-          <input
-            type="checkbox"
-            class="rendux-input"
-            id="hidePort"
-            [(ngModel)]="widget.hidePort"
-            [attr.aria-label]="'status.widget.homebridge_port' | translate"
-          />
-          <label for="hidePort" class="rendux-label ml-3"></label>
-        </div>
-      </li>
       } @case ('HomebridgeLogsWidgetComponent') {
       <li class="list-group-item d-flex flex-column flex-md-row align-items-center">
         <label class="mb-2 mb-md-0 w-100 w-md-50">{{ 'status.widget.font_size' | translate }}</label>

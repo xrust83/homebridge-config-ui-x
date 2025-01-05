@@ -283,10 +283,12 @@ export class StatusService {
     return {
       status: this.homebridgeStatus,
       consolePort: this.configService.ui.port,
+      name: this.configService.homebridgeConfig.bridge.name,
       port: this.configService.homebridgeConfig.bridge.port,
       pin: this.configService.homebridgeConfig.bridge.pin,
       setupUri: this.serverService.setupCode,
       packageVersion: this.configService.package.version,
+      paired: this.serverService.paired,
     }
   }
 

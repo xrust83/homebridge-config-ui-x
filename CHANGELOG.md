@@ -4,6 +4,12 @@ All notable changes to `homebridge-config-ui-x` will be documented in this file.
 
 ## BETA
 
+### ⚠️ Status Page Widget Renaming
+
+This version of Homebridge UI renames some widgets. If you update, and see some blank widgets on your home screen, perform a reset of your layout widgets:
+- Click the 'Show/Hide Widgets' button in the top right corner of the status screen
+- Scroll down to the bottom of the window that appears and click the red 'Reset' button on the right
+
 ### ⚠️ Plugin Config Validation
 
 This version of Homebridge UI adds validation to plugin config screens. This does not apply to manual plugin configuration (with raw `JSON`).
@@ -30,6 +36,13 @@ Plugin developers:
 - fix typos in hb/ui settings schemas (#2317) (@dnicolson)
 - fix margins in update plugin modal
 - add plugin config validation functionality
+- refactor status and child bridge widgets
+  - the existing 'status' widget has been renamed to 'update info' widget
+  - the existing 'child bridges' widget has been renamed to 'bridges' widget
+  - the homebridge status (from the old status widget) is now shown as a bridge in the new bridges widget
+  - node update information has been added to the new update info widget
+    - a widget option has been added to hide node update information: this may be useful for docker/synology users
+  - homebridge and ui version information has been moved from the footer to the new update info widget
 
 ### Other Changes
 

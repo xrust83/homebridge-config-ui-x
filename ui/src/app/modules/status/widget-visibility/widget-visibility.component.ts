@@ -29,8 +29,8 @@ export class WidgetVisibilityComponent implements OnInit {
   ngOnInit() {
     const allWidgets = [
       {
-        name: this.$translate.instant('status.widget.add.label_homebridge_status'),
-        component: 'HomebridgeStatusWidgetComponent',
+        name: this.$translate.instant('status.services.updates'),
+        component: 'UpdateInfoWidgetComponent',
         hidden: false,
         cols: 10,
         rows: 3,
@@ -55,8 +55,8 @@ export class WidgetVisibilityComponent implements OnInit {
         hideOnMobile: false,
       },
       {
-        name: 'Child Bridge Status',
-        component: 'ChildBridgeWidgetComponent',
+        name: this.$translate.instant('child_bridge.bridges'),
+        component: 'BridgesWidgetComponent',
         hidden: !this.$settings.env.serviceMode,
         cols: 5,
         rows: 9,

@@ -1,27 +1,30 @@
 import { NgClass } from '@angular/common'
 import { Component, inject, Input, OnInit } from '@angular/core'
 import { RouterLink } from '@angular/router'
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { TranslatePipe, TranslateService } from '@ngx-translate/core'
 import { ToastrService } from 'ngx-toastr'
 import { firstValueFrom } from 'rxjs'
 
+import { InformationComponent } from '@/app/core/components/information/information.component'
 import { ManagePluginsService } from '@/app/core/manage-plugins/manage-plugins.service'
 import { SettingsService } from '@/app/core/settings.service'
 import { IoNamespace, WsService } from '@/app/core/ws.service'
 
 @Component({
-  templateUrl: './homebridge-status-widget.component.html',
-  styleUrls: ['./homebridge-status-widget.component.scss'],
+  templateUrl: './update-info-widget.component.html',
+  styleUrls: ['./update-info-widget.component.scss'],
   standalone: true,
   imports: [
     NgClass,
-    RouterLink,
     TranslatePipe,
+    RouterLink,
   ],
 })
-export class HomebridgeStatusWidgetComponent implements OnInit {
+export class UpdateInfoWidgetComponent implements OnInit {
+  private $modal = inject(NgbModal)
   $plugin = inject(ManagePluginsService)
-  private $settings = inject(SettingsService)
+  $settings = inject(SettingsService)
   private $toastr = inject(ToastrService)
   private $translate = inject(TranslateService)
   private $ws = inject(WsService)
@@ -30,9 +33,11 @@ export class HomebridgeStatusWidgetComponent implements OnInit {
 
   public homebridgePkg = {} as any
   public homebridgeUiPkg = {} as any
-  public homebridgeStatus = {} as any
   public homebridgePluginStatus = [] as any
   public homebridgePluginStatusDone = false as boolean
+  public nodejsInfo = {} as any
+  public nodejsStatusDone = false as boolean
+  public serverInfo: any
 
   private io: IoNamespace
 
@@ -40,35 +45,24 @@ export class HomebridgeStatusWidgetComponent implements OnInit {
 
   async ngOnInit() {
     this.io = this.$ws.getExistingNamespace('status')
-    this.io.socket.on('homebridge-status', (data) => {
-      this.homebridgeStatus = data
-    })
 
     this.io.connected.subscribe(async () => {
       await Promise.all([
-        this.getHomebridgeStatus(),
         this.checkHomebridgeVersion(),
         this.checkHomebridgeUiVersion(),
         this.getOutOfDatePlugins(),
+        this.getNodeInfo(),
       ])
     })
 
     if (this.io.socket.connected) {
       await Promise.all([
-        this.getHomebridgeStatus(),
         this.checkHomebridgeVersion(),
         this.checkHomebridgeUiVersion(),
         this.getOutOfDatePlugins(),
+        this.getNodeInfo(),
       ])
     }
-
-    this.io.socket.on('disconnect', () => {
-      this.homebridgeStatus.status = 'down'
-    })
-  }
-
-  async getHomebridgeStatus() {
-    this.homebridgeStatus = await firstValueFrom(this.io.request('get-homebridge-status'))
   }
 
   async checkHomebridgeVersion() {
@@ -77,6 +71,17 @@ export class HomebridgeStatusWidgetComponent implements OnInit {
       this.homebridgePkg = response
       this.homebridgePkg.displayName = 'Homebridge'
       this.$settings.env.homebridgeVersion = response.installedVersion
+    } catch (error) {
+      console.error(error)
+      this.$toastr.error(error.message, this.$translate.instant('toast.title_error'))
+    }
+  }
+
+  async getNodeInfo() {
+    try {
+      this.serverInfo = await firstValueFrom(this.io.request('get-homebridge-server-info'))
+      this.nodejsInfo = await firstValueFrom(this.io.request('nodejs-version-check'))
+      this.nodejsStatusDone = true
     } catch (error) {
       console.error(error)
       this.$toastr.error(error.message, this.$translate.instant('toast.title_error'))
@@ -103,5 +108,32 @@ export class HomebridgeStatusWidgetComponent implements OnInit {
       console.error(error)
       this.$toastr.error(error.message, this.$translate.instant('toast.title_error'))
     }
+  }
+
+  nodeUpdateModal() {
+    const ref = this.$modal.open(InformationComponent, {
+      size: 'lg',
+      backdrop: 'static',
+    })
+
+    ref.componentInstance.title = this.$translate.instant('status.widget.info.node_update_title')
+    ref.componentInstance.message = this.$translate.instant('status.widget.info.node_update_message')
+    ref.componentInstance.subtitle = `${this.serverInfo.nodeVersion} &rarr; ${this.nodejsInfo.latestVersion}`
+    ref.componentInstance.ctaButtonLabel = this.$translate.instant('form.button_more_info')
+    ref.componentInstance.faIconClass = 'fab fa-fw fa-node-js primary-text'
+    ref.componentInstance.ctaButtonLink = 'https://github.com/homebridge/homebridge/wiki/How-To-Update-Node.js'
+  }
+
+  nodeUnsupportedModal() {
+    const ref = this.$modal.open(InformationComponent, {
+      size: 'lg',
+      backdrop: 'static',
+    })
+
+    ref.componentInstance.title = this.$translate.instant('status.widget.info.node_unsupp_title')
+    ref.componentInstance.message = this.$translate.instant('status.widget.info.node_unsupp_message')
+    ref.componentInstance.ctaButtonLabel = this.$translate.instant('form.button_more_info')
+    ref.componentInstance.faIconClass = 'fab fa-fw fa-node-js primary-text'
+    ref.componentInstance.ctaButtonLink = 'https://github.com/homebridge/homebridge/wiki/How-To-Update-Node.js'
   }
 }
