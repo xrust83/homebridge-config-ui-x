@@ -2,7 +2,17 @@
 
 All notable changes to `homebridge-config-ui-x` will be documented in this file. This project tries to adhere to [Semantic Versioning](http://semver.org/).
 
-## BETA
+## v4.68.0 (2025-01-08)
+
+Happy 2025 to all our users! 🎉
+
+### ⚠️ Upcoming Deprecations:
+
+- The **next major version** `v5` of the Homebridge UI will drop support for:
+  - Node.js `v16` and earlier, so please update to `v18` or `v20` or `v22` - [more info on updating](https://github.com/homebridge/homebridge/wiki/How-To-Update-Node.js)
+  - Raspberry Pi devices running on the `armv6` architecture (like the Pi 1 and Pi Zero) - please update your hardware
+  - Instances using `pnpm` as the package manager - consider updating your Homebridge instance to use npm instead - [more info on updating](https://github.com/homebridge/homebridge-apt-pkg/blob/latest/README.md#using-apt)
+- Note that these are not requirements for UI `v4.68.0`
 
 ### UI Changes
 
@@ -62,14 +72,6 @@ Developers: to maintain compatibility with older versions of the Homebridge UI, 
 - `@homebridge/plugin-ui-utils` @ `v2.0.0`
 
 ## v4.67.0 (2024-12-28)
-
-### ⚠️ Upcoming Deprecations:
-
-- The **next major version** `v5` of the Homebridge UI will drop support for:
-  - Node.js `v16` and earlier, so please update to `v18` or `v20` or `v22` - [more info on updating](https://github.com/homebridge/homebridge/wiki/How-To-Update-Node.js)
-  - Raspberry Pi devices running on the `armv6` architecture (like the Pi 1 and Pi Zero) - please update your hardware
-  - Instances using `pnpm` as the package manager - consider updating your Homebridge instance to use npm instead - [more info on updating](https://github.com/homebridge/homebridge-apt-pkg/blob/latest/README.md#using-apt)
-- Note that these are not requirements for UI `v4.67.0`
 
 ### UI Changes
 
