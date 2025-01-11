@@ -3,13 +3,11 @@
     <h5 class="modal-title">{{ 'form.button_restore' | translate }}</h5>
     <button
       type="button"
-      class="close"
-      data-dismiss="modal"
+      class="btn-close"
+      data-bs-dismiss="modal"
       [attr.aria-label]="'form.button_close' | translate"
       (click)="$activeModal.dismiss('Dismiss')"
-    >
-      <span aria-hidden="true">&times;</span>
-    </button>
+    ></button>
   </div>
   <div class="modal-body">
     @if (loading) {
@@ -28,7 +26,7 @@
         {{ backup.timestamp | date:'medium' }}
         <button
           (click)="restore(backup.id)"
-          class="btn btn-primary m-0 ml-3"
+          class="btn btn-primary m-0 ms-3"
           [attr.aria-label]="'config.restore.copy_to_editor' | translate"
         >
           <i class="fas fa-fw fa-arrow-right"></i>
@@ -41,12 +39,12 @@
     } }
   </div>
   <div class="modal-footer justify-content-between">
-    <div class="text-left">
+    <div class="text-start">
       @if (!loading && backupList.length) {
       <button
         type="button"
         class="btn btn-elegant"
-        data-dismiss="modal"
+        data-bs-dismiss="modal"
         (click)="$activeModal.dismiss('Dismiss')"
         [attr.aria-label]="'form.button_close' | translate"
       >
@@ -59,7 +57,7 @@
       <button
         type="button"
         class="btn btn-elegant"
-        data-dismiss="modal"
+        data-bs-dismiss="modal"
         (click)="$activeModal.dismiss('Dismiss')"
         [attr.aria-label]="'form.button_close' | translate"
       >
@@ -67,11 +65,11 @@
       </button>
       }
     </div>
-    <div class="text-right">
+    <div class="text-end">
       @if (!loading && backupList.length) {
       <button
         type="button"
-        class="btn btn-danger mr-auto"
+        class="btn btn-danger me-auto"
         (click)="deleteAllBackups()"
         [attr.aria-label]="'form.button_remove' | translate"
       >

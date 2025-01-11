@@ -71,8 +71,8 @@ export class PluginBridgeComponent implements OnInit {
   public bridgesAvailableForLink: { index: string, usesIndex: string, name: string, username: string, port: number }[] = []
   public currentlySelectedLink: { index: string, usesIndex: string, name: string, username: string, port: number } | null = null
   public currentBridgeHasLinks: boolean = false
-  public readonly linkChildBridges = '<a href="https://github.com/homebridge/homebridge/wiki/Child-Bridges" target="_blank"><i class="fa fa/fw fas fa-fw fa-external-link-alt"></i></a>'
-  public readonly linkDebug = '<a href="https://github.com/homebridge/homebridge-config-ui-x/wiki/Debug-Common-Values" target="_blank"><i class="fa fa-fw fa-external-link-alt"></i></a>'
+  public readonly linkChildBridges = '<a href="https://github.com/homebridge/homebridge/wiki/Child-Bridges" target="_blank"><i class="fa fa/fw fas fa-fw fa-external-link-alt primary-text"></i></a>'
+  public readonly linkDebug = '<a href="https://github.com/homebridge/homebridge-config-ui-x/wiki/Debug-Common-Values" target="_blank"><i class="fa fa-fw fa-external-link-alt primary-text"></i></a>'
 
   constructor() {}
 

@@ -3,14 +3,12 @@
     <h5 class="modal-title">{{ 'backup.title_backup' | translate }}</h5>
     <button
       type="button"
-      class="close"
-      data-dismiss="modal"
+      class="btn-close"
+      data-bs-dismiss="modal"
       [attr.aria-label]="'form.button_close' | translate"
       (click)="$activeModal.dismiss('Dismiss')"
       [disabled]="clicked || deleting"
-    >
-      <span aria-hidden="true">&times;</span>
-    </button>
+    ></button>
   </div>
   <div class="modal-body">
     <div class="text-center mb-3">
@@ -29,7 +27,7 @@
           <small class="grey-text">{{ 'backup.backup_now_desc' | translate }}</small>
         </div>
         <button
-          class="btn btn-primary m-0 ml-3"
+          class="btn btn-primary m-0 ms-3"
           (click)="onDownloadBackupClick()"
           [disabled]="clicked"
           [attr.aria-label]="'backup.backup_now' | translate"
@@ -44,7 +42,7 @@
           <small class="grey-text">{{ 'backup.restore_now_desc' | translate }}</small>
         </div>
         <button
-          class="btn btn-primary m-0 ml-3"
+          class="btn btn-primary m-0 ms-3"
           (click)="restore(null)"
           [attr.aria-label]="'backup.restore_now' | translate"
           [disabled]="clicked"
@@ -88,7 +86,7 @@
         </span>
         <span style="display: flex; flex-wrap: nowrap">
           <button
-            class="btn btn-primary m-0 ml-3"
+            class="btn btn-primary m-0 ms-3"
             (click)="restore(backup)"
             [disabled]="clicked || deleting || backup.size > backup.maxBackupSize"
             [ngbTooltip]="'form.button_restore' | translate"
@@ -101,7 +99,7 @@
             <i class="fas fa-fw fa-history"></i>
           </button>
           <button
-            class="btn btn-primary m-0 ml-2"
+            class="btn btn-primary m-0 ms-2"
             (click)="download(backup)"
             [disabled]="clicked || deleting"
             [ngbTooltip]="'form.button_download' | translate"
@@ -114,7 +112,7 @@
             <i class="fas fa-fw fa-download"></i>
           </button>
           <button
-            class="btn btn-danger m-0 ml-2"
+            class="btn btn-danger m-0 ms-2"
             (click)="delete(backup)"
             [disabled]="clicked || deleting"
             [ngbTooltip]="'form.button_delete' | translate"
@@ -137,18 +135,18 @@
   </div>
 
   <div class="modal-footer justify-content-between">
-    <div class="text-left"></div>
+    <div class="text-start"></div>
     <div class="text-center">
       <button
         type="button"
         class="btn btn-elegant"
-        data-dismiss="modal"
+        data-bs-dismiss="modal"
         (click)="$activeModal.dismiss('Dismiss')"
         [disabled]="clicked || deleting"
       >
         {{ 'form.button_close' | translate }}
       </button>
     </div>
-    <div class="text-right"></div>
+    <div class="text-end"></div>
   </div>
 </div>

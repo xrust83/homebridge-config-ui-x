@@ -1,9 +1,12 @@
+@use 'sass:color';
+
 .btn {
   font-weight: 400;
   padding: 0.375rem 0.75rem;
   font-size: 1rem;
   line-height: 1.5;
   border-radius: 0.25rem;
+  text-transform: uppercase;
 
   @media (max-width: 575px) {
     font-size: 0.8rem;
@@ -11,12 +14,9 @@
 }
 
 /* Prevent outlines around the close button when a modal opens */
-button {
-  &.close {
-    &:focus {
-      outline: none;
-    }
-  }
+.btn-close:focus {
+  outline: none;
+  box-shadow: none !important;
 }
 
 .dropdown-toggle::after {
@@ -25,5 +25,32 @@ button {
 
 .btn.disabled,
 .btn:disabled {
-  background: #333333 !important;
+  background-color: #333333;
+  color: #eeeeee;
+  border-color: #333333;
+}
+
+.btn-elegant {
+  color: #ffffff;
+  background-color: #333333;
+
+  &:hover,
+  &:focus {
+    color: #ffffff;
+    background-color: color.adjust(#333333, $lightness: -5%) !important;
+    border-color: color.adjust(#333333, $lightness: -5%) !important;
+    transition: background-color 0.25s;
+  }
+}
+
+.btn-danger {
+  background-color: #d32f2f;
+  border-color: #d32f2f;
+
+  &:hover,
+  &:focus {
+    background-color: color.adjust(#d32f2f, $lightness: -5%) !important;
+    border-color: color.adjust(#d32f2f, $lightness: -5%) !important;
+    transition: background-color 0.25s;
+  }
 }

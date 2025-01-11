@@ -3,13 +3,11 @@
     <h5 class="modal-title">{{ pluginDisplayName }}</h5>
     <button
       type="button"
-      class="close"
-      data-dismiss="modal"
+      class="btn-close"
+      data-bs-dismiss="modal"
       [attr.aria-label]="'form.button_close' | translate"
       (click)="$activeModal.dismiss('Dismiss')"
-    >
-      <span aria-hidden="true">&times;</span>
-    </button>
+    ></button>
   </div>
   <div [hidden]="!onlineUpdateOk || actionComplete || showReleaseNotes" id="plugin-log-output" class="modal-body"></div>
   @if (actionComplete) {
@@ -91,12 +89,12 @@ hb-service start</pre
   </div>
   } @if (!onlineUpdateOk || actionComplete || showReleaseNotes || actionFailed) {
   <div class="modal-footer justify-content-between">
-    <div class="text-left">
+    <div class="text-start">
       @if ((!justUpdatedPlugin && onlineUpdateOk) || (justUpdatedPlugin && (!isDisabled || actionFailed))) {
       <button
         type="button"
         class="btn btn-elegant"
-        data-dismiss="modal"
+        data-bs-dismiss="modal"
         (click)="$activeModal.dismiss('Dismiss')"
         [attr.aria-label]="'form.button_close' | translate"
       >
@@ -109,7 +107,7 @@ hb-service start</pre
       <button
         type="button"
         class="btn btn-elegant"
-        data-dismiss="modal"
+        data-bs-dismiss="modal"
         (click)="$activeModal.dismiss('Dismiss')"
         [attr.aria-label]="'form.button_close' | translate"
       >
@@ -117,7 +115,7 @@ hb-service start</pre
       </button>
       }
     </div>
-    <div class="text-right">
+    <div class="text-end">
       @if (onlineUpdateOk && showReleaseNotes) {
       <button type="button" class="btn btn-primary" (click)="update()">
         {{ 'plugins.button_update' | translate }}

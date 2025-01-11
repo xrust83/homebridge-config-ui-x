@@ -99,8 +99,8 @@ export class SettingsComponent implements OnInit {
     cache: true,
   }
 
-  public readonly file = '<span class="text-monospace">ui-wallpaper.jpg</span>'
-  public readonly linkDebug = '<a href="https://github.com/homebridge/homebridge-config-ui-x/wiki/Debug-Common-Values" target="_blank"><i class="fa fa-fw fa-external-link-alt"></i></a>'
+  public readonly file = '<span class="font-monospace">ui-wallpaper.jpg</span>'
+  public readonly linkDebug = '<a href="https://github.com/homebridge/homebridge-config-ui-x/wiki/Debug-Common-Values" target="_blank"><i class="fa fa-fw fa-external-link-alt primary-text"></i></a>'
 
   constructor() {}
 

@@ -40,7 +40,7 @@ export class AccessoriesComponent implements OnInit, OnDestroy {
   public hideHidden = true
   private orderSubscription: Subscription
 
-  public readonly linkInsecure = '<a href="https://github.com/homebridge/homebridge-config-ui-x/wiki/Enabling-Accessory-Control" target="_blank"><i class="fa fa-fw fa-external-link-alt"></i></a>'
+  public readonly linkInsecure = '<a href="https://github.com/homebridge/homebridge-config-ui-x/wiki/Enabling-Accessory-Control" target="_blank"><i class="fa fa-fw fa-external-link-alt primary-text"></i></a>'
 
   constructor() {
     const dragulaService = this.dragulaService

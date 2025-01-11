@@ -246,7 +246,7 @@ export class HomebridgeServiceHelper {
   public logger(msg: string, level: 'info' | 'succeed' | 'fail' | 'warn' = 'info') {
     if (this.action === 'run') {
       msg = `\x1B[37m[${new Date().toLocaleString()}]\x1B[0m `
-      + `\x1B[36m[HB Supervisor]\x1B[0m ${msg}`
+        + `\x1B[36m[HB Supervisor]\x1B[0m ${msg}`
       if (this.log) {
         this.log.write(`${msg}\n`)
       } else {

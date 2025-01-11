@@ -71,13 +71,14 @@ export class PluginsService {
 
   // Plugin list cache
   private pluginListUrl = 'https://raw.githubusercontent.com/homebridge/plugins/latest/'
-  private pluginListFile = `${this.pluginListUrl}assets/plugins.min.json`
+  private pluginListFile = `${this.pluginListUrl}assets/plugins-v2.min.json`
   private pluginListRetryTimeout: NodeJS.Timeout
 
   private hiddenPlugins: string[] = []
   private maintainedPlugins: string[] = []
   private pluginIcons: { [key: string]: string } = {}
-  private scopedPlugins: { [key: string]: string } = {}
+  private pluginAuthors: { [key: string]: string } = {}
+  private pluginNames: { [key: string]: string } = {}
   private newScopePlugins: { [key: string]: PluginListNewScopeItem } = {}
   private verifiedPlugins: string[] = []
   private verifiedPlusPlugins: string[] = []
@@ -256,8 +257,14 @@ export class PluginsService {
       await this.getInstalledPlugins()
     }
 
-    if ((query.indexOf('homebridge-') === 0 || this.isScopedPlugin(query)) && !this.hiddenPlugins.includes(query.toLowerCase())) {
-      return await this.searchNpmRegistrySingle(query.toLowerCase())
+    query = query.trim().toLowerCase()
+
+    if ((query.startsWith('homebridge-') || this.isScopedPlugin(query)) && !this.hiddenPlugins.includes(query)) {
+      // Change the query to the scoped version if it exists, and the 'old' version is not installed
+      if (!this.installedPlugins.find(x => x.name === query) && Object.keys(this.newScopePlugins).includes(query)) {
+        query = `@homebridge-plugins/${query}`
+      }
+      return await this.searchNpmRegistrySingle(query)
     }
 
     // There seems to be a new 64-character limit on the text query (which allows for 15 characters of query)
@@ -278,6 +285,7 @@ export class PluginsService {
       .map((pkg) => {
         let plugin: HomebridgePlugin = {
           name: pkg.package.name,
+          displayName: this.pluginNames[pkg.package.name],
           private: false,
         }
 
@@ -300,13 +308,13 @@ export class PluginsService {
           : pkg.package.name
         plugin.keywords = pkg.package.keywords
         plugin.links = pkg.package.links
-        plugin.author = this.scopedPlugins[pkg.package.name] || ((pkg.package.publisher) ? pkg.package.publisher.username : null)
+        plugin.author = this.pluginAuthors[pkg.package.name] || ((pkg.package.publisher) ? pkg.package.publisher.username : null)
         plugin.verifiedPlugin = this.verifiedPlugins.includes(pkg.package.name)
         plugin.verifiedPlusPlugin = this.verifiedPlusPlugins.includes(pkg.package.name)
         plugin.icon = this.pluginIcons[pkg.package.name]
           ? `${this.pluginListUrl}${this.pluginIcons[pkg.package.name]}`
           : null
-        plugin.isHbScoped = !!this.scopedPlugins[pkg.package.name]
+        plugin.isHbScoped = pkg.package.name.startsWith('@homebridge-plugins/')
         plugin.newHbScope = this.newScopePlugins[pkg.package.name]
         plugin.isHbMaintained = this.maintainedPlugins.includes(pkg.package.name)
         return plugin
@@ -314,7 +322,6 @@ export class PluginsService {
 
     const searchTerm: string = query
       .replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, '') // remove punctuation
-      .toLowerCase() // convert to lowercase
 
     const searchTerms: string[] = searchTerm
       .split(/\s+/) // split into words
@@ -392,12 +399,13 @@ export class PluginsService {
         verifiedPlugin: this.verifiedPlugins.includes(pkg.name),
         verifiedPlusPlugin: this.verifiedPlusPlugins.includes(pkg.name),
         icon: this.pluginIcons[pkg.name],
-        isHbScoped: !!this.scopedPlugins[pkg.name],
+        isHbScoped: pkg.name.startsWith('@homebridge-plugins/'),
         newHbScope: this.newScopePlugins[pkg.name],
         isHbMaintained: this.maintainedPlugins.includes(pkg.name),
       } as HomebridgePlugin
 
       // It's not installed; finish building the response
+      plugin.displayName = this.pluginNames[pkg.name]
       plugin.publicPackage = true
       plugin.latestVersion = pkg['dist-tags'] ? pkg['dist-tags'].latest : undefined
       plugin.lastUpdated = pkg.time.modified
@@ -408,18 +416,18 @@ export class PluginsService {
         homepage: pkg.homepage,
         bugs: typeof pkg.bugs === 'object' && pkg.bugs?.url ? pkg.bugs.url : null,
       }
-      plugin.author = this.scopedPlugins[pkg.name]
-      || ((pkg.maintainers && pkg.maintainers.length) ? pkg.maintainers[0].name : null)
+      plugin.author = this.pluginAuthors[pkg.name]
+        || ((pkg.maintainers && pkg.maintainers.length) ? pkg.maintainers[0].name : null)
       plugin.verifiedPlugin = this.verifiedPlugins.includes(pkg.name)
       plugin.verifiedPlusPlugin = this.verifiedPlusPlugins.includes(pkg.name)
       plugin.icon = this.pluginIcons[pkg.name]
         ? `${this.pluginListUrl}${this.pluginIcons[pkg.name]}`
         : null
-      plugin.isHbScoped = !!this.scopedPlugins[pkg.name]
+      plugin.isHbScoped = pkg.name.startsWith('@homebridge-plugins/')
       plugin.newHbScope = this.newScopePlugins[pkg.name]
       plugin.isHbMaintained = this.maintainedPlugins.includes(pkg.name)
 
-      return [plugin]
+      return [this.fixDisplayName(plugin)]
     } catch (e) {
       if (e.response?.status !== 404) {
         this.logger.error(`Failed to search the npm registry (see https://homebridge.io/w/JJSz6 for help) as ${e.message}.`)
@@ -702,7 +710,7 @@ export class PluginsService {
       && pluginAction.version !== 'latest'
     ) {
       try {
-        await firstValueFrom(this.httpService.head(`https://github.com/homebridge/verified/releases/download/v1.0.0/${pluginAction.name.replace('/', '@')}-${pluginAction.version}.sha256`))
+        await firstValueFrom(this.httpService.head(`https://github.com/homebridge/plugins/releases/download/v1.0.0/${pluginAction.name.replace('/', '@')}-${pluginAction.version}.sha256`))
         return true
       } catch (e) {
         return false
@@ -1303,8 +1311,8 @@ export class PluginsService {
   private async parsePackageJson(pkgJson: IPackageJson, installPath: string): Promise<HomebridgePlugin> {
     const plugin: HomebridgePlugin = {
       name: pkgJson.name,
+      displayName: pkgJson.displayName || this.pluginNames[pkgJson.name],
       private: pkgJson.private || false,
-      displayName: pkgJson.displayName,
       description: (pkgJson.description)
         ? pkgJson.description.replace(/(?:https?|ftp):\/\/[\n\S]+/g, '').trim()
         : pkgJson.name,
@@ -1313,7 +1321,7 @@ export class PluginsService {
       icon: this.pluginIcons[pkgJson.name]
         ? `${this.pluginListUrl}${this.pluginIcons[pkgJson.name]}`
         : null,
-      isHbScoped: !!this.scopedPlugins[pkgJson.name],
+      isHbScoped: pkgJson.name.startsWith('@homebridge-plugins/'),
       newHbScope: this.newScopePlugins[pkgJson.name],
       isHbMaintained: this.maintainedPlugins.includes(pkgJson.name),
       installedVersion: installPath ? (pkgJson.version || '0.0.1') : null,
@@ -1388,8 +1396,8 @@ export class PluginsService {
         homepage: pkg.homepage,
         bugs: typeof pkg.bugs === 'object' && pkg.bugs?.url ? pkg.bugs.url : null,
       }
-      plugin.author = this.scopedPlugins[pkg.name]
-      || ((pkg.maintainers && pkg.maintainers.length) ? pkg.maintainers[0].name : null)
+      plugin.author = this.pluginAuthors[pkg.name]
+        || ((pkg.maintainers && pkg.maintainers.length) ? pkg.maintainers[0].name : null)
     } catch (e) {
       if (e.response?.status !== 404) {
         this.logger.log(`[${plugin.name}] failed to check registry.npmjs.org for updates (see https://homebridge.io/w/JJSz6 for help) as ${e.message}.`)
@@ -1436,11 +1444,17 @@ export class PluginsService {
       command.unshift('sudo', '-E', '-n')
     } else {
       // Do a pre-check to test for write access when not using sudo mode
+      let npmInstallPath: string
       try {
-        await access(resolve(cwd, 'node_modules'), constants.W_OK)
+        npmInstallPath = execSync('npm root -g').toString().trim()
+      } catch (e) {
+        npmInstallPath = resolve(cwd, 'node_modules')
+      }
+      try {
+        await access(npmInstallPath, constants.W_OK)
       } catch (e) {
         client.emit('stdout', yellow(`The user "${userInfo().username}" does not have write access to the target directory:\n\r\n\r`))
-        client.emit('stdout', `${resolve(cwd, 'node_modules')}\n\r\n\r`)
+        client.emit('stdout', `${npmInstallPath}\n\r\n\r`)
         client.emit('stdout', yellow('This may cause the operation to fail.\n\r'))
         client.emit('stdout', yellow('See the docs for details on how to enable sudo mode:\n\r'))
         client.emit('stdout', yellow('https://github.com/homebridge/homebridge-config-ui-x/wiki/Manual-Configuration#sudo-mode\n\r\n\r'))
@@ -1605,30 +1619,34 @@ export class PluginsService {
       this.pluginIcons = {}
       this.hiddenPlugins = []
       this.maintainedPlugins = []
-      this.scopedPlugins = {}
+      this.pluginAuthors = {}
+      this.pluginNames = {}
       this.newScopePlugins = {}
 
       Object.keys(pluginListData).forEach((key) => {
         const plugin: PluginListItem = pluginListData[key]
-        if (plugin.icon) {
-          this.pluginIcons[key] = `icons/${plugin.icon}.png`
+        if (plugin.i) {
+          this.pluginIcons[key] = `icons/${plugin.i}.png`
         }
-        if (plugin.hidden) {
+        if (plugin.h) {
           this.hiddenPlugins.push(key)
         }
-        if (plugin.maintained) {
+        if (plugin.m) {
           this.maintainedPlugins.push(key)
         }
-        if (plugin.scoped) {
-          this.scopedPlugins[key] = plugin.scoped
+        if (plugin.a) {
+          this.pluginAuthors[key] = plugin.a
         }
-        if (plugin.newScope) {
-          this.newScopePlugins[key] = plugin.newScope
+        if (plugin.n) {
+          this.pluginNames[key] = plugin.n
         }
-        if (plugin.verified) {
+        if (plugin.s) {
+          this.newScopePlugins[key] = plugin.s
+        }
+        if (plugin.v) {
           this.verifiedPlugins.push(key)
         }
-        if (plugin.verifiedPlus) {
+        if (plugin.p) {
           this.verifiedPlusPlugins.push(key)
         }
       })

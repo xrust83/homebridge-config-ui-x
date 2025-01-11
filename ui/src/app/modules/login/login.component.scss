@@ -12,10 +12,6 @@
   max-width: 500px;
   background-color: rgba(255, 255, 255, 0.9);
 
-  .form-control:focus {
-    background-color: inherit !important;
-  }
-
   @media screen and (min-height: 800px) {
     margin-bottom: 12em;
   }

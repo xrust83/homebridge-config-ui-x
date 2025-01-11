@@ -3,10 +3,10 @@
     <div class="col-6">
       <h3 class="primary-text m-0">{{ 'menu.config_json_editor' | translate }}</h3>
     </div>
-    <div class="col-6 text-right">
+    <div class="col-6 text-end">
       @if (!originalConfig) {
       <button
-        class="btn btn-elegant waves-effect my-0"
+        class="btn btn-elegant waves-effect my-0 me-2"
         (click)="onExportConfig()"
         container="body"
         placement="bottom"
@@ -19,7 +19,7 @@
       </button>
       } @if (originalConfig) {
       <button
-        class="btn btn-danger waves-effect my-0"
+        class="btn btn-danger waves-effect my-0 me-2"
         (click)="onCancelRestore()"
         [disabled]="saveInProgress"
         container="body"
@@ -33,7 +33,7 @@
       </button>
       } @if (!originalConfig) {
       <button
-        class="btn btn-elegant waves-effect my-0"
+        class="btn btn-elegant waves-effect my-0 me-2"
         (click)="onRestore()"
         container="body"
         placement="bottom"
@@ -46,7 +46,7 @@
       </button>
       }
       <button
-        class="btn btn-elegant waves-effect my-0 mr-0"
+        class="btn btn-elegant waves-effect my-0 me-0"
         (click)="onSave()"
         [disabled]="saveInProgress"
         container="body"

@@ -1,5 +1,6 @@
 import type { Systeminformation } from 'systeminformation'
 
+import { Buffer } from 'node:buffer'
 import { exec, spawn } from 'node:child_process'
 import { join, resolve } from 'node:path'
 import process from 'node:process'
@@ -12,7 +13,6 @@ import {
   NotFoundException,
   ServiceUnavailableException,
 } from '@nestjs/common'
-import { alloc } from 'buffer-shims'
 import {
   pathExists,
   readdir,
@@ -497,8 +497,7 @@ export class ServerService {
    * Generates the setup code
    */
   private generateSetupCode(accessoryInfo: any): string {
-    // This code is from https://github.com/KhaosT/HAP-NodeJS/blob/master/lib/Accessory.js#L369
-    const buffer = alloc(8)
+    const buffer = Buffer.allocUnsafe(8)
     let valueLow = Number.parseInt(accessoryInfo.pincode.replace(/-/g, ''), 10)
     const valueHigh = accessoryInfo.category >> 1
 

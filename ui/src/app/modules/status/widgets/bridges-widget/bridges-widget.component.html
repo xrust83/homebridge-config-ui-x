@@ -25,7 +25,7 @@
         ></i>
       </div>
       <div class="align-self-center flex-child px-3">{{ homebridgeStatus.name || 'Homebridge' }}</div>
-      <div class="grey-text ml-auto d-flex align-items-center">
+      <div class="grey-text ms-auto d-flex align-items-center">
         @if (homebridgeStatus.status === 'up') {
         <i
           class="icon-button fas fa-fw fa-power-off"
@@ -41,7 +41,7 @@
         <i class="fas icon-button fa-fw fa-spinner fa-pulse"></i>
         }
         <i
-          class="fas fa-fw ml-2 fa-link"
+          class="fas fa-fw ms-2 fa-link"
           [ngbTooltip]="(homebridgeStatus.paired ? 'status.widget.qr_paired' : 'status.widget.qr_unpaired') | translate"
           container="body"
           openDelay="150"
@@ -75,7 +75,7 @@
         ></i>
       </div>
       <div class="align-self-center flex-child px-3">{{ bridge.name }}</div>
-      <div class="grey-text ml-auto d-flex align-items-center">
+      <div class="grey-text ms-auto d-flex align-items-center">
         @if (bridge.status === 'ok') {
         <i
           class="icon-button fas fa-fw fa-power-off"
@@ -91,7 +91,7 @@
         <i class="fas icon-button fa-fw fa-spinner fa-pulse"></i>
         }
         <i
-          class="fas fa-fw ml-2 fa-link"
+          class="fas fa-fw ms-2 fa-link"
           [ngbTooltip]="(bridge.paired ? 'status.widget.qr_paired' : 'status.widget.qr_unpaired') | translate"
           container="body"
           openDelay="150"

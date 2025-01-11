@@ -1,6 +1,6 @@
 <div class="card card-body mb-3">
   <div class="d-flex flex-row justify-content-between">
-    <div class="d-flex flex-column mr-3 align-items-center justify-content-between">
+    <div class="d-flex flex-column me-3 align-items-center justify-content-between">
       <img [src]="plugin.icon" (error)="handleIconError()" alt="Plugin Icon" class="plugin-icon-card mb-3" />
       @if (plugin.installedVersion && hb2Status !== 'hide') {
       <a
@@ -33,7 +33,7 @@
           <!-- plugin name and right 'action' icon -->
           <div class="d-flex flex-row">
             <h5 class="card-title mb-2 text-truncate">{{ plugin.displayName }}</h5>
-            <div class="ml-auto">
+            <div class="ms-auto">
               <!-- update available -->
               @if (plugin.installedVersion && plugin.updateAvailable && !childBridgeRestartInProgress) {
               <a
@@ -47,7 +47,7 @@
                 [attr.aria-label]="'plugins.button_update' | translate"
               >
                 <i
-                  class="far fa-fw fa-arrow-alt-circle-up primary-text fa-lg fa-fade ml-3"
+                  class="far fa-fw fa-arrow-alt-circle-up primary-text fa-lg fa-fade ms-3"
                   style="--fa-animation-duration: 2s"
                 ></i>
               </a>
@@ -67,7 +67,7 @@
                 [attr.aria-label]="'plugins.manage.scoped.switch' | translate"
               >
                 <i
-                  class="fas fa-fw fa-arrow-right-arrow-left primary-text fa-lg fa-fade ml-3"
+                  class="fas fa-fw fa-arrow-right-arrow-left primary-text fa-lg fa-fade ms-3"
                   style="--fa-animation-duration: 2s"
                 ></i>
               </a>
@@ -87,7 +87,7 @@
                 triggers="hover"
                 [attr.aria-label]="'plugins.button_set_up' | translate"
               >
-                <i class="fas fa-fw fa-sliders primary-text fa-lg fa-fade ml-3" style="--fa-animation-duration: 2s"></i>
+                <i class="fas fa-fw fa-sliders primary-text fa-lg fa-fade ms-3" style="--fa-animation-duration: 2s"></i>
               </a>
               }
               <!-- // -->
@@ -106,7 +106,7 @@
                 [attr.aria-label]="'child_bridge.setup' | translate"
               >
                 <i
-                  class="icon-button fas fa-fw fa-bridge primary-text fa-lg fa-fade ml-3"
+                  class="icon-button fas fa-fw fa-bridge primary-text fa-lg fa-fade ms-3"
                   style="--fa-animation-duration: 2s"
                 ></i>
               </a>
@@ -128,7 +128,7 @@
                 [attr.aria-label]="'child_bridge.bridge_connect' | translate"
               >
                 <i
-                  class="icon-button fas fa-fw fa-qrcode primary-text fa-lg fa-fade ml-3"
+                  class="icon-button fas fa-fw fa-qrcode primary-text fa-lg fa-fade ms-3"
                   style="--fa-animation-duration: 2s"
                 ></i>
               </a>
@@ -137,7 +137,7 @@
               <!-- restart in progress spinner -->
               <i
                 [hidden]="!childBridgeRestartInProgress"
-                class="fas fa-fw fa-spinner fa-pulse fa-lg grey-text ml-3"
+                class="fas fa-fw fa-spinner fa-pulse fa-lg grey-text ms-3"
               ></i>
               <!-- // -->
               <!-- child bridge status (good status is not shown) -->
@@ -146,7 +146,7 @@
               !childBridgeRestartInProgress && !hasUnpairedChildBridges && childBridgeStatus !== 'ok' &&
               !plugin.disabled) {
               <i
-                class="fas fa-fw fa-lg ml-3"
+                class="fas fa-fw fa-lg ms-3"
                 [ngClass]="{
                   'fa-bridge-circle-exclamation orange-text': childBridgeStatus === 'pending',
                   'fa-bridge-circle-xmark red-text': childBridgeStatus === 'down'
@@ -161,9 +161,9 @@
           <p class="card-text mb-2 text-truncate">
             <a href="javascript:void(0)" (click)="pluginInfoModal(plugin)" class="card-link">
               <i
-                class="fas fa-fw fa-shield-alt fa-lg mr-1"
+                class="fas fa-fw fa-shield-alt fa-lg me-1"
                 [ngClass]="{
-                  'scoped-text': plugin.isHbScoped,
+                  'purple-text': plugin.isHbScoped,
                   'green-text': !plugin.isHbScoped && (plugin.verifiedPlugin || plugin.verifiedPlusPlugin),
                   'orange-text': !plugin.isHbScoped && !plugin.verifiedPlugin && !plugin.verifiedPlusPlugin,
                 }"
@@ -176,12 +176,12 @@
           <p class="card-text mb-2">
             @if ((plugin.verifiedPlugin || plugin.verifiedPlusPlugin) && plugin.funding) {
             <a href="javascript:void(0)" class="card-link" (click)="openFundingModal(plugin)">
-              <i class="fas fa-fw fa-heart fa-lg mr-1 pink-text"></i>
+              <i class="fas fa-fw fa-heart fa-lg me-1 pink-text"></i>
               <span class="grey-text">&#64;{{ plugin.author }}</span>
             </a>
             } @if (!((plugin.verifiedPlugin || plugin.verifiedPlusPlugin) && plugin.funding)) {
             <span class="grey-text">
-              <i class="fas fa-fw fa-heart fa-lg mr-1" style="opacity: 0.5"></i>&#64;{{ plugin.author }}
+              <i class="fas fa-fw fa-heart fa-lg me-1" style="opacity: 0.5"></i>&#64;{{ plugin.author }}
             </span>
             }
           </p>
@@ -192,7 +192,7 @@
               <!-- not installed -->
               @if (plugin.publicPackage && !plugin.installedVersion) {
               <span>
-                <i class="far fa-fw fa-circle-dot fa-lg mr-1"></i>
+                <i class="far fa-fw fa-circle-dot fa-lg me-1"></i>
                 <span class="grey-text"
                   >v{{ plugin.latestVersion }} @if (plugin.lastUpdated) {
                   <span>({{ plugin.lastUpdated | date:'yyyy-MM-dd' }})</span>
@@ -203,10 +203,10 @@
               <!-- // -->
               <!-- installed -->
               @if (plugin.installedVersion) {
-              <i class="far fa-fw fa-circle-check fa-lg mr-1"></i>v{{ plugin.installedVersion }} }
+              <i class="far fa-fw fa-circle-check fa-lg me-1"></i>v{{ plugin.installedVersion }} }
               <!-- // -->
             </p>
-            <div class="ml-auto">
+            <div class="ms-auto">
               <!-- icon for child bridge restart -->
               @if (!plugin.disabled && plugin.hasChildBridges && childBridgeStatus === 'ok') {
               <a
@@ -218,7 +218,7 @@
                 triggers="hover"
                 [ngbTooltip]="(setChildBridges.length > 1 ? 'child_bridge.restart_plural' : 'child_bridge.restart') | translate"
               >
-                <i class="fas fa-fw fa-lg fa-power-off ml-3"></i>
+                <i class="fas fa-fw fa-lg fa-power-off ms-3"></i>
               </a>
               }
               <!-- // -->
@@ -243,7 +243,7 @@
               }
               <!-- // -->
               @if (plugin.installedVersion) {
-              <span ngbDropdown placement="left" class="d-inline-block ml-3 mt-auto">
+              <span ngbDropdown placement="left" class="d-inline-block ms-3 mt-auto">
                 <!-- icon to expand dropdown -->
                 <a
                   class="card-link text-decoration-none mt-auto"

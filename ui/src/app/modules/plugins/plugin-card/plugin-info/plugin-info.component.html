@@ -3,19 +3,17 @@
     <h5 class="modal-title">{{ 'plugins.manage.information' | translate }}</h5>
     <button
       type="button"
-      class="close"
-      data-dismiss="modal"
+      class="btn-close"
+      data-bs-dismiss="modal"
       [attr.aria-label]="'form.button_close' | translate"
       (click)="$activeModal.dismiss('Dismiss')"
-    >
-      <span aria-hidden="true">&times;</span>
-    </button>
+    ></button>
   </div>
   <div class="modal-body text-center">
     <img [src]="plugin.icon" (error)="handleIconError()" alt="Plugin Icon" class="mb-3 plugin-icon-card" />
     <h4 class="mb-1">{{ plugin.displayName }}</h4>
-    <p class="grey-text mb-0 text-monospace">{{ plugin.name }}</p>
-    <p class="grey-text mb-1 text-monospace">&#64;{{ plugin.author }}</p>
+    <p class="grey-text mb-0 font-monospace">{{ plugin.name }}</p>
+    <p class="grey-text mb-1 font-monospace">&#64;{{ plugin.author }}</p>
     <p class="mb-3">{{ plugin.description }}</p>
     <i
       class="fas fa-fw fa-shield-alt mb-3"
@@ -32,7 +30,7 @@
     <i
       class="fas fa-fw fa-shield-alt mb-3"
       style="font-size: 48px"
-      [ngClass]="{ 'scoped-text': plugin.isHbScoped, 'grey-text': !plugin.isHbScoped }"
+      [ngClass]="{ 'purple-text': plugin.isHbScoped, 'grey-text': !plugin.isHbScoped }"
       [ngStyle]="{ 'opacity': plugin.isHbScoped ? 1 : 0.25 }"
     ></i>
     @if (plugin.isHbScoped) {
@@ -52,21 +50,21 @@
     ></p>
   </div>
   <div class="modal-footer justify-content-between">
-    <div class="text-left">
+    <div class="text-start">
       @if (plugin.links.homepage || plugin.links.npm) {
-      <button type="button" class="btn btn-elegant" data-dismiss="modal" (click)="$activeModal.dismiss('Dismiss')">
+      <button type="button" class="btn btn-elegant" data-bs-dismiss="modal" (click)="$activeModal.dismiss('Dismiss')">
         {{ 'form.button_close' | translate }}
       </button>
       }
     </div>
     <div class="text-center">
       @if (!plugin.links.homepage && !plugin.links.npm) {
-      <button type="button" class="btn btn-elegant" data-dismiss="modal" (click)="$activeModal.dismiss('Dismiss')">
+      <button type="button" class="btn btn-elegant" data-bs-dismiss="modal" (click)="$activeModal.dismiss('Dismiss')">
         {{ 'form.button_close' | translate }}
       </button>
       }
     </div>
-    <div class="text-right">
+    <div class="text-end">
       @if (plugin.links.homepage || plugin.links.npm) {
       <a
         class="btn btn-primary text-decoration-none"

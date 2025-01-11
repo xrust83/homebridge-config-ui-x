@@ -121,14 +121,28 @@ export class StatusComponent implements OnInit, OnDestroy {
   }
 
   getLayout() {
-    this.io.request('get-dashboard-layout').subscribe(
-      (layout) => {
-        if (!layout.length) {
-          return this.resetLayout()
+    this.io.request('get-dashboard-layout').subscribe((layout) => {
+      if (!layout.length) {
+        return this.resetLayout()
+      }
+
+      let saveNeeded = false
+      this.setLayout(layout.map((item: any) => {
+        // Renamed between v4.68.0 and v4.69.0
+        if (item.component === 'HomebridgeStatusWidgetComponent') {
+          item.component = 'UpdateInfoWidgetComponent'
+          saveNeeded = true
+        } else if (item.component === 'ChildBridgeWidgetComponent') {
+          item.component = 'BridgesWidgetComponent'
+          saveNeeded = true
         }
-        this.setLayout(layout.map((item: any) => item))
-      },
-    )
+        return item
+      }))
+
+      if (saveNeeded) {
+        this.gridChangedEvent()
+      }
+    })
   }
 
   setLayout(layout: any[]) {

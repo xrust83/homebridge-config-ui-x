@@ -3,14 +3,12 @@
     <h5 class="modal-title">{{ 'backup.title_backup' | translate }}</h5>
     <button
       type="button"
-      class="close"
-      data-dismiss="modal"
+      class="btn-close"
+      data-bs-dismiss="modal"
       [attr.aria-label]="'form.button_close' | translate"
       (click)="$activeModal.dismiss('Dismiss')"
       [disabled]="restoreInProgress"
-    >
-      <span aria-hidden="true">&times;</span>
-    </button>
+    ></button>
   </div>
   @if (!restoreStarted && !setupWizardRestore) {
   <div class="modal-body">
@@ -26,18 +24,13 @@
     @if (selectedBackup) {
     <input class="form-control custom-input" type="text" [value]="selectedBackup.fileName" disabled />
     } @if (!selectedBackup) {
-    <div class="custom-file">
-      <input
-        type="file"
-        class="custom-file-input"
-        id="restoreFileUpload"
-        accept="application/gzip, .gz, .hbfx"
-        (change)="handleRestoreFileInput($event.target.files)"
-      />
-      <label class="custom-file-label" for="restoreFileUpload">
-        {{ selectedFile?.name || 'backup.label_choose_backup_file_to_restore' | translate }}
-      </label>
-    </div>
+    <input
+      type="file"
+      class="form-control"
+      id="restoreFileUpload"
+      accept="application/gzip, .gz, .hbfx"
+      (change)="handleRestoreFileInput($event.target.files)"
+    />
     }
   </div>
   }
@@ -46,12 +39,12 @@
 
   @if (!restoreStarted || restoreFailed === true) {
   <div class="modal-footer justify-content-between">
-    <div class="text-left">
+    <div class="text-start">
       @if (setupWizardRestore) {
       <button
         type="button"
         class="btn btn-elegant"
-        data-dismiss="modal"
+        data-bs-dismiss="modal"
         (click)="$activeModal.dismiss('Dismiss')"
         [attr.aria-label]="'form.button_close' | translate"
         [disabled]="clicked"
@@ -62,7 +55,7 @@
       <button
         type="button"
         class="btn btn-elegant"
-        data-dismiss="modal"
+        data-bs-dismiss="modal"
         (click)="reopenBackupModal()"
         [attr.aria-label]="'form.button_back' | translate"
         [disabled]="clicked"
@@ -72,11 +65,11 @@
       }
     </div>
     <div class="text-center"></div>
-    <div class="text-right">
+    <div class="text-end">
       <button
         type="button"
         class="btn btn-primary"
-        data-dismiss="modal"
+        data-bs-dismiss="modal"
         (click)="onRestoreBackupClick()"
         [disabled]="(!selectedBackup && !selectedFile) || clicked"
       >
@@ -98,13 +91,13 @@
   </div>
   } @if (!restoreInProgress && restoreStarted) {
   <div class="modal-footer justify-content-between">
-    <div class="text-left"></div>
+    <div class="text-start"></div>
     <div class="text-center">
-      <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="postBackupRestart()">
+      <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="postBackupRestart()">
         {{ 'menu.hbrestart.title' | translate }}
       </button>
     </div>
-    <div class="text-right"></div>
+    <div class="text-end"></div>
   </div>
   }
 </div>

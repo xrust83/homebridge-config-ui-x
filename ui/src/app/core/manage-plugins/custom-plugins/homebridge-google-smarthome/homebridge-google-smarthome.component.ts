@@ -40,7 +40,7 @@ export class HomebridgeGoogleSmarthomeComponent implements OnInit, OnDestroy {
   public justLinked = false
   public gshConfig: Record<string, any>
   public linkType: string
-  public readonly linkInsecure = '<a href="https://github.com/homebridge/homebridge-config-ui-x/wiki/Enabling-Accessory-Control" target="_blank"><i class="fa fa-fw fa-external-link-alt"></i></a>'
+  public readonly linkInsecure = '<a href="https://github.com/homebridge/homebridge-config-ui-x/wiki/Enabling-Accessory-Control" target="_blank"><i class="fa fa-fw fa-external-link-alt primary-text"></i></a>'
 
   private linkDomain = 'https://homebridge-gsh.iot.oz.nu'
   private linkUrl = `${this.linkDomain}/link-account`

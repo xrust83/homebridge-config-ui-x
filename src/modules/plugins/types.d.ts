@@ -172,13 +172,14 @@ export interface PluginListNewScopeItem {
 }
 
 export interface PluginListItem {
-  hidden?: 1
-  icon?: string
-  maintained?: 1
-  scoped?: string
-  newScope?: PluginListNewScopeItem
-  verified?: 1
-  verifiedPlus?: 1
+  h?: 1 // hidden
+  i?: string // icon
+  m?: 1 // maintained
+  a?: string // author
+  n?: string // name
+  s?: PluginListNewScopeItem // has new scope
+  v?: 1 // verified
+  p?: 1 // verified plus
 }
 
 export interface PluginListData {

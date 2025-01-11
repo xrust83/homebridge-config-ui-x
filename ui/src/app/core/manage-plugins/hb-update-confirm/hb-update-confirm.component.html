@@ -3,13 +3,11 @@
     <h5 class="modal-title">Homebridge v2 Update</h5>
     <button
       type="button"
-      class="close"
-      data-dismiss="modal"
+      class="btn-close"
+      data-bs-dismiss="modal"
       [attr.aria-label]="'form.button_close' | translate"
       (click)="$activeModal.close('Dismiss')"
-    >
-      <span aria-hidden="true">&times;</span>
-    </button>
+    ></button>
   </div>
   <div class="modal-body">
     @if (loading) {
@@ -32,8 +30,8 @@
     <ul class="mb-3">
       <li>Some of your plugins are not explicitly marked as compatible with the new version of Homebridge.</li>
       <li>
-        This does <span class="font-weight-bold">not</span> necessarily mean that they won't work. We just can't
-        guarantee that they will.
+        This does <span class="fw-bold">not</span> necessarily mean that they won't work. We just can't guarantee that
+        they will.
       </li>
       <li>
         For more information about this update, please see the
@@ -48,12 +46,12 @@
       <li class="list-group-item d-flex flex-row flex-wrap justify-content-between">
         {{ plugin.displayName }} @if (plugin.hb2Ready === 'supported') {
         <i
-          class="fas fa-check-circle green-text fa-xl ml-2"
+          class="fas fa-check-circle green-text fa-xl ms-2"
           aria-label="The developer has specifically marked this plugin as compatible with Homebridge v2.0"
         ></i>
         } @if (plugin.hb2Ready === 'unknown') {
         <i
-          class="fas fa-question-circle orange-text fa-xl ml-2"
+          class="fas fa-question-circle orange-text fa-xl ms-2"
           aria-label="The developer has not specifically marked this plugin as compatible with Homebridge v2.0, but it may still work."
         ></i>
         }
@@ -63,11 +61,11 @@
     }
   </div>
   <div class="modal-footer justify-content-between">
-    <div class="text-left">
+    <div class="text-start">
       <button
         type="button"
         class="btn btn-elegant"
-        data-dismiss="modal"
+        data-bs-dismiss="modal"
         (click)="$activeModal.close('Dismiss')"
         [attr.aria-label]="'form.button_close' | translate"
       >
@@ -75,12 +73,12 @@
       </button>
     </div>
     <div class="text-center"></div>
-    <div class="text-right">
+    <div class="text-end">
       <button
         [disabled]="loading"
         type="button"
         class="btn btn-primary"
-        data-dismiss="modal"
+        data-bs-dismiss="modal"
         (click)="$activeModal.close('update')"
       >
         {{ 'plugins.node_update.continue' | translate }}

@@ -27,7 +27,7 @@ export class ContainerRestartComponent implements OnInit, OnDestroy {
   resp: any = {}
   timeout = false
   error: any = false
-  public readonly command = '<span class="text-monospace">--restart=always</span>'
+  public readonly command = '<span class="font-monospace">--restart=always</span>'
 
   private io: IoNamespace
 

@@ -2,7 +2,7 @@
   <div class="col-9">
     <h3 class="primary-text m-0">{{ 'users.title_users' | translate }}</h3>
   </div>
-  <div class="col-3 text-right">
+  <div class="col-3 text-end">
     <button
       class="btn btn-elegant waves-effect m-0"
       (click)="openAddNewUser()"
@@ -33,14 +33,14 @@
           }
           <div>
             <button
-              class="btn btn-elegant m-0 ml-3"
+              class="btn btn-elegant m-0"
               (click)="openEditUser(user)"
               [attr.aria-label]="'form.button_edit' | translate"
             >
               <i class="fas fa-fw fa-user-pen"></i>
             </button>
             <button
-              class="btn btn-danger m-0 ml-3"
+              class="btn btn-danger m-0 ms-2"
               (click)="deleteUser(user.id)"
               [attr.aria-label]="'form.button_delete' | translate"
               [disabled]="$auth.user.username === user.username"

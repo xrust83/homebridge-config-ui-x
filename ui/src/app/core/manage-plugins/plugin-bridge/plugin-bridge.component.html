@@ -4,14 +4,12 @@
     @if (!justInstalled) {
     <button
       type="button"
-      class="close"
-      data-dismiss="modal"
+      class="btn-close"
+      data-bs-dismiss="modal"
       [attr.aria-label]="'form.button_close' | translate"
       (click)="$activeModal.close('Dismiss')"
       [disabled]="saveInProgress"
-    >
-      <span aria-hidden="true">&times;</span>
-    </button>
+    ></button>
     }
   </div>
   <div class="modal-body">
@@ -37,7 +35,7 @@
         <label for="bridgeSelect" class="mb-2 mb-md-0 w-100 w-md-50">
           {{ (isPlatform ? 'child_bridge.config.platform' : 'child_bridge.config.accessory') | translate }}
         </label>
-        <div class="text-left text-md-right w-100 w-md-50">
+        <div class="text-start text-md-end w-100 w-md-50">
           <select
             class="custom-select"
             id="bridgeSelect"
@@ -55,7 +53,7 @@
         <label class="mb-2 mb-md-0 w-100 w-md-50">
           {{ (isPlatform ? 'child_bridge.config.platform' : 'child_bridge.config.accessory') | translate }}
         </label>
-        <div class="text-left text-md-right w-100 w-md-50 grey-text text-monospace">
+        <div class="text-start text-md-end w-100 w-md-50 grey-text font-monospace">
           {{ configBlocks[selectedBlock].name || configBlocks[selectedBlock].platform ||
           configBlocks[selectedBlock].accessory }}
         </div>
@@ -63,14 +61,14 @@
       } @if (currentBridgeHasLinks) {
       <li class="list-group-item d-flex flex-column flex-md-row align-items-center">
         <label class="mb-2 mb-md-0 w-100 w-md-50">{{ 'child_bridge.config.use' | translate }}</label>
-        <div class="text-left text-md-right w-100 w-md-50 grey-text">
+        <div class="text-start text-md-end w-100 w-md-50 grey-text">
           {{ 'child_bridge.config.prevent' | translate }}
         </div>
       </li>
       } @if (!currentBridgeHasLinks) {
       <li class="list-group-item d-flex justify-content-between align-items-center flex-row pb-2">
-        <span class="text-left">{{ 'child_bridge.config.use' | translate }}</span>
-        <div class="text-right grey-text">
+        <span class="text-start">{{ 'child_bridge.config.use' | translate }}</span>
+        <div class="text-end grey-text">
           <input
             type="checkbox"
             class="rendux-input"
@@ -86,7 +84,7 @@
         <label for="bridgeLink" class="mb-2 mb-md-0 w-100 w-md-50"
           >{{ 'child_bridge.config.or_link' | translate }}</label
         >
-        <div class="text-left text-md-right w-100 w-md-50">
+        <div class="text-start text-md-end w-100 w-md-50">
           <select class="custom-select" id="bridgeLink" (change)="onLinkBridgeChange($event.target.value)">
             <option [value]="">{{ 'child_bridge.config.select_existing' | translate }}</option>
             @for (bridge of bridgesAvailableForLink; track bridge; let i = $index) {
@@ -98,19 +96,19 @@
       } } @if (currentlySelectedLink) {
       <li class="list-group-item d-flex flex-column flex-md-row align-items-center">
         <label class="mb-2 mb-md-0 w-100 w-md-50">{{ 'accessories.bridge_link_username' | translate }}</label>
-        <div class="text-left text-md-right w-100 w-md-50 grey-text text-monospace">
+        <div class="text-start text-md-end w-100 w-md-50 grey-text font-monospace">
           {{ currentlySelectedLink.username }}
         </div>
       </li>
       <li class="list-group-item d-flex flex-column flex-md-row align-items-center">
         <label class="mb-2 mb-md-0 w-100 w-md-50">{{ 'accessories.bridge_link_port' | translate }}</label>
-        <div class="text-left text-md-right w-100 w-md-50 grey-text text-monospace">
+        <div class="text-start text-md-end w-100 w-md-50 grey-text font-monospace">
           {{ currentlySelectedLink.port }}
         </div>
       </li>
       <li class="list-group-item d-flex flex-column flex-md-row align-items-center">
         <label class="mb-2 mb-md-0 w-100 w-md-50">{{ 'accessories.bridge_link_name' | translate }}</label>
-        <div class="text-left text-md-right w-100 w-md-50 grey-text text-monospace">
+        <div class="text-start text-md-end w-100 w-md-50 grey-text font-monospace">
           {{ currentlySelectedLink.name }}
         </div>
       </li>
@@ -143,26 +141,26 @@
       </li>
       <li class="list-group-item d-flex flex-column flex-md-row align-items-center">
         <label class="mb-2 mb-md-0 w-100 w-md-50">{{ 'accessories.bridge_username' | translate }}</label>
-        <div class="text-left text-md-right w-100 w-md-50 grey-text text-monospace">
+        <div class="text-start text-md-end w-100 w-md-50 grey-text font-monospace">
           {{ configBlocks[selectedBlock]._bridge.username }}
         </div>
       </li>
       <li class="list-group-item d-flex flex-column flex-md-row align-items-center">
         <label class="mb-2 mb-md-0 w-100 w-md-50">{{ 'accessories.bridge_port' | translate }}</label>
-        <div class="text-left text-md-right w-100 w-md-50 grey-text text-monospace">
+        <div class="text-start text-md-end w-100 w-md-50 grey-text font-monospace">
           {{ configBlocks[selectedBlock]._bridge.port }}
         </div>
       </li>
       @if ($settings.env.serviceMode) {
       <li class="list-group-item d-flex flex-column flex-md-row align-items-center">
         <label class="mb-2 mb-md-0 w-100 w-md-50">{{ 'child_bridge.config.name' | translate }}</label>
-        <div class="text-left text-md-right w-100 w-md-50">
+        <div class="text-start text-md-end w-100 w-md-50">
           <input type="text" class="form-control custom-input" [(ngModel)]="configBlocks[selectedBlock]._bridge.name" />
         </div>
       </li>
       <li class="list-group-item d-flex flex-column flex-md-row align-items-center">
         <label class="mb-2 mb-md-0 w-100 w-md-50">{{ 'child_bridge.config.manufacturer' | translate }}</label>
-        <div class="text-left text-md-right w-100 w-md-50">
+        <div class="text-start text-md-end w-100 w-md-50">
           <input
             type="text"
             class="form-control custom-input"
@@ -172,7 +170,7 @@
       </li>
       <li class="list-group-item d-flex flex-column flex-md-row align-items-center">
         <label class="mb-2 mb-md-0 w-100 w-md-50">{{ 'child_bridge.config.model' | translate }}</label>
-        <div class="text-left text-md-right w-100 w-md-50">
+        <div class="text-start text-md-end w-100 w-md-50">
           <input
             type="text"
             class="form-control custom-input"
@@ -182,7 +180,7 @@
       </li>
       <li class="list-group-item d-flex flex-column flex-md-row align-items-center">
         <label class="mb-2 mb-md-0 w-100 w-md-50">{{ 'child_bridge.config.firmware' | translate }}</label>
-        <div class="text-left text-md-right w-100 w-md-50">
+        <div class="text-start text-md-end w-100 w-md-50">
           <input
             type="text"
             class="form-control custom-input"
@@ -192,8 +190,8 @@
       </li>
       @if (canShowBridgeDebug) {
       <li class="list-group-item d-flex justify-content-between align-items-center flex-row pb-2">
-        <span class="text-left">{{ 'child_bridge.config.debug' | translate }} <code>-D</code></span>
-        <div class="text-right grey-text">
+        <span class="text-start">{{ 'child_bridge.config.debug' | translate }} <code>-D</code></span>
+        <div class="text-end grey-text">
           <input
             type="checkbox"
             class="rendux-input"
@@ -207,13 +205,13 @@
       }
       <li class="list-group-item d-flex flex-column flex-md-row align-items-center">
         <label class="mb-2 mb-md-0 w-100 w-md-50">
-          <span class="text-monospace">DEBUG</span><br />
+          <span class="font-monospace">DEBUG</span><br />
           <small
             class="grey-text"
             [innerHTML]="'settings.service.debug_tooltip' | translate: { link: linkDebug }"
           ></small>
         </label>
-        <div class="text-left text-md-right w-100 w-md-50">
+        <div class="text-start text-md-end w-100 w-md-50">
           <input
             type="text"
             class="form-control custom-input"
@@ -224,10 +222,10 @@
       </li>
       <li class="list-group-item d-flex flex-column flex-md-row align-items-center">
         <label class="mb-2 mb-md-0 w-100 w-md-50">
-          <span class="text-monospace">NODE_OPTIONS</span><br />
+          <span class="font-monospace">NODE_OPTIONS</span><br />
           <small class="grey-text">{{ 'settings.service.node_tooltip' | translate }}</small>
         </label>
-        <div class="text-left text-md-right w-100 w-md-50">
+        <div class="text-start text-md-end w-100 w-md-50">
           <input
             type="text"
             class="form-control custom-input"
@@ -251,10 +249,10 @@
         'child_bridge.confirm_delete_2' | translate }} }
       </p>
       <div class="text-center">
-        <ul class="d-inline-block text-left mb-0">
+        <ul class="d-inline-block text-start mb-0">
           @for (bridge of deleteBridges; track bridge) {
           <li>
-            {{ bridge.bridgeName || this.deviceInfo[bridge.id]?.displayName }} (<span class="text-monospace"
+            {{ bridge.bridgeName || this.deviceInfo[bridge.id]?.displayName }} (<span class="font-monospace"
               >{{ bridge.id }}</span
             >)
           </li>
@@ -277,12 +275,12 @@
     }
   </div>
   <div class="modal-footer justify-content-between">
-    <div class="text-left">
+    <div class="text-start">
       @if (canConfigure && !justInstalled) {
       <button
         type="button"
         class="btn btn-elegant"
-        data-dismiss="modal"
+        data-bs-dismiss="modal"
         (click)="$activeModal.close('Dismiss')"
         [disabled]="saveInProgress"
       >
@@ -298,12 +296,12 @@
         }
       </button>
       } @if (!canConfigure) {
-      <button type="button" class="btn btn-elegant" data-dismiss="modal" (click)="$activeModal.close('Dismiss')">
+      <button type="button" class="btn btn-elegant" data-bs-dismiss="modal" (click)="$activeModal.close('Dismiss')">
         {{ 'form.button_close' | translate }}
       </button>
       }
     </div>
-    <div class="text-right">
+    <div class="text-end">
       @if (canConfigure && !justInstalled) { @if (configBlocks.length) {
       <button type="button" class="btn btn-primary" (click)="save()" [disabled]="saveInProgress">
         @if (!saveInProgress) { {{ 'form.button_save' | translate }} } @if (saveInProgress) {
@@ -311,7 +309,7 @@
         }
       </button>
       } @if (!configBlocks.length) {
-      <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="openPluginConfig()">
+      <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="openPluginConfig()">
         {{ 'plugins.button_settings' | translate }}
       </button>
       } }

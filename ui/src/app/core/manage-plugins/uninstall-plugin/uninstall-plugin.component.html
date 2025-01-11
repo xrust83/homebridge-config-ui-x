@@ -3,14 +3,12 @@
     <h5 class="modal-title">{{ plugin.displayName || plugin.name }}</h5>
     <button
       type="button"
-      class="close"
-      data-dismiss="modal"
+      class="btn-close"
+      data-bs-dismiss="modal"
       [attr.aria-label]="'form.button_close' | translate"
       (click)="$activeModal.dismiss('Dismiss')"
       [disabled]="uninstalling"
-    >
-      <span aria-hidden="true">&times;</span>
-    </button>
+    ></button>
   </div>
   <div class="modal-body">
     @if (loading) {
@@ -23,7 +21,7 @@
     </div>
     <div class="text-center">
       @if (pluginAlias && pluginType) {
-      <p class="d-inline-block text-left mb-1">
+      <p class="d-inline-block text-start mb-1">
         <label class="hb-uix-switch d-block" for="remove-plugin-config">
           <input id="remove-plugin-config" type="checkbox" [(ngModel)]="removeConfig" />
           {{ 'plugins.uninstall_remove_plugin_config' | translate }}
@@ -42,7 +40,7 @@
       }
     </div>
     @if (hasChildBridges && removeChildBridges) {
-    <ul class="mb-3 text-left">
+    <ul class="mb-3 text-start">
       <li>{{ 'plugins.uninstall_warn_1' | translate }}</li>
       <li>{{ 'plugins.uninstall_warn_2' | translate }}</li>
     </ul>
@@ -57,11 +55,11 @@
     }
   </div>
   <div class="modal-footer justify-content-between">
-    <div class="text-left">
+    <div class="text-start">
       <button
         type="button"
         class="btn btn-elegant"
-        data-dismiss="modal"
+        data-bs-dismiss="modal"
         (click)="$activeModal.dismiss('Dismiss')"
         [attr.aria-label]="'form.button_close' | translate"
         [disabled]="uninstalling"
@@ -70,11 +68,11 @@
       </button>
     </div>
     <div class="text-center"></div>
-    <div class="text-right">
+    <div class="text-end">
       <button
         type="button"
         class="btn btn-danger"
-        data-dismiss="modal"
+        data-bs-dismiss="modal"
         (click)="doUninstall()"
         [disabled]="loading || uninstalling"
       >

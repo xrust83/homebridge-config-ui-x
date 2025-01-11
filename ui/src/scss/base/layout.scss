@@ -16,6 +16,60 @@ body {
   padding-top: 5.5rem;
 }
 
+a,
+a:hover,
+a:focus {
+  text-decoration: none !important;
+  --bs-link-decoration: none !important;
+}
+
+.grey-text,
+.grey-text a {
+  color: #999999 !important;
+}
+
+.pink-text,
+.pink-text a {
+  color: #e91e63 !important;
+}
+
+.green-text,
+.green-text a {
+  color: #4caf50 !important;
+}
+
+.red-text,
+.red-text a {
+  color: #ff0000 !important;
+}
+
+.orange-text,
+.orange-text a {
+  color: #ff9800 !important;
+}
+
+.purple-text {
+  color: #9c42f5;
+}
+
+.navbar-brand {
+  color: #ffffff !important;
+}
+
+.table {
+  --bs-table-color: initial;
+  --bs-table-bg: initial;
+}
+
+.list-group-item {
+  border: none !important;
+  font-weight: 300;
+}
+
+.list-group-item:not(:last-child) {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125) !important;
+}
+
 a {
   text-decoration: none !important;
 }
@@ -25,11 +79,17 @@ a:hover {
 }
 
 h3 {
+  font-weight: 300;
   @media (max-width: 575px) {
     font-size: 1.5rem;
   }
 }
 
+p,
+h2,
+h4,
+h5,
+h6,
 table th,
 table td,
 small,
@@ -41,6 +101,17 @@ small,
   font-size: 0.9rem;
   color: #747373;
   font-weight: 300;
+}
+
+td {
+  font-size: 0.9rem;
+  font-weight: 300;
+  color: #999999 !important;
+}
+
+th {
+  font-size: 0.9rem;
+  font-weight: 400;
 }
 
 .alert {
@@ -63,9 +134,7 @@ small,
 }
 
 .list-group-box {
-  box-shadow:
-    0 0 1px 0 rgba(0, 0, 0, 0.16),
-    0 0 1px 0 rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(0, 0, 0, 0.125);
   border-radius: 0.5rem;
 
   .list-group-item:first-child {
@@ -98,8 +167,4 @@ small,
   .tooltip {
     z-index: 1070 !important;
   }
-}
-
-.scoped-text {
-  color: #9c42f5;
 }

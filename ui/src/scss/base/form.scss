@@ -3,10 +3,35 @@
   color: rgba(0, 0, 0, 0.46);
 }
 
-.ng-bs4-validate {
+.ng-bs5-validate {
+  .expandable {
+    margin-bottom: 0.75rem;
+  }
+
+  .control-label {
+    margin-bottom: 0.25rem;
+  }
+
+  .help-block {
+    margin-top: 0.25rem;
+    margin-bottom: 0;
+  }
+
   .form-group {
+    margin-top: 0.25rem;
+    margin-bottom: 1rem;
+
     input.ng-touched.ng-dirty.ng-invalid {
       @extend .form-control, .is-invalid;
+    }
+  }
+
+  .nav-tabs {
+    padding: 0 !important;
+    margin-bottom: 0.5rem;
+
+    li {
+      margin-bottom: 0 !important;
     }
   }
 }
@@ -21,9 +46,11 @@
   }
 }
 
-select,
-input {
-  font-size: 0.95rem !important;
+.custom-select {
+  padding: 7px;
+  border-radius: 0.25rem;
+  width: 100%;
+  border: 1px solid #ced4da;
 }
 
 .resp-select {
@@ -42,4 +69,35 @@ input {
   @media (min-width: 768px) {
     width: 300px;
   }
+}
+
+.accordion {
+  --bs-accordion-border-width: 0px;
+
+  .card-header {
+    border-bottom: 0;
+  }
+}
+
+.accordion-header {
+  border-radius: 0;
+  --bs-card-border-radius: 0 !important;
+}
+
+.accordion-body {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.accordion-item {
+  border-radius: 0;
+  --bs-card-border-radius: 0 !important;
+}
+
+.accordion-item:not(:last-child) {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.schema-form-text {
+  margin-bottom: 1rem;
 }

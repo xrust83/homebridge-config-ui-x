@@ -4,13 +4,11 @@
       <h5 class="modal-title">{{ 'accessories.button_add_room' | translate }}</h5>
       <button
         type="button"
-        class="close"
-        data-dismiss="modal"
+        class="btn-close"
+        data-bs-dismiss="modal"
         [attr.aria-label]="'form.button_close' | translate"
         (click)="$activeModal.dismiss('Dismiss')"
-      >
-        <span aria-hidden="true">&times;</span>
-      </button>
+      ></button>
     </div>
     <div class="modal-body">
       <div class="text-center mb-3">
@@ -19,7 +17,7 @@
       <ul class="list-group list-group-box mb-0">
         <li class="list-group-item d-flex flex-column flex-md-row align-items-center">
           <label for="form-name" class="mb-2 mb-md-0 w-100 w-md-50">{{ 'accessories.room_name' | translate }}</label>
-          <div class="text-left text-md-right w-100 w-md-50">
+          <div class="text-start text-md-end w-100 w-md-50">
             <input
               autocomplete="off"
               type="text"
@@ -35,17 +33,17 @@
       </ul>
     </div>
     <div class="modal-footer justify-content-between">
-      <div class="text-left">
-        <button type="button" class="btn btn-elegant" data-dismiss="modal" (click)="$activeModal.dismiss('Dismiss')">
+      <div class="text-start">
+        <button type="button" class="btn btn-elegant" data-bs-dismiss="modal" (click)="$activeModal.dismiss('Dismiss')">
           {{ 'form.button_close' | translate }}
         </button>
       </div>
       <div class="text-center"></div>
-      <div class="text-right">
+      <div class="text-end">
         <button
           type="button"
           class="btn btn-primary"
-          data-dismiss="modal"
+          data-bs-dismiss="modal"
           (click)="$activeModal.close(roomName)"
           [disabled]="!roomName"
         >

@@ -21,8 +21,8 @@ gridster {
 .widget-control-button {
   cursor: pointer;
   position: fixed;
-  right: 5px;
-  top: 5px;
+  right: 8px;
+  top: 10px;
   opacity: 0;
   -webkit-transition: opacity 200ms ease-in;
   -moz-transition: opacity 200ms ease-in;
@@ -47,14 +47,6 @@ gridster {
         opacity: 1;
       }
     }
-  }
-}
-
-.status-button {
-  z-index: 1000;
-
-  @media (max-width: 1023px) {
-    display: none;
   }
 }
 

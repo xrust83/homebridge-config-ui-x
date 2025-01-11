@@ -3,13 +3,11 @@
     <h5 class="modal-title">{{ 'plugins.compat.title' | translate }}</h5>
     <button
       type="button"
-      class="close"
-      data-dismiss="modal"
+      class="btn-close"
+      data-bs-dismiss="modal"
       [attr.aria-label]="'form.button_close' | translate"
       (click)="$activeModal.dismiss('Dismiss')"
-    >
-      <span aria-hidden="true">&times;</span>
-    </button>
+    ></button>
   </div>
   <div class="modal-body">
     <!-- plugins -->
@@ -81,23 +79,23 @@
     }
   </div>
   <div class="modal-footer justify-content-between">
-    <div class="text-left">
+    <div class="text-start">
       @if (!['homebridge', 'homebridge-config-ui-x'].includes(plugin.name)) {
-      <button type="button" class="btn btn-elegant" data-dismiss="modal" (click)="$activeModal.dismiss('Dismiss')">
+      <button type="button" class="btn btn-elegant" data-bs-dismiss="modal" (click)="$activeModal.dismiss('Dismiss')">
         {{ 'form.button_close' | translate }}
       </button>
       }
     </div>
     <div class="text-center">
       @if (['homebridge', 'homebridge-config-ui-x'].includes(plugin.name)) {
-      <button type="button" class="btn btn-elegant" data-dismiss="modal" (click)="$activeModal.dismiss('Dismiss')">
+      <button type="button" class="btn btn-elegant" data-bs-dismiss="modal" (click)="$activeModal.dismiss('Dismiss')">
         {{ 'form.button_close' | translate }}
       </button>
       }
     </div>
-    <div class="text-right">
+    <div class="text-end">
       @if (!['homebridge', 'homebridge-config-ui-x'].includes(plugin.name)) {
-      <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="$activeModal.close(true);">
+      <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="$activeModal.close(true);">
         {{ 'plugins.node_update.continue' | translate }}
       </button>
       }

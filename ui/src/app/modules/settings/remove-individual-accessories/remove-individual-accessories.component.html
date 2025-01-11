@@ -3,14 +3,12 @@
     <h5 class="modal-title">{{ 'reset.accessory_ind.title' | translate }}</h5>
     <button
       type="button"
-      class="close"
-      data-dismiss="modal"
+      class="btn-close"
+      data-bs-dismiss="modal"
       [attr.aria-label]="'form.button_close' | translate"
       (click)="$activeModal.dismiss('Dismiss')"
       [disabled]="clicked"
-    >
-      <span aria-hidden="true">&times;</span>
-    </button>
+    ></button>
   </div>
   <div class="modal-body">
     @if (!accessoriesExist) {
@@ -34,7 +32,7 @@
         <label for="bridgeSelect" class="mb-2 mb-md-0 w-100 w-md-50"
           >{{ 'reset.accessory_ind.bridge' | translate }}</label
         >
-        <div class="text-left text-md-right w-100 w-md-50">
+        <div class="text-start text-md-end w-100 w-md-50">
           <select
             class="custom-select"
             id="bridgeSelect"
@@ -50,7 +48,7 @@
       } @if (pairings.length === 1) {
       <li class="list-group-item d-flex flex-column flex-md-row align-items-center">
         <label class="mb-2 mb-md-0 w-100 w-md-50">{{ 'reset.accessory_ind.bridge' | translate }}</label>
-        <div class="text-left text-md-right w-100 w-md-50 grey-text text-monospace">
+        <div class="text-start text-md-end w-100 w-md-50 grey-text font-monospace">
           {{ getCurrentlySelectedBridge() }}
         </div>
       </li>
@@ -58,10 +56,10 @@
       <li class="list-group-item d-flex justify-content-between align-items-center">
         <span>
           {{ item.displayName }}<br />
-          <small><span class="text-monospace grey-text">{{ item.UUID }}</span></small>
+          <small><span class="font-monospace grey-text">{{ item.UUID }}</span></small>
         </span>
         <button
-          class="btn btn-danger m-0 ml-3"
+          class="btn btn-danger m-0 ms-3"
           (click)="toggleList(item.UUID, item.$cacheFile)"
           [disabled]="clicked"
           [ngClass]="{ 'btn-danger': !isInList(item.UUID, item.$cacheFile), 'btn-elegant': isInList(item.UUID, item.$cacheFile) }"
@@ -82,12 +80,12 @@
     }
   </div>
   <div class="modal-footer justify-content-between">
-    <div class="text-left">
+    <div class="text-start">
       @if (accessoriesExist) {
       <button
         type="button"
         class="btn btn-elegant"
-        data-dismiss="modal"
+        data-bs-dismiss="modal"
         (click)="$activeModal.dismiss('Dismiss')"
         [disabled]="clicked"
       >
@@ -97,17 +95,17 @@
     </div>
     <div class="text-center">
       @if (!accessoriesExist) {
-      <button type="button" class="btn btn-elegant" data-dismiss="modal" (click)="$activeModal.dismiss('Dismiss')">
+      <button type="button" class="btn btn-elegant" data-bs-dismiss="modal" (click)="$activeModal.dismiss('Dismiss')">
         {{ 'form.button_close' | translate }}
       </button>
       }
     </div>
-    <div class="text-right">
+    <div class="text-end">
       @if (accessoriesExist) {
       <button
         type="button"
         class="btn btn-danger"
-        data-dismiss="modal"
+        data-bs-dismiss="modal"
         [disabled]="!toDelete.length || clicked"
         (click)="removeAccessories()"
       >
