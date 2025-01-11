@@ -1,4 +1,4 @@
-name: Node Build
+name: Validate Package
 
 on:
   push:
@@ -8,12 +8,17 @@ on:
     types: [review_requested, ready_for_review]
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
 jobs:
   build_and_test:
+    name: Build and run npm test
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-2019]
+        os: [ubuntu-latest, ubuntu-24.04, ubuntu-22.04, ubuntu-20.04, macos-latest, macos-15, macos-14, macos-13, windows-latest, windows-2022, windows-2019]
 
     uses: homebridge/.github/.github/workflows/nodejs-build-and-test.yml@latest
     with:
@@ -25,20 +30,16 @@ jobs:
     secrets:
       token: ${{ secrets.GITHUB_TOKEN }}
 
-  test_hb_service:
+  # Validate that the UI can be installed and ran across all platforms
+  validate_service_starts:
     needs: build_and_test
+    name: Validate
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest]
-        node-version: [18.x]
-        include:
-          - os: macos-latest
-            node-version: 18.x
-          - os: windows-2019
-            node-version: 18.x
-          - os: windows-latest
-            node-version: 18.x
+        os:
+          [ubuntu-latest, ubuntu-24.04, ubuntu-22.04, ubuntu-20.04, macos-latest, macos-15, macos-14, macos-13, windows-latest, windows-2022, windows-2019]
+        node-version: [18.x, 20.x, 22.x]
 
     runs-on: ${{ matrix.os }}
 

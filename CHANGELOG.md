@@ -11,6 +11,10 @@ All notable changes to `homebridge-config-ui-x` will be documented in this file.
 - fix typos in hb/ui settings schemas (#2317) (@dnicolson)
 - fix margins in update plugin modal
 
+### Other Changes
+
+- improvements to GH actions and build processes (@NorthernMan54)
+
 ### Homebridge Dependencies
 
 - `@homebridge/hap-client` @ `v2.0.5`
