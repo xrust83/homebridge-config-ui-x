@@ -67,7 +67,6 @@ export class BridgesWidgetComponent implements OnInit, OnDestroy {
 
   async getHomebridgeStatus() {
     this.homebridgeStatus = await firstValueFrom(this.ioMain.request('get-homebridge-status'))
-    console.error(this.homebridgeStatus)
   }
 
   getChildBridgeMetadata() {

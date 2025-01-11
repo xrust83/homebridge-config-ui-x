@@ -43,6 +43,7 @@ Plugin developers:
   - node update information has been added to the new update info widget
     - a widget option has been added to hide node update information: this may be useful for docker/synology users
   - homebridge and ui version information has been moved from the footer to the new update info widget
+- add 'homebridge name' setting to settings page
 
 ### Other Changes
 

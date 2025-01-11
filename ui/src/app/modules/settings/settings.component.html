@@ -17,6 +17,18 @@
   </div>
   @if (showFields.general) {
   <ul class="list-group list-group-box mt-2 mx-0" id="fieldsGeneral">
+    <li class="list-group-item d-block d-md-flex justify-content-between align-items-center">
+      <span> Homebridge Name </span>
+      <div class="my-3 my-md-0 pl-0 pl-md-5 w-auto">
+        <input
+          class="form-control custom-input form-control-sm resp-input"
+          type="text"
+          [formControl]="hbNameFormControl"
+          [attr.aria-label]="('settings.network.port_ui' | translate)"
+          [ngClass]="{ 'is-invalid': isInvalidHbName }"
+        />
+      </div>
+    </li>
     <li class="list-group-item d-flex justify-content-between align-items-center">
       <span class="pr-2"> {{ 'menu.label_settings_advanced' | translate }} </span>
       <button
@@ -50,6 +62,18 @@
         <i class="fas fa-fw fa-arrow-right"></i>
       </a>
     </li>
+    @if (hasChangedHbName && !isInvalidHbName) {
+    <li class="list-group-item d-flex flex-column align-items-center">
+      <small class="grey-text my-2">{{ 'settings.changes.saved' | translate }}</small>
+      <button
+        class="btn btn-primary waves-effect my-2"
+        routerLink="/restart"
+        [attr.aria-label]="'menu.tooltip_restart' | translate"
+      >
+        {{ 'menu.tooltip_restart' | translate }}
+      </button>
+    </li>
+    }
   </ul>
   }
 </div>
@@ -450,7 +474,8 @@
         />
       </div>
     </li>
-    @if (hasChangedHbPort || hasChangedUiSettings || hasChangedMdns || hasChangedBridgeNetworkAdapters) {
+    @if ((hasChangedHbPort && !isInvalidHbPort) || hasChangedUiSettings || hasChangedMdns ||
+    hasChangedBridgeNetworkAdapters) {
     <li class="list-group-item d-flex flex-column align-items-center">
       <small class="grey-text my-2">{{ 'settings.changes.saved' | translate }}</small>
       <button

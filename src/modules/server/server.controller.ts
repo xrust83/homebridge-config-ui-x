@@ -225,6 +225,13 @@ export class ServerController {
   }
 
   @UseGuards(AdminGuard)
+  @ApiOperation({ summary: 'Set the Homebridge name.' })
+  @Put('/name')
+  setHomebridgeName(@Body() body: { name: string }) {
+    return this.serverService.setHomebridgeName(body.name)
+  }
+
+  @UseGuards(AdminGuard)
   @ApiOperation({ summary: 'Get the Homebridge port.' })
   @Get('/port')
   getHomebridgePort() {

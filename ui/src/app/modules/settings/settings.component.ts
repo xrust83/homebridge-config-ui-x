@@ -55,15 +55,18 @@ export class SettingsComponent implements OnInit {
   public originalMdnsSetting = ''
   public originalBridgeNetworkAdapters: string[] = []
   public originalHbPort = 0
+  public originalHbName = ''
 
   public hasChangedService = false
   public hasChangedUiSettings = false
   public hasChangedMdns = false
   public hasChangedBridgeNetworkAdapters = false
   public hasChangedHbPort = false
+  public hasChangedHbName = false
   public hasChangedLoginWallpaper = false
 
   public isInvalidHbPort = false
+  public isInvalidHbName = false
   public isInvalidHbUiPort = false
 
   public serviceForm = new FormGroup({
@@ -85,6 +88,7 @@ export class SettingsComponent implements OnInit {
   public availableNetworkAdapters: any[] = []
   public bridgeNetworkAdapters: string[] = []
   public hbPortFormControl = new FormControl(0)
+  public hbNameFormControl = new FormControl('')
   public isHbV2 = false
   public showFields = {
     general: true,
@@ -102,6 +106,10 @@ export class SettingsComponent implements OnInit {
 
   ngOnInit() {
     this.isHbV2 = this.$settings.env.homebridgeVersion.startsWith('2')
+    this.hbNameFormControl.patchValue(this.$settings.env.homebridgeInstanceName)
+    this.hbNameFormControl.valueChanges.subscribe((name: string) => this.setHomebridgeName(name))
+    this.originalHbName = this.$settings.env.homebridgeInstanceName
+
     this.initUiSettingsForm()
     this.initDisplaySettingsForm()
     this.initNetworkingOptions()
@@ -311,6 +319,25 @@ export class SettingsComponent implements OnInit {
       error: (error) => {
         console.error(error)
         this.$toastr.error(error.message, this.$translate.instant('toast.title_error'))
+      },
+    })
+  }
+
+  async setHomebridgeName(name: string) {
+    // https://github.com/homebridge/HAP-NodeJS/blob/ee41309fd9eac383cdcace39f4f6f6a3d54396f3/src/lib/util/checkName.ts#L12
+    if (!name || !(/^[\p{L}\p{N}][\p{L}\p{N} ']*[\p{L}\p{N}]$/u).test(name)) {
+      this.isInvalidHbName = true
+      return
+    }
+
+    this.$api.put('/server/name', { name }).subscribe({
+      next: () => {
+        this.hasChangedHbName = this.originalHbName !== name
+        this.$settings.setEnvItem('homebridgeInstanceName', name)
+        this.isInvalidHbName = false
+      },
+      error: () => {
+        this.isInvalidHbName = true
       },
     })
   }

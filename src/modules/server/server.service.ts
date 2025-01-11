@@ -651,6 +651,22 @@ export class ServerService {
   }
 
   /**
+   * Set the Homebridge name
+   */
+  public async setHomebridgeName(name: string): Promise<void> {
+    // https://github.com/homebridge/HAP-NodeJS/blob/ee41309fd9eac383cdcace39f4f6f6a3d54396f3/src/lib/util/checkName.ts#L12
+    if (!name || !(/^[\p{L}\p{N}][\p{L}\p{N} ']*[\p{L}\p{N}]$/u).test(name)) {
+      throw new BadRequestException('Invalid name')
+    }
+
+    const config = await this.configEditorService.getConfigFile()
+
+    config.bridge.name = name
+
+    await this.configEditorService.updateConfigFile(config)
+  }
+
+  /**
    * Set the Homebridge port
    */
   public async setHomebridgePort(port: number): Promise<void> {
@@ -662,8 +678,6 @@ export class ServerService {
     const config = await this.configEditorService.getConfigFile()
 
     config.bridge.port = port
-
-    console.error('port', port)
 
     await this.configEditorService.updateConfigFile(config)
   }
