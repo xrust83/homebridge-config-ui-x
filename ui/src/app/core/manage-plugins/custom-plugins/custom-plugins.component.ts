@@ -1,5 +1,6 @@
+import { NgClass } from '@angular/common'
 import { Component, ElementRef, inject, Input, OnDestroy, OnInit, viewChild } from '@angular/core'
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap'
+import { NgbActiveModal, NgbModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { TranslatePipe, TranslateService } from '@ngx-translate/core'
 import { ToastrService } from 'ngx-toastr'
 import { firstValueFrom, Subject } from 'rxjs'
@@ -21,6 +22,8 @@ import { environment } from '@/environments/environment'
   standalone: true,
   imports: [
     SchemaFormComponent,
+    NgbTooltip,
+    NgClass,
     TranslatePipe,
   ],
 })
@@ -58,6 +61,8 @@ export class CustomPluginsComponent implements OnInit, OnDestroy {
   public formActionSubject = new Subject()
   public childBridges: any[] = []
   public isFirstSave = false
+  public formIsValid = true
+  public strictValidation = false
 
   private io: IoNamespace
   private basePath: string
@@ -72,6 +77,7 @@ export class CustomPluginsComponent implements OnInit, OnDestroy {
     this.io = this.$ws.connectToNamespace('plugins/settings-ui')
     this.pluginAlias = this.schema.pluginAlias
     this.pluginType = this.schema.pluginType
+    this.strictValidation = this.schema.strictValidation
 
     if (this.pluginConfig.length === 0) {
       this.isFirstSave = true
@@ -494,6 +500,10 @@ export class CustomPluginsComponent implements OnInit, OnDestroy {
       this.$toastr.error(error.message, this.$translate.instant('toast.title_error'))
       this.childBridges = []
     }
+  }
+
+  onIsValid($event: boolean) {
+    this.formIsValid = $event
   }
 
   ngOnDestroy() {

@@ -1,3 +1,4 @@
+import { NgClass } from '@angular/common'
 import { Component, inject, Input, OnInit } from '@angular/core'
 import { NgbAccordionBody, NgbAccordionButton, NgbAccordionCollapse, NgbAccordionDirective, NgbAccordionHeader, NgbAccordionItem, NgbActiveModal, NgbModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap'
 import { TranslatePipe, TranslateService } from '@ngx-translate/core'
@@ -26,6 +27,7 @@ export interface PluginConfigBlock {
 export interface PluginSchema {
   pluginAlias: string
   pluginType: 'platform' | 'accessory'
+  strictValidation?: boolean
   singular?: boolean
   headerDisplay?: string
   footerDisplay?: string
@@ -48,6 +50,7 @@ export interface PluginSchema {
     NgbAccordionButton,
     NgbAccordionCollapse,
     NgbAccordionBody,
+    NgClass,
     SchemaFormComponent,
     HomebridgeDeconzComponent,
     HomebridgeHueComponent,
@@ -75,12 +78,16 @@ export class PluginConfigComponent implements OnInit {
   public saveInProgress: boolean
   public childBridges: any[] = []
   public isFirstSave = false
+  public formBlocksValid: { [key: number]: boolean } = {}
+  public formIsValid = true
+  public strictValidation = false
 
   constructor() {}
 
   ngOnInit() {
     this.pluginAlias = this.schema.pluginAlias
     this.pluginType = this.schema.pluginType
+    this.strictValidation = this.schema.strictValidation
     this.loadPluginConfig()
   }
 
@@ -187,12 +194,18 @@ export class PluginConfigComponent implements OnInit {
       },
     })
 
+    this.formBlocksValid[this.pluginConfig.length - 1] = false
     this.blockShown(__uuid__)
   }
 
   removeBlock(__uuid__: string) {
     const pluginConfigIndex = this.pluginConfig.findIndex(x => x.__uuid__ === __uuid__)
     this.pluginConfig.splice(pluginConfigIndex, 1)
+
+    delete this.formBlocksValid[pluginConfigIndex]
+    if (!Object.keys(this.formBlocksValid).length) {
+      this.formIsValid = true
+    }
   }
 
   async getChildBridges(): Promise<void> {
@@ -228,5 +241,10 @@ export class PluginConfigComponent implements OnInit {
         type: 'string',
       }
     }
+  }
+
+  onIsValid($event: boolean, index: number) {
+    this.formBlocksValid[index] = $event
+    this.formIsValid = Object.values(this.formBlocksValid).every(x => x)
   }
 }
