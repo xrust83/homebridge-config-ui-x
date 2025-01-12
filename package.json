@@ -91,7 +91,7 @@
     "@nestjs/passport": "10.0.3",
     "@nestjs/platform-fastify": "10.4.15",
     "@nestjs/platform-socket.io": "10.4.15",
-    "@nestjs/swagger": "8.1.0",
+    "@nestjs/swagger": "8.1.1",
     "@nestjs/websockets": "10.4.15",
     "axios": "1.7.9",
     "bash-color": "0.0.4",
@@ -114,14 +114,14 @@
     "reflect-metadata": "0.2.2",
     "rxjs": "7.8.1",
     "semver": "7.6.3",
-    "systeminformation": "5.25.5",
+    "systeminformation": "5.25.10",
     "tail": "2.2.6",
     "tar": "7.4.3",
     "tcp-port-used": "1.0.2",
     "unzipper": "0.12.3"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^3.12.2",
+    "@antfu/eslint-config": "^3.13.0",
     "@nestjs/testing": "^10.4.15",
     "@prettier/plugin-xml": "^3.4.1",
     "@types/fs-extra": "^11.0.4",
@@ -139,10 +139,10 @@
     "form-data": "^4.0.1",
     "nodemon": "^3.1.9",
     "rimraf": "^6.0.1",
-    "ts-loader": "^9.5.1",
+    "ts-loader": "^9.5.2",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.7.2",
+    "typescript": "^5.7.3",
     "unplugin-swc": "^1.5.1",
     "vitest": "^2.1.8"
   },
@@ -188,5 +188,8 @@
       "email": "nfarina@gmail.com",
       "name": "nfarina"
     }
-  ]
+  ],
+  "scarfSettings": {
+    "enabled": false
+  }
 }
