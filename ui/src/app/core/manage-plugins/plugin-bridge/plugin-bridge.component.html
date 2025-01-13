@@ -13,6 +13,11 @@
     }
   </div>
   <div class="modal-body">
+    @if (loading) {
+    <div class="text-center primary-text">
+      <i class="fa fa-fw fa-cog fa-spin" style="font-size: 75px"></i>
+    </div>
+    } @if (!loading) {
     <div class="mb-3 text-center">
       <i class="fas fa-fw fa-bridge primary-text" style="font-size: 75px"></i>
     </div>
@@ -272,7 +277,7 @@
         {{ 'plugins.settings.label_open_config_editor' | translate }}
       </button>
     </ngb-alert>
-    }
+    } }
   </div>
   <div class="modal-footer justify-content-between">
     <div class="text-start">
@@ -303,7 +308,7 @@
     </div>
     <div class="text-end">
       @if (canConfigure && !justInstalled) { @if (configBlocks.length) {
-      <button type="button" class="btn btn-primary" (click)="save()" [disabled]="saveInProgress">
+      <button type="button" class="btn btn-primary" (click)="save()" [disabled]="saveInProgress || loading">
         @if (!saveInProgress) { {{ 'form.button_save' | translate }} } @if (saveInProgress) {
         <i class="fas fa-fw fa-spinner fa-pulse"></i>
         }

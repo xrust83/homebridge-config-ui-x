@@ -39,6 +39,7 @@ Plugin developers:
   - homebridge and ui version information has been moved from the footer to the new update info widget
 - add 'homebridge name' setting to settings page
 - migrate bootstrap from `v4` to `v5`
+- fix plugin config/bridge screens for certain plugins
 
 ### Other Changes
 

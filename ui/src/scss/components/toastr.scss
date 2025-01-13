@@ -16,15 +16,28 @@
   border: initial !important;
   backdrop-filter: blur(0) !important;
 }
+
+.toast-title {
+  font-weight: 300;
+}
+
+.toast-message {
+  font-weight: 300;
+  font-size: 0.85rem;
+}
+
 .toast-success {
   background-color: #51a351 !important;
 }
+
 .toast-error {
   background-color: #bd362f !important;
 }
+
 .toast-info {
   background-color: #2f96b4 !important;
 }
+
 .toast-warning {
   background-color: #f89406 !important;
 }

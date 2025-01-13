@@ -55,6 +55,7 @@ export class PluginBridgeComponent implements OnInit {
   @Input() schema: PluginSchema
   @Input() justInstalled = false
 
+  public loading = true
   public canConfigure = true
   public configBlocks: any[] = []
   public selectedBlock: string = '0'
@@ -71,15 +72,15 @@ export class PluginBridgeComponent implements OnInit {
   public bridgesAvailableForLink: { index: string, usesIndex: string, name: string, username: string, port: number }[] = []
   public currentlySelectedLink: { index: string, usesIndex: string, name: string, username: string, port: number } | null = null
   public currentBridgeHasLinks: boolean = false
-  public readonly linkChildBridges = '<a href="https://github.com/homebridge/homebridge/wiki/Child-Bridges" target="_blank"><i class="fa fa/fw fas fa-fw fa-external-link-alt primary-text"></i></a>'
+  public readonly linkChildBridges = '<a href="https://github.com/homebridge/homebridge/wiki/Child-Bridges" target="_blank"><i class="fas fa-fw fa-external-link-alt primary-text"></i></a>'
   public readonly linkDebug = '<a href="https://github.com/homebridge/homebridge-config-ui-x/wiki/Debug-Common-Values" target="_blank"><i class="fa fa-fw fa-external-link-alt primary-text"></i></a>'
 
   constructor() {}
 
-  ngOnInit(): void {
-    this.isPlatform = this.schema.pluginType === 'platform'
-    this.loadPluginConfig()
+  async ngOnInit(): Promise<void> {
+    await Promise.all([this.getPluginType(), this.loadPluginConfig()])
     this.canShowBridgeDebug = this.$settings.env.homebridgeVersion.startsWith('2')
+    this.loading = false
   }
 
   onBlockChange(index: string) {
@@ -132,59 +133,67 @@ export class PluginBridgeComponent implements OnInit {
     }
   }
 
-  loadPluginConfig() {
-    this.$api.get(`/config-editor/plugin/${encodeURIComponent(this.plugin.name)}`).subscribe({
-      next: async (configBlocks) => {
-        this.configBlocks = configBlocks
-        for (const [i, block] of this.configBlocks.entries()) {
-          if (block._bridge && block._bridge.username) {
-            this.enabledBlocks[i] = true
+  async getPluginType() {
+    try {
+      const alias = await firstValueFrom(this.$api.get(`/plugins/alias/${encodeURIComponent(this.plugin.name)}`))
+      this.isPlatform = alias.pluginType === 'platform'
+    } catch (error) {
+      this.$toastr.error(this.$translate.instant('plugins.config.load_error'), this.$translate.instant('toast.title_error'))
+      this.$activeModal.close()
+      console.error(error)
+    }
+  }
 
-            // For accessory plugin blocks, the username might be the same as a previous block
-            const existingBridgeIndex = Array.from(this.bridgeCache.values()).findIndex(bridge => bridge.username === block._bridge.username)
-            const existingBridge = existingBridgeIndex !== -1 ? Array.from(this.bridgeCache.values())[existingBridgeIndex] : undefined
-            if (existingBridge) {
-              block._bridge.env = {}
-              this.accessoryBridgeLinks.push({
-                index: i.toString(),
-                usesIndex: existingBridgeIndex.toString(),
-                name: existingBridge.name,
-                port: existingBridge.port,
-                username: block._bridge.username,
-              })
-            } else {
-              block._bridge.env = block._bridge.env || {}
-              this.bridgeCache.set(i, block._bridge)
-              await this.getDeviceInfo(block._bridge.username)
+  async loadPluginConfig() {
+    try {
+      this.configBlocks = await firstValueFrom(this.$api.get(`/config-editor/plugin/${encodeURIComponent(this.plugin.name)}`))
+      for (const [i, block] of this.configBlocks.entries()) {
+        if (block._bridge && block._bridge.username) {
+          this.enabledBlocks[i] = true
 
-              // If the bridge does not have a name in the config, then override it from the pairing
-              if (!block._bridge.name) {
-                block._bridge.name = this.deviceInfo[block._bridge.username]?.displayName
-              }
-              this.originalBridges.push(block._bridge)
+          // For accessory plugin blocks, the username might be the same as a previous block
+          const existingBridgeIndex = Array.from(this.bridgeCache.values()).findIndex(bridge => bridge.username === block._bridge.username)
+          const existingBridge = existingBridgeIndex !== -1 ? Array.from(this.bridgeCache.values())[existingBridgeIndex] : undefined
+          if (existingBridge) {
+            block._bridge.env = {}
+            this.accessoryBridgeLinks.push({
+              index: i.toString(),
+              usesIndex: existingBridgeIndex.toString(),
+              name: existingBridge.name,
+              port: existingBridge.port,
+              username: block._bridge.username,
+            })
+          } else {
+            block._bridge.env = block._bridge.env || {}
+            this.bridgeCache.set(i, block._bridge)
+            await this.getDeviceInfo(block._bridge.username)
+
+            // If the bridge does not have a name in the config, then override it from the pairing
+            if (!block._bridge.name) {
+              block._bridge.name = this.deviceInfo[block._bridge.username]?.displayName
             }
+            this.originalBridges.push(block._bridge)
           }
         }
+      }
 
-        // If the plugin has just been installed, and there are no existing bridges, enable all blocks
-        if (this.justInstalled && this.bridgeCache.size === 0) {
-          this.configBlocks.forEach((block, index) => {
-            this.enabledBlocks[index] = true
-            this.toggleExternalBridge(block, true, index.toString())
-          })
-        }
+      // If the plugin has just been installed, and there are no existing bridges, enable all blocks
+      if (this.justInstalled && this.bridgeCache.size === 0) {
+        this.configBlocks.forEach((block, index) => {
+          this.enabledBlocks[index] = true
+          this.toggleExternalBridge(block, true, index.toString())
+        })
+      }
 
-        // Check if the currently selected bridge has any links
-        const currentBridgeLinks = this.accessoryBridgeLinks.find(link => link.username === this.bridgeCache.get(Number(this.selectedBlock))?.username)
-        if (currentBridgeLinks) {
-          this.currentBridgeHasLinks = true
-        }
-      },
-      error: (error) => {
-        this.canConfigure = false
-        console.error(error)
-      },
-    })
+      // Check if the currently selected bridge has any links
+      const currentBridgeLinks = this.accessoryBridgeLinks.find(link => link.username === this.bridgeCache.get(Number(this.selectedBlock))?.username)
+      if (currentBridgeLinks) {
+        this.currentBridgeHasLinks = true
+      }
+    } catch (error) {
+      this.canConfigure = false
+      console.error(error)
+    }
   }
 
   async toggleExternalBridge(block: any, enable: boolean, index: string) {
