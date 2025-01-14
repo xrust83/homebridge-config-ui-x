@@ -23,17 +23,17 @@
     >
       <button
         type="button"
-        class="btn btn-primary mb-0 mx-0 px-0 py-2"
+        class="btn mb-0 mx-0 px-0 py-3"
         (click)="setTargetMode(false)"
-        [style.opacity]="!targetMode ? '1' : '0.75'"
+        [ngClass]="{ 'btn-primary': !targetMode, 'btn-elegant': targetMode }"
       >
         {{ 'accessories.control.not_mute' | translate }}
       </button>
       <button
         type="button"
-        class="btn btn-primary mb-0 mx-0 px-0 py-2"
+        class="btn mb-0 mx-0 px-0 py-3"
         (click)="setTargetMode(true)"
-        [style.opacity]="targetMode ? '1' : '0.75'"
+        [ngClass]="{ 'btn-primary': targetMode, 'btn-elegant': !targetMode }"
       >
         {{ 'accessories.control.mute' | translate }}
       </button>

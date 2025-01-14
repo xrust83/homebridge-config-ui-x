@@ -42,6 +42,7 @@ Plugin developers:
 - fix plugin config/bridge screens for certain plugins
 - add lighting mode option for terminal and log widgets
   - only available when the UI is already in light mode
+- fix long press on mobile devices
 
 ### Other Changes
 

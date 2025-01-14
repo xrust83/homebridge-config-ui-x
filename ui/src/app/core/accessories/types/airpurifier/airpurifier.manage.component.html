@@ -23,17 +23,17 @@
     >
       <button
         type="button"
-        class="btn btn-primary mb-0 mx-0 px-0 py-2"
+        class="btn mb-0 mx-0 px-0 py-3"
         (click)="setTargetMode(0)"
-        [style.opacity]="targetMode === 0 ? '1' : '0.75'"
+        [ngClass]="{ 'btn-primary': targetMode === 0, 'btn-elegant': targetMode !== 0 }"
       >
         {{ 'accessories.control.off' | translate }}
       </button>
       <button
         type="button"
-        class="btn btn-primary mb-0 mx-0 px-0 py-2"
+        class="btn mb-0 mx-0 px-0 py-3"
         (click)="setTargetMode(1)"
-        [style.opacity]="targetMode === 1 ? '1' : '0.75'"
+        [ngClass]="{ 'btn-primary': targetMode === 1, 'btn-elegant': targetMode !== 1 }"
       >
         {{ 'accessories.control.on' | translate }}
       </button>

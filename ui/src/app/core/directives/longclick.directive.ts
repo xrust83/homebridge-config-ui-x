@@ -7,8 +7,8 @@ import { Directive, HostListener, Input, OnDestroy, output } from '@angular/core
 })
 export class LongClickDirective implements OnDestroy {
   @Input() public duration = 350
-  public readonly longclick = output<MouseEvent>()
-  public readonly shortclick = output<MouseEvent | KeyboardEvent>()
+  public readonly longclick = output<MouseEvent | TouchEvent>()
+  public readonly shortclick = output<MouseEvent | KeyboardEvent | TouchEvent>()
 
   private downTimeout: NodeJS.Timeout
   private done = false
@@ -22,7 +22,7 @@ export class LongClickDirective implements OnDestroy {
 
   @HostListener('mouseup', ['$event'])
   public onMouseUp(event: MouseEvent): void {
-    clearInterval(this.downTimeout)
+    clearTimeout(this.downTimeout)
     if (!this.done) {
       this.done = true
       this.shortclick.emit(event)
@@ -30,8 +30,8 @@ export class LongClickDirective implements OnDestroy {
   }
 
   @HostListener('touchend', ['$event'])
-  public onTouchEnd(event: MouseEvent): void {
-    clearInterval(this.downTimeout)
+  public onTouchEnd(event: TouchEvent): void {
+    clearTimeout(this.downTimeout)
     event.preventDefault()
     event.stopPropagation()
     if (!this.done) {
@@ -42,15 +42,19 @@ export class LongClickDirective implements OnDestroy {
 
   @HostListener('touchstart', ['$event'])
   @HostListener('mousedown', ['$event'])
-  public onMouseDown(event: MouseEvent): void {
-    // Check for the left mouse button (button 0)
-    if (event.button !== 0) {
+  public onMouseDown(event: MouseEvent | TouchEvent): void {
+    // Check for the left mouse button (button 0) in case of mouse event
+    if (event instanceof MouseEvent && event.button !== 0) {
       return
     }
     this.done = false
+    event.preventDefault()
+    event.stopPropagation()
     this.downTimeout = setTimeout(() => {
-      this.done = true
-      this.longclick.emit(event)
+      if (!this.done) {
+        this.done = true
+        this.longclick.emit(event)
+      }
     }, this.duration)
   }
 
@@ -58,10 +62,10 @@ export class LongClickDirective implements OnDestroy {
   @HostListener('touchmove', ['$event'])
   public onMouseMove(): void {
     this.done = true
-    clearInterval(this.downTimeout)
+    clearTimeout(this.downTimeout)
   }
 
   ngOnDestroy() {
-    clearInterval(this.downTimeout)
+    clearTimeout(this.downTimeout)
   }
 }
