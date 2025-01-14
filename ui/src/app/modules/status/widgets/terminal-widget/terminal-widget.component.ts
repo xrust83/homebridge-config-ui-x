@@ -4,6 +4,7 @@ import { TranslatePipe } from '@ngx-translate/core'
 import { Subject } from 'rxjs'
 import { ITerminalOptions } from 'xterm'
 
+import { SettingsService } from '@/app/core/settings.service'
 import { TerminalService } from '@/app/core/terminal.service'
 
 @Component({
@@ -17,6 +18,7 @@ import { TerminalService } from '@/app/core/terminal.service'
 })
 export class TerminalWidgetComponent implements OnInit, OnDestroy {
   private $terminal = inject(TerminalService)
+  private $settings = inject(SettingsService)
 
   readonly widgetContainerElement = viewChild<ElementRef>('widgetcontainer')
   readonly titleElement = viewChild<ElementRef>('terminaltitle')
@@ -30,19 +32,32 @@ export class TerminalWidgetComponent implements OnInit, OnDestroy {
 
   private fontSize = 15
   private fontWeight: ITerminalOptions['fontWeight'] = '400'
+  public theme: 'dark' | 'light' = 'dark'
 
   constructor() {}
 
   ngOnInit() {
     this.fontSize = this.widget.fontSize || 15
     this.fontWeight = this.widget.fontWeight || 400
+    if (this.$settings.actualLightingMode === 'dark') {
+      this.widget.theme = 'dark'
+    }
+    this.theme = this.widget.theme || 'dark'
 
     setTimeout(() => {
       this.$terminal.startTerminal(this.termTarget(), {
         cursorBlink: false,
-        theme: {
-          background: '#2b2b2b',
-        },
+        theme: this.theme !== 'light'
+          ? {
+              background: '#2b2b2b',
+            }
+          : {
+              background: '#00000000',
+              foreground: '#2b2b2b',
+              cursor: '#d2d2d2',
+              selection: '#d2d2d2',
+            },
+        allowTransparency: this.theme === 'light',
         fontSize: this.fontSize,
         fontWeight: this.fontWeight,
       }, this.resizeEvent)
@@ -56,11 +71,34 @@ export class TerminalWidgetComponent implements OnInit, OnDestroy {
 
     this.configureEvent.subscribe({
       next: () => {
-        if (this.widget.fontSize !== this.fontSize || this.widget.fontWeight !== this.fontWeight) {
+        let changed = false
+        if (this.widget.fontSize !== this.fontSize) {
           this.fontSize = this.widget.fontSize
-          this.fontWeight = this.widget.fontWeight
           this.$terminal.term.options.fontSize = this.widget.fontSize
+          changed = true
+        }
+        if (this.widget.fontWeight !== this.fontWeight) {
+          this.fontWeight = this.widget.fontWeight
           this.$terminal.term.options.fontWeight = this.widget.fontWeight
+          changed = true
+        }
+        if (this.widget.theme !== this.theme) {
+          this.theme = this.widget.theme
+          this.$terminal.term.options.theme = this.theme !== 'light'
+            ? {
+                background: '#2b2b2b',
+              }
+            : {
+                background: '#00000000',
+                foreground: '#2b2b2b',
+                cursor: '#d2d2d2',
+                selection: '#d2d2d2',
+              }
+          this.$terminal.term.options.allowTransparency = this.theme === 'light'
+          changed = true
+        }
+
+        if (changed) {
           this.resizeEvent.next(undefined)
           setTimeout(() => {
             this.$terminal.term.scrollToBottom()

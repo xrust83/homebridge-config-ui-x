@@ -40,6 +40,8 @@ Plugin developers:
 - add 'homebridge name' setting to settings page
 - migrate bootstrap from `v4` to `v5`
 - fix plugin config/bridge screens for certain plugins
+- add lighting mode option for terminal and log widgets
+  - only available when the UI is already in light mode
 
 ### Other Changes
 

@@ -15,6 +15,7 @@ import {
 } from 'rxjs/operators'
 
 import { ApiService } from '@/app/core/api.service'
+import { SettingsService } from '@/app/core/settings.service'
 import { environment } from '@/environments/environment'
 
 @Component({
@@ -32,6 +33,7 @@ export class WidgetControlComponent implements OnInit {
   $activeModal = inject(NgbActiveModal)
   private $api = inject(ApiService)
   private $http = inject(HttpClient)
+  private $settings = inject(SettingsService)
   private $translate = inject(TranslateService)
 
   @Input() widget: any
@@ -72,6 +74,7 @@ export class WidgetControlComponent implements OnInit {
   ]
 
   public networkInterfaces: string[] = []
+  public isLightMode: boolean
 
   constructor() {}
 
@@ -96,12 +99,16 @@ export class WidgetControlComponent implements OnInit {
   public searchCountryCodeFormatter = (result: any) => `${result.name}, ${result.country}`
 
   ngOnInit() {
+    this.isLightMode = this.$settings.actualLightingMode === 'light'
     if (this.widget.component === 'HomebridgeLogsWidgetComponent' || this.widget.component === 'TerminalWidgetComponent') {
       if (!this.widget.fontWeight) {
         this.widget.fontWeight = '400'
       }
       if (!this.widget.fontSize) {
         this.widget.fontSize = 15
+      }
+      if (!this.widget.theme) {
+        this.widget.theme = 'dark'
       }
     }
     if (this.widget.component === 'NetworkWidgetComponent') {
