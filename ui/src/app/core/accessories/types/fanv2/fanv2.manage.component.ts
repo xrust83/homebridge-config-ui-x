@@ -27,6 +27,7 @@ export class Fanv2ManageComponent implements OnInit {
   public targetMode: any
   public targetRotationSpeed: any
   public targetRotationSpeedChanged: Subject<string> = new Subject<string>()
+  public hasRotationDirection = false
 
   constructor() {
     this.targetRotationSpeedChanged
@@ -52,6 +53,10 @@ export class Fanv2ManageComponent implements OnInit {
     this.targetMode = this.service.values.Active
 
     this.loadRotationSpeed()
+
+    if (this.service.serviceCharacteristics.find(c => c.type === 'RotationDirection')) {
+      this.hasRotationDirection = true
+    }
   }
 
   loadRotationSpeed() {
@@ -80,5 +85,9 @@ export class Fanv2ManageComponent implements OnInit {
 
   onTargetRotationSpeedChange() {
     this.targetRotationSpeedChanged.next(this.targetRotationSpeed.value)
+  }
+
+  setRotationDirection(value: number) {
+    this.service.getCharacteristic('RotationDirection').setValue(value)
   }
 }

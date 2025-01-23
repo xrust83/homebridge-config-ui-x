@@ -22,6 +22,7 @@ export class Fanv2Component implements OnInit {
 
   @Input() public service: ServiceTypeX
   public rotationSpeedUnit = ''
+  public hasRotationDirection = false
 
   constructor() {}
 
@@ -30,6 +31,9 @@ export class Fanv2Component implements OnInit {
     const RotationSpeed = this.service.serviceCharacteristics.find(c => c.type === 'RotationSpeed')
     if (RotationSpeed && RotationSpeed.unit === 'percentage') {
       this.rotationSpeedUnit = '%'
+    }
+    if (this.service.serviceCharacteristics.find(c => c.type === 'RotationDirection')) {
+      this.hasRotationDirection = true
     }
   }
 

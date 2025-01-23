@@ -11,10 +11,8 @@
   </div>
   <div class="modal-body text-center px-5">
     <h5>
-      <strong>
-        {{ 'accessories.control.fan' | translate }} {{ (service.values.Active ? 'accessories.control.on' :
-        'accessories.control.off') | translate }}
-      </strong>
+      {{ 'accessories.control.fan' | translate }} {{ (service.values.Active ? 'accessories.control.on' :
+      'accessories.control.off') | translate }}
     </h5>
 
     <div class="btn-group-vertical d-flex justify-content-center mb-4 p-0" role="group" aria-label="Fan Mode Control">
@@ -47,6 +45,30 @@
       (ngModelChange)="onTargetRotationSpeedChange()"
     >
     </nouislider>
+    } @if (hasRotationDirection && targetMode === 1) {
+    <h5 class="mt-4">{{ 'accessories.control.rotation_direction' | translate }}</h5>
+    <div
+      class="btn-group-vertical d-flex justify-content-center mb-4 p-0"
+      role="group"
+      aria-label="Fan Direction Control"
+    >
+      <button
+        type="button"
+        class="btn mb-0 mx-0 px-0 py-3"
+        (click)="setRotationDirection(0)"
+        [ngClass]="{ 'btn-primary': service.values.RotationDirection === 0, 'btn-elegant': service.values.RotationDirection !== 0 }"
+      >
+        {{ 'accessories.control.rotation_clockwise' | translate }}
+      </button>
+      <button
+        type="button"
+        class="btn mb-0 mx-0 px-0 py-3"
+        (click)="setRotationDirection(1)"
+        [ngClass]="{ 'btn-primary': service.values.RotationDirection === 1, 'btn-elegant': service.values.RotationDirection !== 1 }"
+      >
+        {{ 'accessories.control.rotation_c_clockwise' | translate }}
+      </button>
+    </div>
     }
   </div>
   <div class="modal-footer"></div>

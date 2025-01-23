@@ -10,7 +10,15 @@
     @if (!service.values.On) {
     <img src="/assets/hap-icons/fan-off.svg" alt="Fan" class="accessory-img" />
     } @if (service.values.On) {
-    <img src="/assets/hap-icons/fan-on.svg" alt="Fan" class="accessory-img spin" />
+    <img
+      src="/assets/hap-icons/fan-on.svg"
+      alt="Fan"
+      class="accessory-img"
+      [ngClass]="{
+        'spin': !hasRotationDirection || (hasRotationDirection && service.values.RotationDirection === 0),
+        'spin-counter': !hasRotationDirection || (hasRotationDirection && service.values.RotationDirection === 1),
+      }"
+    />
     }
     <div class="accessory-label mt-auto">{{ service.customName || service.serviceName }}</div>
     @if (!service.values.RotationSpeed || !service.values.On) {
