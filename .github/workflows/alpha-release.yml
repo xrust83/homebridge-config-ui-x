@@ -50,14 +50,14 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 20.x
+          node-version: 22.x
 
       - name: Install package v${{ needs.publish.outputs.NPM_VERSION }}
         run: |
           export npm_config_prefix=$(pwd)/package
           for i in {1..10}; do
-            npm install -g homebridge-config-ui-x@${{ needs.publish.outputs.NPM_VERSION }} && break || {
-              if [ $? -eq 1 ] && grep -q 'ETARGET' <<< "$(npm install -g homebridge-config-ui-x@${{ needs.publish.outputs.NPM_VERSION }} 2>&1)"; then
+            npm install -g --omit=dev homebridge-config-ui-x@${{ needs.publish.outputs.NPM_VERSION }} && break || {
+              if [ $? -eq 1 ] && grep -q 'ETARGET' <<< "$(npm install -g --omit=dev homebridge-config-ui-x@${{ needs.publish.outputs.NPM_VERSION }} 2>&1)"; then
                 echo "Attempt $i failed with ETARGET error. Retrying in 1 minute..."
                 sleep 60
               else

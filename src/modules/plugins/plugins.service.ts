@@ -521,6 +521,7 @@ export class PluginsService {
 
     // Prepare flags for npm command
     const installOptions: Array<string> = []
+    let npmPluginLabel = pluginAction.name
 
     // Check to see if custom plugin path is using a package.json file
     if (
@@ -539,7 +540,11 @@ export class PluginsService {
       installOptions.push('-g')
     }
 
-    const npmPluginLabel = action === 'uninstall' ? pluginAction.name : `${pluginAction.name}@${pluginAction.version}`
+    // If installing, set --omit=dev to prevent installing devDependencies
+    if (action === 'install') {
+      installOptions.push('--omit=dev')
+      npmPluginLabel = `${pluginAction.name}@${pluginAction.version}`
+    }
 
     try {
       await this.runNpmCommand(
@@ -638,6 +643,7 @@ export class PluginsService {
 
     // Prepare flags for npm command
     const installOptions: Array<string> = []
+    installOptions.push('--omit=dev')
 
     // Check to see if custom plugin path is using a package.json file
     if (installPath === this.configService.customPluginPath && await pathExists(resolve(installPath, '../package.json'))) {

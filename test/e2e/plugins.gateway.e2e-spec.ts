@@ -100,9 +100,9 @@ describe('PluginsGateway (e2e)', () => {
 
     // Expect the npm command to be spawned
     if (platform() === 'win32') {
-      expect(mockSpawn).toHaveBeenCalledWith(win32NpmPath, ['install', '-g', 'homebridge-mock-plugin@latest'], expect.anything())
+      expect(mockSpawn).toHaveBeenCalledWith(win32NpmPath, ['install', '-g', '--omit=dev', 'homebridge-mock-plugin@latest'], expect.anything())
     } else {
-      expect(mockSpawn).toHaveBeenCalledWith('npm', ['install', 'homebridge-mock-plugin@latest'], expect.anything())
+      expect(mockSpawn).toHaveBeenCalledWith('npm', ['install', '--omit=dev', 'homebridge-mock-plugin@latest'], expect.anything())
     }
 
     // Expect the terminal logs to be sent to the client
@@ -127,9 +127,9 @@ describe('PluginsGateway (e2e)', () => {
 
     // Expect the npm command to be spawned
     if (platform() === 'win32') {
-      expect(mockSpawn).toHaveBeenCalledWith(win32NpmPath, ['install', '-g', 'homebridge-mock-plugin@3.2.5'], expect.anything())
+      expect(mockSpawn).toHaveBeenCalledWith(win32NpmPath, ['install', '-g', '--omit=dev', 'homebridge-mock-plugin@3.2.5'], expect.anything())
     } else {
-      expect(mockSpawn).toHaveBeenCalledWith('npm', ['install', 'homebridge-mock-plugin@3.2.5'], expect.anything())
+      expect(mockSpawn).toHaveBeenCalledWith('npm', ['install', '--omit=dev', 'homebridge-mock-plugin@3.2.5'], expect.anything())
     }
 
     // Expect the terminal logs to be sent to the client
@@ -160,7 +160,7 @@ describe('PluginsGateway (e2e)', () => {
     await pluginsGateway.installPlugin(client, { name: 'homebridge-mock-plugin', version: 'latest' })
 
     // Expect the npm command to be spawned with sudo
-    expect(mockSpawn).toHaveBeenCalledWith('sudo', ['-E', '-n', 'npm', 'install', 'homebridge-mock-plugin@latest'], expect.anything())
+    expect(mockSpawn).toHaveBeenCalledWith('sudo', ['-E', '-n', 'npm', 'install', '--omit=dev', 'homebridge-mock-plugin@latest'], expect.anything())
 
     // Expect the method to let the client know the command succeeded
     expect(client.emit).toHaveBeenCalledWith('stdout', expect.stringContaining('Operation succeeded!'))
@@ -182,9 +182,9 @@ describe('PluginsGateway (e2e)', () => {
 
     // Expect the npm command to be spawned
     if (platform() === 'win32') {
-      expect(mockSpawn).toHaveBeenCalledWith(win32NpmPath, ['install', '-g', 'homebridge-mock-plugin@latest'], expect.anything())
+      expect(mockSpawn).toHaveBeenCalledWith(win32NpmPath, ['install', '-g', '--omit=dev', 'homebridge-mock-plugin@latest'], expect.anything())
     } else {
-      expect(mockSpawn).toHaveBeenCalledWith('npm', ['install', 'homebridge-mock-plugin@latest'], expect.anything())
+      expect(mockSpawn).toHaveBeenCalledWith('npm', ['install', '--omit=dev', 'homebridge-mock-plugin@latest'], expect.anything())
     }
 
     // Expect the method to let the client know the operation failed
@@ -253,9 +253,9 @@ describe('PluginsGateway (e2e)', () => {
 
     // Expect the npm command to be spawned
     if (platform() === 'win32') {
-      expect(mockSpawn).toHaveBeenCalledWith(win32NpmPath, ['install', '-g', 'homebridge-mock-plugin@latest'], expect.anything())
+      expect(mockSpawn).toHaveBeenCalledWith(win32NpmPath, ['install', '-g', '--omit=dev', 'homebridge-mock-plugin@latest'], expect.anything())
     } else {
-      expect(mockSpawn).toHaveBeenCalledWith('npm', ['install', 'homebridge-mock-plugin@latest'], expect.anything())
+      expect(mockSpawn).toHaveBeenCalledWith('npm', ['install', '--omit=dev', 'homebridge-mock-plugin@latest'], expect.anything())
     }
 
     // Expect the method to let the client know the command succeeded
@@ -278,9 +278,9 @@ describe('PluginsGateway (e2e)', () => {
 
     // Expect the npm command to be spawned
     if (platform() === 'win32') {
-      expect(mockSpawn).toHaveBeenCalledWith(win32NpmPath, ['install', '-g', 'homebridge-mock-plugin@3.4.6'], expect.anything())
+      expect(mockSpawn).toHaveBeenCalledWith(win32NpmPath, ['install', '-g', '--omit=dev', 'homebridge-mock-plugin@3.4.6'], expect.anything())
     } else {
-      expect(mockSpawn).toHaveBeenCalledWith('npm', ['install', 'homebridge-mock-plugin@3.4.6'], expect.anything())
+      expect(mockSpawn).toHaveBeenCalledWith('npm', ['install', '--omit=dev', 'homebridge-mock-plugin@3.4.6'], expect.anything())
     }
 
     // Expect the method to let the client know the command succeeded
@@ -313,9 +313,9 @@ describe('PluginsGateway (e2e)', () => {
 
     // Expect the npm command to be spawned
     if (platform() === 'win32') {
-      expect(mockSpawn).toHaveBeenCalledWith(win32NpmPath, ['install', '-g', 'homebridge@latest'], expect.anything())
+      expect(mockSpawn).toHaveBeenCalledWith(win32NpmPath, ['install', '--omit=dev', '-g', 'homebridge@latest'], expect.anything())
     } else {
-      expect(mockSpawn).toHaveBeenCalledWith('npm', ['install', 'homebridge@latest'], expect.objectContaining({
+      expect(mockSpawn).toHaveBeenCalledWith('npm', ['install', '--omit=dev', 'homebridge@latest'], expect.objectContaining({
         cwd: resolve(process.env.UIX_STORAGE_PATH, 'plugins'),
       }))
     }
@@ -349,9 +349,9 @@ describe('PluginsGateway (e2e)', () => {
 
     // Expect the npm command to be spawned
     if (platform() === 'win32') {
-      expect(mockSpawn).toHaveBeenCalledWith(win32NpmPath, ['install', '-g', 'homebridge@1.2.5'], expect.anything())
+      expect(mockSpawn).toHaveBeenCalledWith(win32NpmPath, ['install', '--omit=dev', '-g', 'homebridge@1.2.5'], expect.anything())
     } else {
-      expect(mockSpawn).toHaveBeenCalledWith('npm', ['install', 'homebridge@1.2.5'], expect.objectContaining({
+      expect(mockSpawn).toHaveBeenCalledWith('npm', ['install', '--omit=dev', 'homebridge@1.2.5'], expect.objectContaining({
         cwd: resolve(process.env.UIX_STORAGE_PATH, 'plugins'),
       }))
     }
