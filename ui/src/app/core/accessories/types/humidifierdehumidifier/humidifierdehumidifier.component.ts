@@ -32,7 +32,7 @@ export class HumidifierDehumidifierComponent {
 
   onLongClick() {
     const ref = this.$modal.open(HumidifierDehumidifierManageComponent, {
-      size: 'sm',
+      size: 'md',
     })
     ref.componentInstance.service = this.service
   }

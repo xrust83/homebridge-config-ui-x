@@ -10,22 +10,17 @@
     ></button>
   </div>
   <div class="modal-body text-center px-5">
-    <strong>
-      @if (service.values.PositionState === 2) {
-      <div>
-        @if (service.values.CurrentPosition === 0) { {{ 'accessories.control.closed' | translate }} } @if
-        (service.values.CurrentPosition > 0 && service.values.CurrentPosition < 100) { {{ service.values.CurrentPosition
-        }}% {{ 'accessories.control.open' | translate }} } @if (service.values.CurrentPosition === 100) { {{
-        'accessories.control.open' | translate }} }
-      </div>
-      } @if (service.values.PositionState === 1) {
-      <div class="red-text">{{ 'accessories.control.opening' | translate }}...</div>
-      } @if (service.values.PositionState === 0) {
-      <div class="red-text">{{ 'accessories.control.closing' | translate }}...</div>
-      }
-    </strong>
+    <h6 class="mb-4">
+      {{ 'menu.label_status' | translate }}: @if (service.values.PositionState === 2) { @if
+      (service.values.CurrentPosition === 0) { {{ 'accessories.control.closed' | translate }} } @if
+      (service.values.CurrentPosition > 0 && service.values.CurrentPosition < 100) { {{ 'accessories.control.open' |
+      translate }} <span class="grey-text"> ({{ service.values.CurrentPosition }}%)</span> } @if
+      (service.values.CurrentPosition === 100) { {{ 'accessories.control.open' | translate }} } } @if
+      (service.values.PositionState === 1) { {{ 'accessories.control.opening' | translate }}... } @if
+      (service.values.PositionState === 0) { {{ 'accessories.control.closing' | translate }}... }
+    </h6>
 
-    <p>{{ 'accessories.control.target' | translate }}: {{ targetPosition.value }}%</p>
+    <h6>{{ 'accessories.control.target' | translate }}: {{ targetPosition.value }}%</h6>
     <nouislider
       [min]="targetPosition.min"
       [max]="targetPosition.max"

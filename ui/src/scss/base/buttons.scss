@@ -43,6 +43,20 @@
   }
 }
 
+.btn-control {
+  color: #000000;
+  background-color: #f4f4f4;
+  border-color: #d4d4d4 !important;
+
+  &:hover,
+  &:focus {
+    color: #000000;
+    background-color: color.adjust(#f4f4f4, $lightness: -2%) !important;
+    border-color: #d4d4d4 !important;
+    transition: background-color 0.25s;
+  }
+}
+
 .btn-danger {
   background-color: #d32f2f;
   border-color: #d32f2f;

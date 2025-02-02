@@ -44,6 +44,7 @@ export class StatusComponent implements OnInit, OnDestroy {
     mobile: (window.innerWidth < 1024),
   }
 
+  private isUnlocked = false
   private io: IoNamespace
 
   constructor() {}
@@ -57,10 +58,10 @@ export class StatusComponent implements OnInit, OnDestroy {
       itemChangeCallback: this.gridChangedEvent.bind(this),
       itemResizeCallback: this.gridResizeEvent.bind(this),
       draggable: {
-        enabled: this.isLayoutUnlocked(),
+        enabled: this.isUnlocked,
       },
       resizable: {
-        enabled: this.isLayoutUnlocked(),
+        enabled: this.isUnlocked,
       },
       gridType: 'verticalFixed',
       margin: 8,
@@ -175,26 +176,19 @@ export class StatusComponent implements OnInit, OnDestroy {
     }
   }
 
-  isLayoutUnlocked() {
-    if (localStorage.getItem(`${this.$settings.env.instanceId}-dashboard-locked`) === 'true' || this.isIos()) {
-      return false
-    }
-    return this.$auth.user.admin
-  }
-
   lockLayout() {
-    localStorage.setItem(`${this.$settings.env.instanceId}-dashboard-locked`, 'true')
     this.options.draggable.enabled = false
     this.options.resizable.enabled = false
     this.options.api.optionsChanged()
+    this.isUnlocked = false
     this.setLayout(this.dashboard)
   }
 
   unlockLayout() {
-    localStorage.removeItem(`${this.$settings.env.instanceId}-dashboard-locked`)
     this.options.draggable.enabled = true
     this.options.resizable.enabled = true
     this.options.api.optionsChanged()
+    this.isUnlocked = true
     this.setLayout(this.dashboard)
   }
 
@@ -246,7 +240,6 @@ export class StatusComponent implements OnInit, OnDestroy {
     ref.componentInstance.resetLayout = this.resetLayout.bind(this)
     ref.componentInstance.lockLayout = this.lockLayout.bind(this)
     ref.componentInstance.unlockLayout = this.unlockLayout.bind(this)
-    ref.componentInstance.isLayoutUnlocked = !this.isLayoutUnlocked()
 
     ref.result
       .then((widget) => {

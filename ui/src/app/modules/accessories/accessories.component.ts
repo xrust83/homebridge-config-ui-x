@@ -64,10 +64,7 @@ export class AccessoriesComponent implements OnInit, OnDestroy {
       })
     })
 
-    // Check to see if the layout should be locked
-    if (window.localStorage.getItem('accessories-layout-locked')) {
-      this.isMobile = true
-    }
+    this.isMobile = true
   }
 
   ngOnInit() {
@@ -108,11 +105,18 @@ export class AccessoriesComponent implements OnInit, OnDestroy {
     this.isMobile = !this.isMobile
 
     if (this.isMobile) {
-      // Layout locked
-      window.localStorage.setItem('accessories-layout-locked', 'yes')
+      const servicesBags = document.querySelectorAll('.services-bag')
+      servicesBags.forEach((servicesBag) => {
+        for (let i = 0; i < 10; i++) {
+          const invisibleDiv = document.createElement('div')
+          invisibleDiv.className = 'accessory-box invisible py-0 my-0'
+          invisibleDiv.style.height = '0'
+          servicesBag.appendChild(invisibleDiv)
+        }
+      })
     } else {
-      // Layout unlocked
-      window.localStorage.removeItem('accessories-layout-locked')
+      const invisibleItems = document.querySelectorAll('.invisible')
+      invisibleItems.forEach(item => item.remove())
     }
   }
 

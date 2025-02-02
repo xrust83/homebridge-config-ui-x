@@ -20,7 +20,6 @@ export class WidgetVisibilityComponent implements OnInit {
   @Input() resetLayout: () => void
   @Input() lockLayout: () => void
   @Input() unlockLayout: () => void
-  @Input() public isLayoutUnlocked: boolean
 
   public availableWidgets = []
 

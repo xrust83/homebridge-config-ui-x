@@ -9,7 +9,7 @@
       (click)="$activeModal.dismiss('Dismiss')"
     ></button>
   </div>
-  <div class="modal-body text-center">
+  <div class="modal-body text-center px-5">
     <div
       class="humidity-drop mb-3"
       [ngClass]="{
@@ -22,48 +22,55 @@
     </div>
 
     <div
-      class="btn-group-vertical d-flex justify-content-center mb-4 p-0"
+      class="btn-group-vertical d-flex justify-content-center mb-0 p-0"
       role="group"
       aria-label="Humidifier Dehumidifier Mode Control"
     >
-      <button
-        type="button"
-        class="btn mb-0 mx-0 px-0 py-3"
-        (click)="setTargetMode(0)"
-        [ngClass]="{ 'btn-primary': targetMode === 0, 'btn-elegant': targetMode !== 0 }"
-      >
+      <button type="button" class="btn mb-0 mx-0 p-3 btn-control" (click)="setTargetMode(0); $event.target.blur()">
+        <div class="float-start primary-text">
+          <i
+            class="fas fa-fw fa-xl"
+            [ngClass]="{ 'fa-check-circle': targetMode === 0, 'fa-blank': targetMode !== 0 }"
+          ></i>
+        </div>
         {{ 'accessories.control.auto' | translate }}
+        <div class="float-end"><i class="fas fa-fw fa-xl fa-blank"></i></div>
       </button>
-      <button
-        type="button"
-        class="btn mb-0 mx-0 px-0 py-3"
-        (click)="setTargetMode(1)"
-        [ngClass]="{ 'btn-primary': targetMode === 1, 'btn-elegant': targetMode !== 1 }"
-      >
+      <button type="button" class="btn mb-0 mx-0 p-3 btn-control" (click)="setTargetMode(1); $event.target.blur()">
+        <div class="float-start primary-text">
+          <i
+            class="fas fa-fw fa-xl"
+            [ngClass]="{ 'fa-check-circle': targetMode === 1, 'fa-blank': targetMode !== 1 }"
+          ></i>
+        </div>
         {{ 'accessories.control.humidifying' | translate }}
+        <div class="float-end"><i class="fas fa-fw fa-xl fa-blank"></i></div>
       </button>
-      <button
-        type="button"
-        class="btn mb-0 mx-0 px-0 py-3"
-        (click)="setTargetMode(2)"
-        [ngClass]="{ 'btn-primary': targetMode === 2, 'btn-elegant': targetMode !== 2 }"
-      >
+      <button type="button" class="btn mb-0 mx-0 p-3 btn-control" (click)="setTargetMode(2); $event.target.blur()">
+        <div class="float-start primary-text">
+          <i
+            class="fas fa-fw fa-xl"
+            [ngClass]="{ 'fa-check-circle': targetMode === 2, 'fa-blank': targetMode !== 2 }"
+          ></i>
+        </div>
         {{ 'accessories.control.dehumidifying' | translate }}
+        <div class="float-end"><i class="fas fa-fw fa-xl fa-blank"></i></div>
       </button>
-      <button
-        type="button"
-        class="btn mb-0 mx-0 px-0 py-3"
-        (click)="setTargetMode('off')"
-        [ngClass]="{ 'btn-primary': targetMode === 'off', 'btn-elegant': targetMode !== 'off' }"
-      >
+      <button type="button" class="btn mb-0 mx-0 p-3 btn-control" (click)="setTargetMode('off'); $event.target.blur()">
+        <div class="float-start primary-text">
+          <i
+            class="fas fa-fw fa-xl"
+            [ngClass]="{ 'fa-check-circle': targetMode === 'off', 'fa-blank': targetMode !== 'off' }"
+          ></i>
+        </div>
         {{ 'accessories.control.off' | translate }}
+        <div class="float-end"><i class="fas fa-fw fa-xl fa-blank"></i></div>
       </button>
     </div>
 
     @if (service.values.Active === 1 && RelativeHumidityHumidifierThreshold && RelativeHumidityDehumidifierThreshold) {
-    <h5>{{ 'accessories.control.target_humidity' | translate }}</h5>
     @switch (targetMode) { @case (0) {
-    <p>{{ autoHumidity[0] }}% - {{ autoHumidity[1] }}%</p>
+    <h6>{{ 'accessories.control.target' | translate }}: {{ autoHumidity[0] }}% - {{ autoHumidity[1] }}%</h6>
     <nouislider
       [min]="RelativeHumidityHumidifierThreshold.minValue"
       [max]="RelativeHumidityDehumidifierThreshold.maxValue"
@@ -73,7 +80,7 @@
     >
     </nouislider>
     } @case (1) {
-    <p>{{ targetHumidifierHumidity }}%</p>
+    <h6>{{ 'accessories.control.target' | translate }}: {{ targetHumidifierHumidity }}%</h6>
     <nouislider
       [min]="RelativeHumidityHumidifierThreshold.minValue"
       [max]="RelativeHumidityHumidifierThreshold.maxValue"
@@ -83,7 +90,7 @@
     >
     </nouislider>
     } @case (2) {
-    <p>{{ targetDehumidifierHumidity }}%</p>
+    <h6>{{ 'accessories.control.target' | translate }}: {{ targetDehumidifierHumidity }}%</h6>
     <nouislider
       [min]="RelativeHumidityDehumidifierThreshold.minValue"
       [max]="RelativeHumidityDehumidifierThreshold.maxValue"

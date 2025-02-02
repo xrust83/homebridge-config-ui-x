@@ -33,7 +33,7 @@ export class SpeakerComponent {
   onLongClick() {
     if ('Volume' in this.service.values) {
       const ref = this.$modal.open(SpeakerManageComponent, {
-        size: 'sm',
+        size: 'md',
       })
       ref.componentInstance.service = this.service
     }

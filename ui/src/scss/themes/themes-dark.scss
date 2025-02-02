@@ -141,6 +141,20 @@
       }
     }
 
+    .btn-control {
+      color: #ffffff;
+      background-color: #333333;
+      border-color: color.adjust(#333333, $lightness: -2%) !important;
+
+      &:hover,
+      &:focus {
+        color: #ffffff;
+        background-color: color.adjust(#333333, $lightness: -2%) !important;
+        border-color: color.adjust(#333333, $lightness: -2%) !important;
+        transition: background-color 0.25s;
+      }
+    }
+
     .btn-link {
       color: #9e9e9e !important;
     }

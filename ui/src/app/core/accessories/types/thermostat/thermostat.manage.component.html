@@ -9,7 +9,7 @@
       (click)="$activeModal.dismiss('Dismiss')"
     ></button>
   </div>
-  <div class="modal-body text-center">
+  <div class="modal-body text-center px-5">
     <div
       class="temperature-circle mb-3"
       [innerText]="(service.values.CurrentTemperature | convertTemp | number:'1.0-1') + '°'"
@@ -19,48 +19,56 @@
         'no-current-state': service.values.TargetHeatingCoolingState > 0 && service.values.CurrentHeatingCoolingState === 0
       }"
     ></div>
-
     <div
-      class="btn-group-vertical d-flex justify-content-center mb-4 p-0"
+      class="btn-group-vertical d-flex justify-content-center mb-0 p-0"
       role="group"
       aria-label="Thermostat Mode Control"
     >
-      <button
-        type="button"
-        class="btn mb-0 mx-0 px-0 py-3"
-        (click)="setTargetMode(0)"
-        [ngClass]="{ 'btn-primary': targetMode === 0, 'btn-elegant': targetMode !== 0 }"
-      >
+      <button type="button" class="btn mb-0 mx-0 p-3 btn-control" (click)="setTargetMode(0); $event.target.blur()">
+        <div class="float-start primary-text">
+          <i
+            class="fas fa-fw fa-xl"
+            [ngClass]="{ 'fa-check-circle': targetMode === 0, 'fa-blank': targetMode !== 0 }"
+          ></i>
+        </div>
         {{ 'accessories.control.off' | translate }}
+        <div class="float-end"><i class="fas fa-fw fa-xl fa-blank"></i></div>
       </button>
-      <button
-        type="button"
-        class="btn mb-0 mx-0 px-0 py-3"
-        (click)="setTargetMode(1)"
-        [ngClass]="{ 'btn-primary': targetMode === 1, 'btn-elegant': targetMode !== 1 }"
-      >
+      <button type="button" class="btn mb-0 mx-0 p-3 btn-control" (click)="setTargetMode(1); $event.target.blur()">
+        <div class="float-start primary-text">
+          <i
+            class="fas fa-fw fa-xl"
+            [ngClass]="{ 'fa-check-circle': targetMode === 1, 'fa-blank': targetMode !== 1 }"
+          ></i>
+        </div>
         {{ 'accessories.control.heat' | translate }}
+        <div class="float-end"><i class="fas fa-fw fa-xl fa-blank"></i></div>
       </button>
-      <button
-        type="button"
-        class="btn mb-0 mx-0 px-0 py-3"
-        (click)="setTargetMode(2)"
-        [ngClass]="{ 'btn-primary': targetMode === 2, 'btn-elegant': targetMode !== 2 }"
-      >
+      <button type="button" class="btn mb-0 mx-0 p-3 btn-control" (click)="setTargetMode(2); $event.target.blur()">
+        <div class="float-start primary-text">
+          <i
+            class="fas fa-fw fa-xl"
+            [ngClass]="{ 'fa-check-circle': targetMode === 2, 'fa-blank': targetMode !== 2 }"
+          ></i>
+        </div>
         {{ 'accessories.control.cool' | translate }}
+        <div class="float-end"><i class="fas fa-fw fa-xl fa-blank"></i></div>
       </button>
-      <button
-        type="button"
-        class="btn mb-0 mx-0 px-0 py-3"
-        (click)="setTargetMode(3)"
-        [ngClass]="{ 'btn-primary': targetMode === 3, 'btn-elegant': targetMode !== 3 }"
-      >
+      <button type="button" class="btn mb-0 mx-0 p-3 btn-control" (click)="setTargetMode(3); $event.target.blur()">
+        <div class="float-start primary-text">
+          <i
+            class="fas fa-fw fa-xl"
+            [ngClass]="{ 'fa-check-circle': targetMode === 3, 'fa-blank': targetMode !== 3 }"
+          ></i>
+        </div>
         {{ 'accessories.control.auto' | translate }}
+        <div class="float-end"><i class="fas fa-fw fa-xl fa-blank"></i></div>
       </button>
     </div>
 
-    <h5>{{ 'accessories.control.target_temperature' | translate }}</h5>
-    <p>{{ targetTemperature.value | convertTemp | number:'1.0-1' }}&deg;</p>
+    <h6>
+      {{ 'accessories.control.target' | translate }}: {{ targetTemperature.value | convertTemp | number:'1.0-1' }}&deg;
+    </h6>
 
     <nouislider
       [min]="targetTemperature.min"

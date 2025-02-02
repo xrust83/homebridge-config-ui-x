@@ -73,48 +73,47 @@
   </div>
 </div>
 <div [dragula]="'rooms-bag'" [(dragulaModel)]="$accessories.rooms">
-  @for (room of $accessories.rooms; track room) { @if (!isMobile || room.services.length) {
-  <div class="row">
-    <div class="col-md-12">
-      <h5 class="primary-text drag-handle room-title m-0 mb-1 mb-sm-0" [ngClass]="{ 'cursor-move': !isMobile }">
-        {{ room.name === 'Default Room' ? ('accessories.control.default_room' | translate) : room.name }}
-      </h5>
-    </div>
-  </div>
-  }
-  <div class="row mb-4">
-    @if (room.services.length) {
-    <div
-      class="col-md-12 d-flex flex-wrap justify-content-between noselect services-bag"
-      [dragula]="'services-bag'"
-      [(dragulaModel)]="room.services"
-    >
-      @for (service of room.services; track service) { @if (!hideHidden || !service.hidden) {
-      <div class="accessory-item accessory-tab">
-        <app-accessory-tile [service]="service"></app-accessory-tile>
+  @for (room of $accessories.rooms; track room) {
+  <div>
+    @if (!isMobile || room.services.length) {
+    <div class="row">
+      <div class="col-md-12">
+        <h5 class="primary-text drag-handle room-title m-0 mb-1 mb-sm-0" [ngClass]="{ 'cursor-move': !isMobile }">
+          {{ room.name === 'Default Room' ? ('accessories.control.default_room' | translate) : room.name }}
+        </h5>
       </div>
-      } }
-      <div style="height: 0 !important" class="accessory-box invisible py-0 my-0"></div>
-      <div style="height: 0 !important" class="accessory-box invisible py-0 my-0"></div>
-      <div style="height: 0 !important" class="accessory-box invisible py-0 my-0"></div>
-      <div style="height: 0 !important" class="accessory-box invisible py-0 my-0"></div>
-      <div style="height: 0 !important" class="accessory-box invisible py-0 my-0"></div>
-      <div style="height: 0 !important" class="accessory-box invisible py-0 my-0"></div>
-      <div style="height: 0 !important" class="accessory-box invisible py-0 my-0"></div>
-      <div style="height: 0 !important" class="accessory-box invisible py-0 my-0"></div>
-      <div style="height: 0 !important" class="accessory-box invisible py-0 my-0"></div>
-      <div style="height: 0 !important" class="accessory-box invisible py-0 my-0"></div>
-      <div style="height: 0 !important" class="accessory-box invisible py-0 my-0"></div>
-      <div style="height: 0 !important" class="accessory-box invisible py-0 my-0"></div>
-      <div style="height: 0 !important" class="accessory-box invisible py-0 my-0"></div>
-      <div style="height: 0 !important" class="accessory-box invisible py-0 my-0"></div>
-      <div style="height: 0 !important" class="accessory-box invisible py-0 my-0"></div>
-    </div>
-    } @if (!room.services.length && !isMobile) {
-    <div class="col-md-12 d-flex flex-wrap noselect" [dragula]="'services-bag'" [(dragulaModel)]="room.services">
-      <app-drag-here-placeholder class="no-drag"></app-drag-here-placeholder>
     </div>
     }
+    <div class="row mb-4">
+      @if (room.services.length) {
+      <div
+        class="col-md-12 d-flex flex-wrap noselect services-bag"
+        [ngClass]="{ 'justify-content-between': isMobile }"
+        [dragula]="'services-bag'"
+        [(dragulaModel)]="room.services"
+      >
+        @for (service of room.services; track service) { @if (!hideHidden || !service.hidden) {
+        <div class="accessory-item accessory-tab">
+          <app-accessory-tile [service]="service"></app-accessory-tile>
+        </div>
+        } }
+        <div style="height: 0" class="accessory-box invisible py-0 my-0"></div>
+        <div style="height: 0" class="accessory-box invisible py-0 my-0"></div>
+        <div style="height: 0" class="accessory-box invisible py-0 my-0"></div>
+        <div style="height: 0" class="accessory-box invisible py-0 my-0"></div>
+        <div style="height: 0" class="accessory-box invisible py-0 my-0"></div>
+        <div style="height: 0" class="accessory-box invisible py-0 my-0"></div>
+        <div style="height: 0" class="accessory-box invisible py-0 my-0"></div>
+        <div style="height: 0" class="accessory-box invisible py-0 my-0"></div>
+        <div style="height: 0" class="accessory-box invisible py-0 my-0"></div>
+        <div style="height: 0" class="accessory-box invisible py-0 my-0"></div>
+      </div>
+      } @if (!room.services.length && !isMobile) {
+      <div class="col-md-12 d-flex flex-wrap noselect" [dragula]="'services-bag'" [(dragulaModel)]="room.services">
+        <app-drag-here-placeholder class="no-drag"></app-drag-here-placeholder>
+      </div>
+      }
+    </div>
   </div>
   }
 </div>
