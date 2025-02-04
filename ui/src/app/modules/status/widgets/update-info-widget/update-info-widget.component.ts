@@ -118,6 +118,9 @@ export class UpdateInfoWidgetComponent implements OnInit {
 
     ref.componentInstance.title = this.$translate.instant('status.widget.info.node_update_title')
     ref.componentInstance.message = this.$translate.instant('status.widget.info.node_update_message')
+    if (this.serverInfo.homebridgeRunningInSynologyPackage || this.serverInfo.homebridgeRunningInDocker) {
+      ref.componentInstance.message2 = this.$translate.instant('status.widget.info.node_update_message_2')
+    }
     ref.componentInstance.subtitle = `${this.serverInfo.nodeVersion} &rarr; ${this.nodejsInfo.latestVersion}`
     ref.componentInstance.ctaButtonLabel = this.$translate.instant('form.button_more_info')
     ref.componentInstance.faIconClass = 'fab fa-fw fa-node-js primary-text'

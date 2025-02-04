@@ -13,6 +13,7 @@ export class InformationComponent {
   @Input() title: string
   @Input() subtitle?: string
   @Input() message: string
+  @Input() message2?: string
   @Input() ctaButtonLabel?: string
   @Input() ctaButtonLink?: string
   @Input() faIconClass: string

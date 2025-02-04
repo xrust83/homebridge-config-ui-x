@@ -20,6 +20,7 @@ All notable changes to `homebridge-config-ui-x` will be documented in this file.
 - improvements to long-click accessory control
   - also fixes accessory and room rearranging on the accessories page
   - accessory and status page layout will now be locked by default on each visit
+- add message for docker/synology users in node update info modal
 
 ### Other Changes
 

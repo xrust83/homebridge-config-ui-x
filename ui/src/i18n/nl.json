@@ -472,6 +472,7 @@
   "status.widget.info.node_unsupp_message": "U gebruikt een versie van Node.js die niet officieel ondersteund wordt door Homebridge. Installatie van een ondersteunde versie wordt geadviseerd.",
   "status.widget.info.node_unsupp_title": "Niet ondersteunde Node Versie",
   "status.widget.info.node_update_message": "Homebridge vereist Node.js geïnstalleerd op Uw syteem. Met enige regelmaat moet u de Node.js runtime bijwerken om nieuwe functionaliteit te ondersteuen. Homebridge (en verified plugins) ondersteunen alle huidige Active en Maintenance LTS releases van Node.js.",
+  "status.widget.info.node_update_message_2": "For Docker/Synology users, the Node.js version is managed by the Docker image or Synology package. You can hide Node.js update information using the widget settings.",
   "status.widget.info.node_update_title": "Node Update",
   "status.widget.info.nodejs_path": "Node.js Pad",
   "status.widget.info.os": "OS",
