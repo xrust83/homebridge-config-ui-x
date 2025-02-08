@@ -546,27 +546,22 @@ export class PluginsService {
       npmPluginLabel = `${pluginAction.name}@${pluginAction.version}`
     }
 
-    try {
-      await this.runNpmCommand(
-        [...this.npm, action, ...installOptions, npmPluginLabel],
-        installPath,
-        client,
-        pluginAction.termCols,
-        pluginAction.termRows,
-      )
+    // Clean up the npm cache before any install or uninstall
+    await this.cleanNpmCache()
 
-      // Ensure the custom plugin dir was not deleted
-      await this.ensureCustomPluginDirExists()
+    // Run the npm command
+    await this.runNpmCommand(
+      [...this.npm, action, ...installOptions, npmPluginLabel],
+      installPath,
+      client,
+      pluginAction.termCols,
+      pluginAction.termRows,
+    )
 
-      return true
-    } catch (e) {
-      if (pluginAction.name === this.configService.name) {
-        client.emit('stdout', yellow('\r\nCleaning up npm cache, please wait...\r\n'))
-        await this.cleanNpmCache()
-        client.emit('stdout', yellow(`npm cache cleared, please try updating ${this.configService.name} again.\r\n`))
-      }
-      throw e
-    }
+    // Ensure the custom plugin dir was not deleted
+    await this.ensureCustomPluginDirExists()
+
+    return true
   }
 
   /**
@@ -1593,7 +1588,7 @@ export class PluginsService {
     }
 
     return new Promise((res) => {
-      const child = spawn(command.shift(), command)
+      const child = spawn(command.shift(), command, { shell: true })
 
       child.on('exit', (code) => {
         this.logger.log(`Executed npm cache clear command with exit code ${code}.`)

@@ -25,6 +25,7 @@ All notable changes to `homebridge-config-ui-x` will be documented in this file.
 ### Other Changes
 
 - append `--omit=dev` to `npm i` commands
+- clean up `npm` cache before any install/uninstall
 
 ### Homebridge Dependencies
 
