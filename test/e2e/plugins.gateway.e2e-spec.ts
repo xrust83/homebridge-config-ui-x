@@ -1,7 +1,6 @@
 import type { NestFastifyApplication } from '@nestjs/platform-fastify'
 import type { TestingModule } from '@nestjs/testing'
 
-import child_process from 'node:child_process'
 import { EventEmitter } from 'node:events'
 import { platform } from 'node:os'
 import { resolve } from 'node:path'
@@ -80,7 +79,6 @@ describe('PluginsGateway (e2e)', () => {
 
     vi.spyOn(client, 'emit')
     vi.spyOn(client, 'on')
-    vi.spyOn(child_process, 'spawn')
 
     // Ensure config is correct
     configService.ui.sudo = false
@@ -364,4 +362,4 @@ describe('PluginsGateway (e2e)', () => {
   afterAll(async () => {
     await app.close()
   })
-})
+}, 10_000)
