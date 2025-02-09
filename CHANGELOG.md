@@ -17,6 +17,9 @@ All notable changes to `homebridge-config-ui-x` will be documented in this file.
 ### UI Changes
 
 - updates to the `uk.json` language file (#2348) (@xrust83)
+- allow docker users to disable the UI terminal via env
+  - set `HOMEBRIDGE_CONFIG_UI_TERMINAL_ENABLED=0`
+  - note that this has not been extensively tested
 
 ### Other Changes
 
