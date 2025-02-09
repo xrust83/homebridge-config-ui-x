@@ -20,6 +20,7 @@ All notable changes to `homebridge-config-ui-x` will be documented in this file.
 - allow docker users to disable the UI terminal via env
   - set `HOMEBRIDGE_CONFIG_UI_TERMINAL_ENABLED=0`
   - note that this has not been extensively tested
+- fix opening control accessory modal on mobile devices
 
 ### Other Changes
 

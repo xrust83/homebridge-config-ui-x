@@ -48,6 +48,12 @@ export class LongClickDirective implements OnDestroy {
       return
     }
     this.done = false
+
+    if (event instanceof TouchEvent) {
+      event.preventDefault()
+      event.stopPropagation()
+    }
+
     this.downTimeout = setTimeout(() => {
       if (!this.done) {
         this.done = true
